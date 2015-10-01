@@ -40,7 +40,11 @@ public class Planeta {
 		return posY;
 	}
 	
+	public int getPop(){
+		return pop;
+	}
+	
 	public void vypis(){
-		System.out.println("{"+id+"}"+posX+"/"+posY);
+		System.out.println("{"+id+"}"+posX+"/"+posY+ " " + pop);
 	}
 }

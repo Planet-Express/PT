@@ -1,13 +1,14 @@
 package PT;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Random;
 
 public class Galaxie{
 
 	private ArrayList<Planeta> planety = new ArrayList<Planeta>();
 	private int pocet = 0;
 	private int delka = 0;
+	private int populace;
 	public Galaxie(int delka, int pocet){
 		this.pocet = pocet;
 		this.delka = delka;
@@ -45,9 +46,9 @@ public class Galaxie{
 			}
 		}
 		
-		
-		Planeta p = new Planeta(id,x,y,5000);
-		System.out.println("{"+p.getId()+"}"+p.getPosX()+"/"+p.getPosY());
+		populace = generujPopulaci();
+		Planeta p = new Planeta(id,x,y,populace);
+		//p.vypis();
 		return p;
 	}
 	
@@ -80,5 +81,19 @@ public class Galaxie{
 
 	public ArrayList<Planeta> getPlanety(){
 		return planety;
+	}
+	
+	public int generujPopulaci(){
+		int stredHodnota = 3000000;
+		int rozptyl = 3000000;
+		Random rand = new Random();
+			int k;
+			while(true){
+				k = (int) (stredHodnota + rozptyl * rand.nextGaussian());
+				if(k >= 100000 && k <= 10000000){
+					break;
+				}
+			}
+		return k;
 	}
 }
