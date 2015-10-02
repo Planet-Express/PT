@@ -45,30 +45,7 @@ public class Hlavni extends Application{
 	}
 	
 	public static Color getColor(int pop){		
-		Color color;
-		switch(pop){
-		case 0: color = Color.hsb(skok, 1, 1);
-		break;
-		case 1: color = Color.hsb(skok*2, 1, 1);
-		break;
-		case 2: color = Color.hsb(skok*3, 1, 1);
-		break;
-		case 3: color = Color.hsb(skok*4, 1, 1);
-		break;
-		case 4: color = Color.hsb(skok*5, 1, 1);
-		break;
-		case 5: color = Color.hsb(skok*6, 1, 1);
-		break;
-		case 6: color = Color.hsb(skok*7, 1, 1);
-		break;
-		case 7: color = Color.hsb(skok*8, 1, 1);
-		break;
-		case 8: color = Color.hsb(skok*9, 1, 1);
-		break;
-		case 9: color = Color.hsb(skok*10, 1, 1);
-		break;
-		default: color = Color.WHITE;
-		}
+		Color color = Color.hsb(skok*pop, 1, 1);
 		return color;
 	}
 
