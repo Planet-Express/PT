@@ -49,6 +49,7 @@ public class Planeta{
 			s.add(sousedi.get(i));
 		}
 		sousedi = s;
+		
 	}
 
 	
