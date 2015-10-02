@@ -17,13 +17,16 @@ public class Galaxie{
 			planety.add(vytvorPlanetu(i));
 		}
 		dohledejSousedy(planety);
+		/**
+		//VYPIS VSECH SOUSEDU PO VZDALENOSTECH
 		for (int i = 0; i < planety.size(); i++) {
-			System.out.println(planety.get(i).getSousedi().size());
-			for (int j = 0; j < planety.get(i).getSousedi().size(); j++) {
-				System.out.print("|"+planety.get(i).getSousedi().get(j).getId()+"|");
 			
+			for (int j = 0; j < planety.get(i).getSousedi().size(); j++) {
+				System.out.print("|"+vzdalenostPlanet(planety.get(i), planety.get(i).getSousedi().get(j))+"|");
 			}
+			System.out.println();
 		}
+		**/
 	}
 	
 	public Planeta vytvorPlanetu(int id){
@@ -58,23 +61,24 @@ public class Galaxie{
 	}
 	
 	public void dohledejSousedy(ArrayList<Planeta> planety){
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < planety.size(); i++) {
 			boolean poprve = true;
+			Planeta a = planety.get(i);
 			for (int j = 0; j < planety.size(); j++) {
 				if(i!=j){
-					Planeta a = planety.get(i);
 					Planeta b = planety.get(j);
 					double vzdalenost = vzdalenostPlanet(a, b);
 					ArrayList<Planeta>sousedi = a.getSousedi();
 					if(true){
 						//pro prvnich pet planet
 						if((j<6&&i<5)||(j<5&&i>=5)){
+							
 							if(poprve==true){
 								sousedi.add(b);
 								poprve=false;}
 							else{
 								for (int k = 0; k < sousedi.size(); k++) {
-									if(vzdalenostPlanet(a, b)<=vzdalenostPlanet(a, sousedi.get(k)))
+									if(vzdalenostPlanet(a, b) <= vzdalenostPlanet(a, sousedi.get(k)))
 									{
 										sousedi.add(k,b);
 										//sousedi.set(k, b);
@@ -87,20 +91,19 @@ public class Galaxie{
 								}
 								
 							}
-							
 							//pro ostatni planety
 						}
 						else{
 							for (int k = 0; k < sousedi.size(); k++) {
-									if(vzdalenost < vzdalenostPlanet(a, sousedi.get(k))){
+									if(vzdalenost <= vzdalenostPlanet(a, sousedi.get(k))){
 										sousedi.add(k, b);
 										a.trimSousedi();
 										sousedi = a.getSousedi();
-										
+										break;
 									}
 								}
 						}
-						System.out.println(i+"/"+j);
+						
 					}
 				}
 			}
