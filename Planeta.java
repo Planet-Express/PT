@@ -3,9 +3,9 @@ package PT;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class Planeta {
+public class Planeta{
 
-	private ArrayList<Planeta> sousedi = new ArrayList<Planeta>(5);
+	private ArrayList<Planeta> sousedi = new ArrayList<Planeta>();
 	private int posX;
 	private int posY;
 	private int pop;
@@ -44,10 +44,12 @@ public class Planeta {
 	}
 	
 	public void trimSousedi(){
-		ArrayList<Planeta> s = new ArrayList<>(5);
-		for (int i = 0; i < s.size(); i++) {
-			s.set(i, sousedi.get(i));
+		ArrayList<Planeta> s = new ArrayList<>();
+		for (int i = 0; i < 5; i++) {
+			s.add(sousedi.get(i));
 		}
 		sousedi = s;
 	}
+
+	
 }

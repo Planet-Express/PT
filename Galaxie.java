@@ -16,9 +16,9 @@ public class Galaxie{
 			planety.add(vytvorPlanetu(i));
 		}
 		dohledejSousedy(planety);
-		System.out.println(planety.get(1).getSousedi().size());
-		for (int i = 0; i < planety.get(1).getSousedi().size(); i++) {
-			System.out.print("|"+planety.get(1).getSousedi().get(i).getId()+"|");
+		System.out.println(planety.get(0).getSousedi().size());
+		for (int i = 0; i < planety.get(0).getSousedi().size(); i++) {
+			System.out.print("|"+planety.get(0).getSousedi().get(i).getId()+"|");
 		}
 	}
 	
@@ -54,25 +54,27 @@ public class Galaxie{
 	}
 	
 	public void dohledejSousedy(ArrayList<Planeta> planety){
-		for (int i = 0; i < planety.size(); i++) {
+		for (int i = 0; i < 1; i++) {
 			for (int j = 0; j < planety.size(); j++) {
 				if(i!=j){
 					Planeta a = planety.get(i);
 					Planeta b = planety.get(j);
 					double vzdalenost = vzdalenostPlanet(a, b);
 					ArrayList<Planeta>sousedi = a.getSousedi();
-					if(i==1){sousedi.add(b);}
-					else{
-						for (int k = 0; k < sousedi.size(); k++) {
-							if(vzdalenost < vzdalenostPlanet(a, sousedi.get(k))){
-								sousedi.add(k, b);
-								a.trimSousedi();
+					if(i==0){
+						if(j<=5){sousedi.add(b);}
+						else{
+							
+								for (int k = 0; k < 5; k++) {
+									if(vzdalenost < vzdalenostPlanet(a, sousedi.get(k))){
+										sousedi.add(k, b);
+										a.trimSousedi();
+									}
+								}
 							}
-						}
 					}
 				}
 			}
-			System.out.println(i);
 		}
 	}
 	
