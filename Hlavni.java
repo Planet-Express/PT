@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 public class Hlavni extends Application{
 	
 	static Galaxie g;
+	GraphicsContext gc;
+	final static int skok = 6;
 
 	public static void main(String[] args){
 		g = new Galaxie(800,5000);
@@ -23,7 +25,7 @@ public class Hlavni extends Application{
 		Scene s = new Scene(root, 800, 800, Color.BLACK);
 
 		final Canvas canvas = new Canvas(800,800);
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+		gc = canvas.getGraphicsContext2D();
 
 		gc.setFill(Color.YELLOW);
 		
@@ -31,29 +33,7 @@ public class Hlavni extends Application{
 			int x = g.getPlanety().get(i).getPosX();
 			int y = g.getPlanety().get(i).getPosY();
 			int pop = g.getPlanety().get(i).getPop()/1000000;
-			switch(pop){
-			case 0: gc.setFill(Color.hsb(1, 1, 0.1));
-			break;
-			case 1: gc.setFill(Color.hsb(1, 1, 0.2));
-			break;
-			case 2: gc.setFill(Color.hsb(1, 1, 0.3));
-			break;
-			case 3: gc.setFill(Color.hsb(1, 1, 0.4));
-			break;
-			case 4: gc.setFill(Color.hsb(1, 1, 0.5));
-			break;
-			case 5: gc.setFill(Color.hsb(1, 1, 0.6));
-			break;
-			case 6: gc.setFill(Color.hsb(1, 1, 0.7));
-			break;
-			case 7: gc.setFill(Color.hsb(1, 1, 0.8));
-			break;
-			case 8: gc.setFill(Color.hsb(1, 1, 0.9));
-			break;
-			case 9: gc.setFill(Color.hsb(1, 1, 1));
-			break;
-			default: gc.setFill(Color.WHITE);
-			}
+			gc.setFill(getColor(pop));
 			gc.fillOval(x-2, y-2, 4, 4);
 			
 		}
@@ -62,6 +42,34 @@ public class Hlavni extends Application{
 		primaryStage.setScene(s);
 		
 		primaryStage.show();
+	}
+	
+	public static Color getColor(int pop){		
+		Color color;
+		switch(pop){
+		case 0: color = Color.hsb(skok, 1, 1);
+		break;
+		case 1: color = Color.hsb(skok*2, 1, 1);
+		break;
+		case 2: color = Color.hsb(skok*3, 1, 1);
+		break;
+		case 3: color = Color.hsb(skok*4, 1, 1);
+		break;
+		case 4: color = Color.hsb(skok*5, 1, 1);
+		break;
+		case 5: color = Color.hsb(skok*6, 1, 1);
+		break;
+		case 6: color = Color.hsb(skok*7, 1, 1);
+		break;
+		case 7: color = Color.hsb(skok*8, 1, 1);
+		break;
+		case 8: color = Color.hsb(skok*9, 1, 1);
+		break;
+		case 9: color = Color.hsb(skok*10, 1, 1);
+		break;
+		default: color = Color.WHITE;
+		}
+		return color;
 	}
 
 }
