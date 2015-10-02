@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 public class Hlavni extends Application{
@@ -29,6 +30,7 @@ public class Hlavni extends Application{
 
 		gc.setFill(Color.YELLOW);
 		
+		nakresliCesty();
 		for (int i = 0; i < g.getPlanety().size(); i++) {
 			int x = g.getPlanety().get(i).getPosX();
 			int y = g.getPlanety().get(i).getPosY();
@@ -38,10 +40,26 @@ public class Hlavni extends Application{
 			
 		}
 		
+		
 		root.getChildren().add(canvas);
 		primaryStage.setScene(s);
 		
 		primaryStage.show();
+	}
+	
+	public void nakresliCesty()
+	{
+		gc.setStroke(Color.GREEN);
+		for (int i = 0; i < g.getPlanety().size(); i++) {
+			Planeta a = g.getPlanety().get(i);
+			int x1 = a.getPosX();
+			int y1 = a.getPosY();
+			for (int j = 0; j < a.getSousedi().size(); j++) {
+				int x2 = a.getSousedi().get(j).getPosX();
+				int y2 = a.getSousedi().get(j).getPosY();
+				gc.strokeLine(x1, y1, x2, y2);
+			}
+		}
 	}
 	
 	public static Color getColor(int pop){		

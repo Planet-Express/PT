@@ -47,7 +47,7 @@ public class Galaxie{
 					int rozdilX = Math.abs(posPX-x);
 					int rozdilY = Math.abs(posPY-y);
 					double vzdalenost = Math.sqrt(Math.pow(rozdilX, 2)+Math.pow(rozdilY, 2));
-					if(vzdalenost<=2){break;}
+					if(vzdalenost<=4){break;}
 					if((i+1)==planety.size()){lze = true;}
 				}
 				if(counter==99){System.out.println("Planeta "+id+" se do galaxie nevesla");}
