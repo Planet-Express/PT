@@ -5,7 +5,7 @@ import java.util.TreeMap;
 
 public class Planeta {
 
-	private TreeMap<Double, Planeta> sousedi = new TreeMap<Double, Planeta>();
+	private ArrayList<Planeta> sousedi = new ArrayList<Planeta>(5);
 	private int posX;
 	private int posY;
 	private int pop;
@@ -16,16 +16,11 @@ public class Planeta {
 		this.posX = posX;
 		this.posY = posY;
 		this.pop = pop;
+		
 	}
 	
 	public ArrayList<Planeta> getSousedi(){
-		ArrayList<Planeta> sousedi = new ArrayList<Planeta>(1);
-		sousedi.add(this.sousedi.get(this.sousedi.firstKey()));
 		return sousedi;
-	}
-	
-	public TreeMap<Double, Planeta> getMapa(){
-		return this.sousedi;
 	}
 	
 	public int getId(){
@@ -42,5 +37,13 @@ public class Planeta {
 	
 	public void vypis(){
 		System.out.println("{"+id+"}"+posX+"/"+posY);
+	}
+	
+	public void trimSousedi(){
+		ArrayList<Planeta> s = new ArrayList<>(5);
+		for (int i = 0; i < s.size(); i++) {
+			s.set(i, sousedi.get(i));
+		}
+		sousedi = s;
 	}
 }

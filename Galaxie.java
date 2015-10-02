@@ -14,9 +14,10 @@ public class Galaxie{
 		for (int i = 1; i <= pocet; i++) {
 			planety.add(vytvorPlanetu(i));
 		}
-	//	dohledejSousedy(planety);
-		for (int i = 0; i < planety.size(); i++) {
-	//		planety.get(i).getSousedi().get(0).vypis();
+		dohledejSousedy(planety);
+		System.out.println(planety.get(1).getSousedi().size());
+		for (int i = 0; i < planety.get(1).getSousedi().size(); i++) {
+			System.out.print("|"+planety.get(1).getSousedi().get(i).getId()+"|");
 		}
 	}
 	
@@ -57,9 +58,20 @@ public class Galaxie{
 				if(i!=j){
 					Planeta a = planety.get(i);
 					Planeta b = planety.get(j);
-					a.getMapa().put(vzdalenostPlanet(a, b),b);
+					double vzdalenost = vzdalenostPlanet(a, b);
+					ArrayList<Planeta>sousedi = a.getSousedi();
+					if(i==1){sousedi.add(b);}
+					else{
+						for (int k = 0; k < sousedi.size(); k++) {
+							if(vzdalenost < vzdalenostPlanet(a, sousedi.get(k))){
+								sousedi.add(k, b);
+								a.trimSousedi();
+							}
+						}
+					}
 				}
 			}
+			System.out.println(i);
 		}
 	}
 	
