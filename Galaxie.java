@@ -1,22 +1,19 @@
 package PT;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class Galaxie{
 
 	private ArrayList<Planeta> planety = new ArrayList<Planeta>();
+	private ArrayList<Stanice> stanice = new ArrayList<Stanice>();
 	private int pocet = 0;
 	private int delka = 0;
 	private int populace;
+	
 	public Galaxie(int delka, int pocet){
 		this.pocet = pocet;
 		this.delka = delka;
-		for (int i = 1; i <= pocet; i++) {
-			planety.add(vytvorPlanetu(i));
-		}
-		dohledejSousedy(planety);
 		/**
 		//VYPIS VSECH SOUSEDU PO VZDALENOSTECH
 		for (int i = 0; i < planety.size(); i++) {
@@ -29,6 +26,23 @@ public class Galaxie{
 		**/
 	}
 	
+	public void generujVesmir(){
+		for (int i = 1; i <= pocet; i++) {
+			planety.add(vytvorPlanetu(i));
+		}
+		vytvorStanice();
+		dohledejSousedy(planety);		
+	}
+	
+	private void vytvorStanice() {
+		stanice.add(new Stanice(1, 200, 200));
+		stanice.add(new Stanice(2, 600, 200));
+		stanice.add(new Stanice(3, 200, 600));
+		stanice.add(new Stanice(4, 600, 600));
+		stanice.add(new Stanice(5, 400, 400));
+		
+	}
+
 	public Planeta vytvorPlanetu(int id){
 		int x = -1;
 		int y = -1;
@@ -60,6 +74,7 @@ public class Galaxie{
 		return p;
 	}
 	
+	@SuppressWarnings("unused")
 	public void dohledejSousedy(ArrayList<Planeta> planety){
 		for (int i = 0; i < planety.size(); i++) {
 			boolean poprve = true;
@@ -127,6 +142,10 @@ public class Galaxie{
 
 	public ArrayList<Planeta> getPlanety(){
 		return planety;
+	}
+	
+	public ArrayList<Stanice> getStanice(){
+		return stanice;
 	}
 	
 	public int generujPopulaci(){
