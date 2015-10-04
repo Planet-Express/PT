@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class Galaxie{
 
-	private ArrayList<Planeta> planety = new ArrayList<Planeta>();
-	private ArrayList<Stanice> stanice = new ArrayList<Stanice>();
+	private ArrayList<Planeta> planety = new ArrayList<Planeta>(5000);
+	private ArrayList<Stanice> stanice = new ArrayList<Stanice>(5);
 	private int pocet = 0;
 	private int delka = 0;
 	private int populace;
@@ -74,52 +74,25 @@ public class Galaxie{
 		return p;
 	}
 	
-	@SuppressWarnings("unused")
 	public void dohledejSousedy(ArrayList<Planeta> planety){
 		for (int i = 0; i < planety.size(); i++) {
-			boolean poprve = true;
 			Planeta a = planety.get(i);
 			for (int j = 0; j < planety.size(); j++) {
 				if(i!=j){
 					Planeta b = planety.get(j);
-					double vzdalenost = vzdalenostPlanet(a, b);
 					ArrayList<Planeta>sousedi = a.getSousedi();
-					if(true){
-						//pro prvnich pet planet
-						if((j<6&&i<5)||(j<5&&i>=5)){
-							
-							if(poprve==true){
-								sousedi.add(b);
-								poprve=false;}
-							else{
-								for (int k = 0; k < sousedi.size(); k++) {
-									if(vzdalenostPlanet(a, b) <= vzdalenostPlanet(a, sousedi.get(k)))
-									{
-										sousedi.add(k,b);
-										//sousedi.set(k, b);
-										break;
-									}
-									else{
-										sousedi.add(b);
-										break;
-									}
-								}
-								
-							}
-							//pro ostatni planety
-						}
-						else{
-							for (int k = 0; k < sousedi.size(); k++) {
-									if(vzdalenost <= vzdalenostPlanet(a, sousedi.get(k))){
-										sousedi.add(k, b);
-										a.trimSousedi();
-										sousedi = a.getSousedi();
-										break;
-									}
-								}
-						}
-						
+					double vzdalenost = vzdalenostPlanet(a, b);
+					for(int l = 0; l < 5; l++){						
+						sousedi.add(new Planeta(0, Integer.MAX_VALUE, Integer.MAX_VALUE, 0));
 					}
+					for (int k = 0; k < sousedi.size(); k++) {
+						if(vzdalenost <= vzdalenostPlanet(a, sousedi.get(k))){
+							sousedi.add(k, b);
+							a.trimSousedi();
+							sousedi = a.getSousedi();
+							break;
+						}
+					}					
 				}
 			}
 		}
