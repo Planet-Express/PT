@@ -1,28 +1,11 @@
 package PT;
 
-public class Stanice {
+public class Stanice extends Planeta{
 
-	private int id;
-	private int x;
-	private int y;
-	
 	public Stanice(int id, int x, int y){
-		this.id = id;
-		this.x = x;
-		this.y = y;
+		super(id, x, y, 0);
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
+	
 	
 	
 }

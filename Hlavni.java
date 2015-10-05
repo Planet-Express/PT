@@ -26,7 +26,11 @@ public class Hlavni extends Application{
 		Scene s = new Scene(root, 800, 800, Color.BLACK);
 		final Canvas canvas = new Canvas(800,800);
 		gc = canvas.getGraphicsContext2D();
-
+		///////////
+		gc.scale(0.75, 0.75);
+		root = new Group();
+		s = new Scene(root, 800*0.75, 800*0.75, Color.BLACK);
+		//////////
 		gc.setFill(Color.YELLOW);
 		nakresliCesty();
 		nakresliPlanety();
@@ -39,12 +43,12 @@ public class Hlavni extends Application{
 	
 	private void nakresliStanice() {
 		for(int i = 0; i < g.getStanice().size(); i++){
-			int x = g.getStanice().get(i).getX();
-			int y = g.getStanice().get(i).getY();
+			int x = g.getStanice().get(i).getPosX();
+			int y = g.getStanice().get(i).getPosY();
 			gc.setFill(Color.BLUE);
 			gc.fillOval(x-3, y-3, 6, 6);
 			gc.setStroke(Color.BLUE);
-			gc.strokeOval(x-300, y-300, 600, 600);
+			gc.strokeOval(x-150, y-150, 300, 300);
 		}
 	}
 
@@ -73,7 +77,7 @@ public class Hlavni extends Application{
 	}
 	
 	private static Color getColor(int pop){		
-		Color color = Color.hsb(skok*pop, 1, 1);
+		Color color = Color.hsb(50-(skok*pop), 1, 1);
 		return color;
 	}
 

@@ -27,19 +27,19 @@ public class Galaxie{
 	}
 	
 	public void generujVesmir(){
+		vytvorStanice();
 		for (int i = 1; i <= pocet; i++) {
 			planety.add(vytvorPlanetu(i));
 		}
-		vytvorStanice();
 		dohledejSousedy(planety);		
 	}
 	
 	private void vytvorStanice() {
-		stanice.add(new Stanice(1, 200, 200));
-		stanice.add(new Stanice(2, 600, 200));
-		stanice.add(new Stanice(3, 200, 600));
-		stanice.add(new Stanice(4, 600, 600));
-		stanice.add(new Stanice(5, 400, 400));
+		stanice.add(new Stanice(5001, 175, 175));
+		stanice.add(new Stanice(5002, 625, 175));
+		stanice.add(new Stanice(5003, 175, 625));
+		stanice.add(new Stanice(5004, 625, 625));
+		stanice.add(new Stanice(5005, 400, 400));
 		
 	}
 
@@ -52,20 +52,26 @@ public class Galaxie{
 			counter++;
 			x = randomRange(0, delka);
 			y = randomRange(0, delka);
-			if(planety.size()==0){break;}
-			else{
+			
+			
 				for (int i = 0; i < planety.size(); i++) 
 				{
-					int posPX = planety.get(i).getPosX();
-					int posPY = planety.get(i).getPosY();
-					int rozdilX = Math.abs(posPX-x);
-					int rozdilY = Math.abs(posPY-y);
-					double vzdalenost = Math.sqrt(Math.pow(rozdilX, 2)+Math.pow(rozdilY, 2));
-					if(vzdalenost<=4){break;}
+					double vzdalenost = vzdalenostBodu(planety.get(i), x, y);
+					
+					if(vzdalenost<=2){break;}
+					
 					if((i+1)==planety.size()){lze = true;}
 				}
+				//Kontrola se stanicemi
+				for (int j = 0; j < stanice.size(); j++) {
+					double vzdalenostStanice = vzdalenostBodu(stanice.get(j),x,y);
+					if(vzdalenostStanice<=4){
+						lze = false;
+						break;
+					}
+				}
 				if(counter==99){System.out.println("Planeta "+id+" se do galaxie nevesla");}
-			}
+			
 		}
 		
 		populace = generujPopulaci();
@@ -106,6 +112,16 @@ public class Galaxie{
 		int rozdilX = Math.abs(posAX-posBX);
 		int rozdilY = Math.abs(posAY-posBY);
 		return Math.sqrt(Math.pow(rozdilX, 2)+Math.pow(rozdilY, 2));
+	}
+	
+	public double vzdalenostBodu(Planeta a, int x, int y)
+	{
+		int posPX = a.getPosX();
+		int posPY = a.getPosY();
+		int rozdilX = Math.abs(posPX-x);
+		int rozdilY = Math.abs(posPY-y);
+		double vzdalenost = Math.sqrt(Math.pow(rozdilX, 2)+Math.pow(rozdilY, 2));
+		return vzdalenost;
 	}
 	
 	public int randomRange(int odkud, int kam){
