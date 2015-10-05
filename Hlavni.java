@@ -1,10 +1,13 @@
 package PT;
 
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -22,7 +25,8 @@ public class Hlavni extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Group root = new Group();
+		Scene s = new Scene(createScene(), 800, 800);
+		/*Group root = new Group();
 		Scene s = new Scene(root, 800, 800, Color.BLACK);
 		final Canvas canvas = new Canvas(800,800);
 		gc = canvas.getGraphicsContext2D();
@@ -35,12 +39,30 @@ public class Hlavni extends Application{
 		nakresliCesty();
 		nakresliPlanety();
 		nakresliStanice();
-		
 		root.getChildren().add(canvas);
+		*/
 		primaryStage.setScene(s);
 		primaryStage.show();
 	}
 	
+	private Parent createScene() {
+		BorderPane bp = new BorderPane();
+		bp.setCenter(getCenter());
+		return bp;
+	}
+
+	private Node getCenter() {
+		FlowPane fp = new FlowPane();
+		final Canvas canvas = new Canvas(800,800);
+		gc = canvas.getGraphicsContext2D();
+		gc.setFill(Color.YELLOW);
+		nakresliCesty();
+		nakresliPlanety();
+		nakresliStanice();
+		fp.getChildren().add(canvas);
+		return fp;
+	}
+
 	private void nakresliStanice() {
 		for(int i = 0; i < g.getStanice().size(); i++){
 			int x = g.getStanice().get(i).getPosX();
