@@ -53,11 +53,10 @@ public class Galaxie{
 			x = randomRange(0, delka);
 			y = randomRange(0, delka);
 			
-			
+				if(planety.size()==0){lze = true;}
 				for (int i = 0; i < planety.size(); i++) 
 				{
 					double vzdalenost = vzdalenostBodu(planety.get(i), x, y);
-					
 					if(vzdalenost<=2){break;}
 					
 					if((i+1)==planety.size()){lze = true;}
