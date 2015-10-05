@@ -53,9 +53,10 @@ public class Galaxie{
 			x = randomRange(0, delka);
 			y = randomRange(0, delka);
 			
-				if(planety.size()==0){lze = true;}
-				for (int i = 0; i < planety.size(); i++) 
-				{
+				if(planety.size()==0){
+					lze = true;
+					}
+				for (int i = 0; i < planety.size(); i++) {
 					double vzdalenost = vzdalenostBodu(planety.get(i), x, y);
 					if(vzdalenost<=2){break;}
 					
@@ -69,8 +70,9 @@ public class Galaxie{
 						break;
 					}
 				}
-				if(counter==99){System.out.println("Planeta "+id+" se do galaxie nevesla");}
-			
+				if(counter==99){
+					System.out.println("Planeta "+id+" se do galaxie nevesla");
+				}
 		}
 		
 		populace = generujPopulaci();
