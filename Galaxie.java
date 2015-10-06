@@ -24,7 +24,7 @@ public class Galaxie{
 			for (int j = 0; j < planety.get(i).getSousedi().size(); j++) {
 				System.out.print("|"+vzdalenostPlanet(planety.get(i), planety.get(i).getSousedi().get(j))+"|");
 			}
-			System.out.println();
+			System.out.println(:D);
 		}
 		**/
 	}
