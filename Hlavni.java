@@ -16,12 +16,14 @@ import javafx.stage.Stage;
 public class Hlavni extends Application{
 	
 	static Galaxie g;
+	static Soubor soubor = new Soubor();
 	GraphicsContext gc;
 	final static int skok = 6;
 
 	public static void main(String[] args){
 		g = new Galaxie(800,5000);
 		g.generujVesmir();
+		soubor.uloz("Soubor",g);
 		launch();
 	}
 
