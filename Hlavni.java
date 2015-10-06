@@ -27,7 +27,7 @@ public class Hlavni extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Scene s = new Scene(createScene(), 800, 800, Color.BLACK);
+		Scene s = new Scene(createScene(), 800, 800);
 		/*Group root = new Group();
 		Scene s = new Scene(root, 800, 800, Color.BLACK);
 		final Canvas canvas = new Canvas(800,800);
