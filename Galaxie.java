@@ -34,6 +34,9 @@ public class Galaxie{
 		for (int i = 1; i <= pocet; i++) {
 			planety.add(vytvorPlanetu(i));
 		}
+		for (int i = 0; i < stanice.size(); i++) {
+			planety.add(stanice.get(i));
+		}
 		dohledejSousedy(planety);
 		vytvorCesty(planety);
 		generujNebezpecneCesty();
