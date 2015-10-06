@@ -1,12 +1,16 @@
 package PT;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
+
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 public class Galaxie{
 
 	private ArrayList<Planeta> planety = new ArrayList<Planeta>(5000);
 	private ArrayList<Stanice> stanice = new ArrayList<Stanice>(5);
+	private ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 	private int pocet = 0;
 	private int delka = 0;
 	private int populace;
@@ -31,7 +35,9 @@ public class Galaxie{
 		for (int i = 1; i <= pocet; i++) {
 			planety.add(vytvorPlanetu(i));
 		}
-		dohledejSousedy(planety);		
+		dohledejSousedy(planety);
+		vytvorCesty(planety);
+		generujNebezpecneCesty();
 	}
 	
 	private void vytvorStanice() {
@@ -105,6 +111,29 @@ public class Galaxie{
 		}
 	}
 	
+	public void vytvorCesty(ArrayList<Planeta> planety){
+		for (int i = 0; i < planety.size(); i++) {
+			Planeta a = planety.get(i);
+			for (int j = 0; j < a.getSousedi().size(); j++) {
+				if(!existujeCesta(a,a.getSousedi().get(j))){
+					Cesta c = new Cesta(a, a.getSousedi().get(j));
+					cesty.add(c);
+				}
+			}
+		}
+	}
+	
+	public boolean existujeCesta(Planeta a, Planeta b){
+		for (int i = 0; i < cesty.size(); i++) {
+			Planeta od = cesty.get(i).getOd();
+			Planeta kam = cesty.get(i).getKam();
+			if(a==od&&b==kam||a==kam&&b==od){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public double vzdalenostPlanet(Planeta a, Planeta b){
 		int posAX = a.getPosX();
 		int posAY = a.getPosY();
@@ -136,6 +165,17 @@ public class Galaxie{
 	
 	public ArrayList<Stanice> getStanice(){
 		return stanice;
+	}
+	
+	public ArrayList<Cesta> getCesty(){
+		return cesty;
+	}
+	
+	public void generujNebezpecneCesty(){
+		Collections.shuffle(cesty);
+		for (int i = 0; i < (cesty.size()/100)*20; i++) {
+			cesty.get(i).setNebezpeci(true);
+		}
 	}
 	
 	public int generujPopulaci(){

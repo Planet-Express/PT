@@ -86,15 +86,21 @@ public class Hlavni extends Application{
 	
 	private void nakresliCesty(){
 		gc.setStroke(Color.GREEN);
-		for (int i = 0; i < g.getPlanety().size(); i++) {
-			Planeta a = g.getPlanety().get(i);
+		for (int i = 0; i < g.getCesty().size(); i++) {
+			Planeta a = g.getCesty().get(i).getOd();
 			int x1 = a.getPosX();
 			int y1 = a.getPosY();
-			for (int j = 0; j < a.getSousedi().size(); j++) {
-				int x2 = a.getSousedi().get(j).getPosX();
-				int y2 = a.getSousedi().get(j).getPosY();
+			Planeta b = g.getCesty().get(i).getKam();
+			int x2 = b.getPosX();
+			int y2 = b.getPosY();
+			if(g.getCesty().get(i).isNebezpecna()){
+				gc.setStroke(Color.FIREBRICK);
+				gc.strokeLine(x1, y1, x2, y2);
+				gc.setStroke(Color.GREEN);
+			}else{
 				gc.strokeLine(x1, y1, x2, y2);
 			}
+			
 		}
 	}
 	
