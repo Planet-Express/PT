@@ -6,8 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -47,8 +49,24 @@ public class Hlavni extends Application{
 	
 	private Parent createScene() {
 		BorderPane bp = new BorderPane();
+		bp.setLeft(getControlBar());
 		bp.setCenter(getCenter());
 		return bp;
+	}
+
+	private Node getControlBar() {
+		VBox vb = new VBox();
+		Button generuj = new Button("Generuj");
+		Button nacti = new Button("Nacti");
+		
+		generuj.setOnAction(event -> {
+			System.out.println("generuji...");
+		});
+		nacti.setOnAction(event -> {
+			System.out.println("nacteno...");
+		});
+		vb.getChildren().addAll(generuj, nacti);
+		return vb;
 	}
 
 	private Node getCenter() {
