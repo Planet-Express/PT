@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Soubor {
 
-	public Galaxie nacti(){
+	public static Galaxie nacti(){
 		BufferedReader br = null;
 		Galaxie g = new Galaxie(800, 800);
 		
@@ -65,7 +65,7 @@ public class Soubor {
 		return g;
 	}
 	
-	public void uloz(String nazev, Galaxie g){
+	public static void uloz(String nazev, Galaxie g){
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));

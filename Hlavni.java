@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 public class Hlavni extends Application{
 	
 	static Galaxie g;
-	static Soubor soubor = new Soubor();
 	GraphicsContext gc;
 	final static int skok = 6;
 
@@ -29,8 +28,8 @@ public class Hlavni extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		//g = new Galaxie(800,5000);
 		//g.generujVesmir();
-		g = soubor.nacti();
-		soubor.uloz("Soubor",g);
+		Soubor.nacti();
+		//Soubor.uloz("Soubor",g);
 		Scene s = new Scene(createScene());
 		/*Group root = new Group();
 		Scene s = new Scene(root, 800, 800, Color.BLACK);
@@ -69,7 +68,7 @@ public class Hlavni extends Application{
 			System.out.println("generuji...");
 		});
 		nacti.setOnAction(event -> {
-			g = soubor.nacti();
+			g = Soubor.nacti();
 		});
 		vb.getChildren().addAll(generuj, nacti);
 		return vb;
