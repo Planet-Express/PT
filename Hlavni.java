@@ -9,7 +9,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -68,25 +68,25 @@ public class Hlavni extends Application{
 			System.out.println("generuji...");
 		});
 		nacti.setOnAction(event -> {
-			System.out.println("nacteno...");
+			soubor.nacti();
 		});
 		vb.getChildren().addAll(generuj, nacti);
 		return vb;
 	}
 
 	private Node getCenter() {
-		FlowPane fp = new FlowPane();
-		fp.setAlignment(Pos.CENTER);
-		fp.setMinSize(800, 800);
+		StackPane fp = new StackPane();
+		fp.setAlignment(Pos.TOP_LEFT);
+		fp.setMinSize(700, 700);
 		final Canvas canvas = new Canvas(800,800);
 		gc = canvas.getGraphicsContext2D();
+		fp.setScaleX(0.85);
+		fp.setScaleY(0.85);
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, 800, 800);
 		nakresliCesty();
 		nakresliPlanety();
 		nakresliStanice();
-		canvas.setScaleX(0.75);
-		canvas.setScaleY(0.75);
 		fp.getChildren().add(canvas);
 		return fp;
 	}
