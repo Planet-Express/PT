@@ -8,7 +8,8 @@ import java.io.PrintWriter;
 public class Soubor {
 
 	public Galaxie nacti(){
-		return new Galaxie(10,10);
+	//try{}catch(Exception e){}
+		return new Galaxie(100,100);
 	}
 	
 	public void uloz(String nazev, Galaxie g){
@@ -17,8 +18,11 @@ public class Soubor {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));
 			for (int i = 0; i < g.getPlanety().size(); i++) {
 				Planeta a = g.getPlanety().get(i);
-				writer.println("{"+a.getId()+"}"+"["+a.getPosX()+","+a.getPosY()+"]"+"|"+a.getPop()+"|");
-				
+				writer.print("{"+a.getId()+"}"+"["+a.getPosX()+","+a.getPosY()+"]"+"|"+a.getPop()+"|");
+				for (int j = 0; j < a.getSousedi().size(); j++) {
+					writer.print(":"+a.getSousedi().get(j).getId()+":");
+				}
+				System.out.println();
 			}
 		
 		
