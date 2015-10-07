@@ -22,14 +22,15 @@ public class Hlavni extends Application{
 	final static int skok = 6;
 
 	public static void main(String[] args){
-		g = new Galaxie(800,5000);
-		g.generujVesmir();
-		soubor.uloz("Soubor",g);
 		launch();
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		//g = new Galaxie(800,5000);
+		//g.generujVesmir();
+		g = soubor.nacti();
+		soubor.uloz("Soubor",g);
 		Scene s = new Scene(createScene());
 		/*Group root = new Group();
 		Scene s = new Scene(root, 800, 800, Color.BLACK);
@@ -68,7 +69,7 @@ public class Hlavni extends Application{
 			System.out.println("generuji...");
 		});
 		nacti.setOnAction(event -> {
-			soubor.nacti();
+			g = soubor.nacti();
 		});
 		vb.getChildren().addAll(generuj, nacti);
 		return vb;

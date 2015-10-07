@@ -9,21 +9,47 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Soubor {
 
 	public Galaxie nacti(){
 		BufferedReader br = null;
+		Galaxie g = new Galaxie(800, 800);
+		
 		try {
-			br = new BufferedReader(new FileReader(new File("soubor.txt")));
+			br = new BufferedReader(new FileReader(new File("Soubor.txt")));
 			try {
 				String[] pole;
+				ArrayList<String[]> poleGalaxie = new ArrayList<String[]>(5005);
 				for(int j = 0; j < 5005; j++){
 					String nazev = br.readLine().trim();
 					pole = nazev.split(",");
-					System.out.println(Arrays.toString(pole));
+					poleGalaxie.add(pole);
 				}
+				for (int i = 0; i < poleGalaxie.size(); i++) {					
+					pole = poleGalaxie.get(i);
+					int id = Integer.parseInt(pole[0]);
+					int posX = Integer.parseInt(pole[1]);
+					int posY = Integer.parseInt(pole[2]);
+					int pop = Integer.parseInt(pole[3]);
+					if(i<5000){
+						g.planety.add(new Planeta(id, posX, posY, pop));						
+					}
+					else{
+						g.planety.add(new Planeta(id, posX, posY, pop));
+						g.stanice.add(new Stanice(id, posX, posY));
+					}
+				}
+				for (int i = 0; i < poleGalaxie.size(); i++) {
+					pole = poleGalaxie.get(i);
+					for (int j = 4; j < pole.length; j++) {	
+ 						int id = Integer.parseInt(pole[j]);
+						g.planety.get(i).getSousedi().add(g.planety.get(id-1));
+					}						
+				}
+				g.vytvorCesty(g.planety);
+				g.generujNebezpecneCesty();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -36,7 +62,7 @@ public class Soubor {
 				e.printStackTrace();
 			}
 		}
-		return new Galaxie(100,100);
+		return g;
 	}
 	
 	public void uloz(String nazev, Galaxie g){

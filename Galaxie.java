@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class Galaxie{
 
-	private ArrayList<Planeta> planety = new ArrayList<Planeta>(5000);
-	private ArrayList<Stanice> stanice = new ArrayList<Stanice>(5);
+	public ArrayList<Planeta> planety = new ArrayList<Planeta>(5005);
+	public ArrayList<Stanice> stanice = new ArrayList<Stanice>(5);
 	private ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 	private int pocet = 0;
 	private int delka = 0;
@@ -85,7 +85,6 @@ public class Galaxie{
 		
 		populace = generujPopulaci();
 		Planeta p = new Planeta(id,x,y,populace);
-		//p.vypis();
 		return p;
 	}
 	
