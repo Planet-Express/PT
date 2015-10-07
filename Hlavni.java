@@ -1,6 +1,7 @@
 package PT;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,7 +30,7 @@ public class Hlavni extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Scene s = new Scene(createScene(), 800, 800);
+		Scene s = new Scene(createScene());
 		/*Group root = new Group();
 		Scene s = new Scene(root, 800, 800, Color.BLACK);
 		final Canvas canvas = new Canvas(800,800);
@@ -58,9 +59,11 @@ public class Hlavni extends Application{
 
 	private Node getControlBar() {
 		VBox vb = new VBox();
+		vb.setAlignment(Pos.CENTER);
 		Button generuj = new Button("Generuj");
+		generuj.setMinWidth(100);
 		Button nacti = new Button("Nacti");
-		
+		nacti.setMinWidth(100);
 		generuj.setOnAction(event -> {
 			System.out.println("generuji...");
 		});
@@ -73,12 +76,17 @@ public class Hlavni extends Application{
 
 	private Node getCenter() {
 		FlowPane fp = new FlowPane();
+		fp.setAlignment(Pos.CENTER);
+		fp.setMinSize(800, 800);
 		final Canvas canvas = new Canvas(800,800);
 		gc = canvas.getGraphicsContext2D();
-		gc.setFill(Color.YELLOW);
+		gc.setFill(Color.BLACK);
+		gc.fillRect(0, 0, 800, 800);
 		nakresliCesty();
 		nakresliPlanety();
 		nakresliStanice();
+		canvas.setScaleX(0.75);
+		canvas.setScaleY(0.75);
 		fp.getChildren().add(canvas);
 		return fp;
 	}
