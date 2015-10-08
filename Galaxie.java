@@ -27,6 +27,7 @@ public class Galaxie{
 			System.out.println(:D);
 		}
 		**/
+		
 	}
 	
 	public void generujVesmir(){
@@ -40,6 +41,20 @@ public class Galaxie{
 		dohledejSousedy(planety);
 		vytvorCesty(planety);
 		generujNebezpecneCesty();
+	}
+	
+	public void simuluj(){
+		while(true){
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int c = (int)(Math.random()*5000);
+			planety.get(c).pop = 99999999;
+			System.out.println(planety.get(c).getId());
+		}
 	}
 	
 	private void vytvorStanice() {

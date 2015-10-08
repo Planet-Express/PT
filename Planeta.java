@@ -7,8 +7,9 @@ public class Planeta{
 	private ArrayList<Planeta> sousedi = new ArrayList<Planeta>();
 	private int posX;
 	private int posY;
-	private int pop;
+	 int pop;
 	private int id;
+	boolean mrtva = false;
 	
 	public Planeta(int id, int posX, int posY, int pop){
 		this.id = id;
@@ -50,6 +51,10 @@ public class Planeta{
 		sousedi = s;
 		
 	}
-
+	
+	
+	public void setMrtva(boolean b){
+		this.mrtva = b;
+	}
 	
 }
