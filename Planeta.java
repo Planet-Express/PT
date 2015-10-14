@@ -7,9 +7,11 @@ public class Planeta{
 	private ArrayList<Planeta> sousedi = new ArrayList<Planeta>();
 	private int posX;
 	private int posY;
-	 int pop;
+	int pop;
 	private int id;
 	boolean mrtva = false;
+	double vzdalenost = Integer.MAX_VALUE;
+	ArrayList<Planeta> cesta = new ArrayList<Planeta>();
 	
 	public Planeta(int id, int posX, int posY, int pop){
 		this.id = id;
@@ -52,7 +54,17 @@ public class Planeta{
 		
 	}
 	
+	public ArrayList<Planeta> getCesta(){
+		return cesta;
+	}
 	
+	public void setVzdalenost(double vzd){
+		this.vzdalenost = vzd;
+	}
+	
+	public double getVzdalenost(){
+		return vzdalenost;
+	}
 	public void setMrtva(boolean b){
 		this.mrtva = b;
 	}

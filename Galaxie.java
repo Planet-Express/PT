@@ -1,7 +1,10 @@
 package PT;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 
@@ -206,5 +209,30 @@ public class Galaxie{
 				}
 			}
 		return k;
+	}
+	
+	public void projdi(ArrayList<Planeta> planety, Planeta stanice){
+		Queue<Planeta> fronta = new LinkedList<Planeta>();
+		int[] pole = new int[5005];
+		for (int i = 0; i < pole.length; i++) {
+			pole[i] = 0;
+		}	
+		Planeta vrchol = stanice;
+		vrchol.setVzdalenost(0);
+		fronta.add(vrchol);
+		while(!fronta.isEmpty()){
+			Planeta node = fronta.poll();
+			for(int i = 0; i < node.getSousedi().size(); i++){
+				Planeta soused = node.getSousedi().get(i);
+				if(pole[soused.getId()-1] == 0){
+					pole[soused.getId()-1] = 1;
+					if(soused.getVzdalenost()>(node.getVzdalenost()+vzdalenostPlanet(node, soused))){
+						soused.setVzdalenost(node.getVzdalenost()+vzdalenostPlanet(node, soused));
+					}
+					soused.getCesta().add(node);
+					fronta.add(soused);
+				}
+			}
+		}
 	}
 }

@@ -22,7 +22,7 @@ public class GUI{
 	final static int skok = 6;
 	static Galaxie g;
 	static int zoom = 0;
-	final static int quality = 4;
+	static int quality = 1;
 	final static Canvas canvas = new Canvas(800*quality,800*quality);
 	static GraphicsContext gc = canvas.getGraphicsContext2D();
 	
@@ -62,7 +62,9 @@ public class GUI{
 		slid.setMax(90);
 		slid.setValue(0);
 		slid.setOnMouseDragged(event -> {
+			
 			zoom = (int)slid.getValue();
+			quality = 1 + zoom/(20);
 			prekresliPlatno();
 		});
 		vb.getChildren().addAll(start,generuj,slid);
@@ -71,8 +73,6 @@ public class GUI{
 
 	
 	public static void prekresliPlatno() {
-		
-		gc.getCanvas().setWidth(gc.getCanvas().getWidth());
 		canvas.setScaleX(1.0/quality*0.9  * 100.0/(101-zoom));
 		canvas.setScaleY(1.0/quality*0.9  * 100.0/(101-zoom));
 		//gc.setTransform(af);
@@ -84,6 +84,8 @@ public class GUI{
 		nakresliStanice();
 	}
 
+	
+	
 	private static Node getCenter() {
 		ScrollPane sc = new ScrollPane();
 		af = gc.getTransform();
@@ -105,7 +107,7 @@ public class GUI{
 		return sc;
 	}
 
-	private static void nakresliStanice() {
+	public static void nakresliStanice() {
 		for(int i = 0; i < g.getStanice().size(); i++){
 			int x = g.getStanice().get(i).getPosX()*quality;
 			int y = g.getStanice().get(i).getPosY()*quality;
@@ -116,17 +118,18 @@ public class GUI{
 		}
 	}
 
-	private static void nakresliPlanety(){
+	public static void nakresliPlanety(){
 		for (int i = 0; i < g.getPlanety().size(); i++) {
 			int x = g.getPlanety().get(i).getPosX()*quality;
 			int y = g.getPlanety().get(i).getPosY()*quality;
 			int pop = g.getPlanety().get(i).getPop()/1000000;
-			gc.setFill(getColor(pop));
+			int vzd = (int)g.getPlanety().get(i).getVzdalenost();
+			gc.setFill(getColor(vzd));
 			gc.fillOval(x-2*quality, y-2*quality, 4*quality, 4*quality);
 		}		
 	}
 	
-	private static void nakresliCesty(){
+	public static void nakresliCesty(){
 		gc.setStroke(Color.GREEN);
 		for (int i = 0; i < g.getCesty().size(); i++) {
 			Planeta a = g.getCesty().get(i).getOd();
