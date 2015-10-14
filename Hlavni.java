@@ -19,9 +19,6 @@ public class Hlavni extends Application{
 		g.projdi(g.getPlanety(), g.getPlanety().get(5002));
 		g.projdi(g.getPlanety(), g.getPlanety().get(5003));
 		g.projdi(g.getPlanety(), g.getPlanety().get(5004));
-		for (int i = 0; i < g.getPlanety().size(); i++) {
-			System.out.println(g.getPlanety().get(i).getVzdalenost());
-		}
 		launch();
 		gui.cas.stop();
 	}
