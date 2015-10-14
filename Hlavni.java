@@ -14,7 +14,11 @@ public class Hlavni extends Application{
 		//g = new Galaxie(800,5000);
 		//g.generujVesmir();
 		g = Soubor.nacti();
+		g.projdi(g.getPlanety(), g.getPlanety().get(5000));
 		g.projdi(g.getPlanety(), g.getPlanety().get(5001));
+		g.projdi(g.getPlanety(), g.getPlanety().get(5002));
+		g.projdi(g.getPlanety(), g.getPlanety().get(5003));
+		g.projdi(g.getPlanety(), g.getPlanety().get(5004));
 		for (int i = 0; i < g.getPlanety().size(); i++) {
 			System.out.println(g.getPlanety().get(i).getVzdalenost());
 		}

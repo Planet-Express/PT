@@ -123,7 +123,7 @@ public class GUI{
 			int x = g.getPlanety().get(i).getPosX()*quality;
 			int y = g.getPlanety().get(i).getPosY()*quality;
 			int pop = g.getPlanety().get(i).getPop()/1000000;
-			int vzd = (int)g.getPlanety().get(i).getVzdalenost()/50;
+			int vzd = (int)g.getPlanety().get(i).getVzdalenost()/10;
 			gc.setFill(getColor(vzd));
 			gc.fillOval(x-2*quality, y-2*quality, 4*quality, 4*quality);
 		}		
