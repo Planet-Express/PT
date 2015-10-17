@@ -140,6 +140,22 @@ public class Galaxie{
 				}
 			}
 		}
+		
+		for(int i = 0; i < cesty.size(); i++){
+			boolean existuje = false;
+			Planeta pFrom = cesty.get(i).getOd();
+			Planeta pTo = cesty.get(i).getKam();
+			for(int j = 0; j < pTo.getSousedi().size(); j++){
+				Planeta soused = pTo.getSousedi().get(j);
+				if(pFrom == soused){
+					existuje = true;
+					System.out.println("existuje");
+				}
+			}
+			if(!existuje){
+				pTo.getSousedi().add(pFrom);				
+			}
+		}
 	}
 	
 	public boolean existujeCesta(Planeta a, Planeta b){

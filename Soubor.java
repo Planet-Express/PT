@@ -22,9 +22,10 @@ public class Soubor {
 			try {
 				String[] pole;
 				ArrayList<String[]> poleGalaxie = new ArrayList<String[]>(5005);
+				br.readLine();
 				for(int j = 0; j < 5005; j++){
 					String nazev = br.readLine().trim();
-					pole = nazev.split(",");
+					pole = nazev.split(";");
 					poleGalaxie.add(pole);
 				}
 				for (int i = 0; i < poleGalaxie.size(); i++) {					
@@ -69,11 +70,12 @@ public class Soubor {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));
+			writer.print("id planety;x souradnice;y souradnice;pocet obyvatel;id sousedicich planet....\n");
 			for (int i = 0; i < g.getPlanety().size(); i++) {
 				Planeta a = g.getPlanety().get(i);
-				writer.print(a.getId()+","+a.getPosX()+","+a.getPosY()+","+a.getPop());
+				writer.print(a.getId()+";"+a.getPosX()+";"+a.getPosY()+";"+a.getPop());
 				for (int j = 0; j < a.getSousedi().size(); j++) {
-					writer.print(","+a.getSousedi().get(j).getId());
+					writer.print(";"+a.getSousedi().get(j).getId());
 				}
 				writer.print("\n");
 			}
