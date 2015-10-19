@@ -42,6 +42,7 @@ public class GUI{
 		bp.setPrefSize(800, 600);
 		bp.setLeft(getControlBar());
 		bp.setCenter(getCenter());
+		testCesty();
 		return bp;
 	}
 
@@ -150,9 +151,10 @@ public class GUI{
 		gc.setFill(Color.RED);
 		gc.fillOval(z.getPosX()-10, z.getPosY()-10, 20, 20);
 		gc.setFill(Color.WHITE);
-		for (int i = 0; i < z.getCesta().size(); i++) {
-			Planeta a = z.getCesta().get(counter);
+		Planeta a = z.getCesta().get(0);
+		for (int i = 0; i < 11; i++) {
 			gc.fillOval(a.getPosX()-3, a.getPosY()-3, 6, 6);
+			a = a.getCesta().get(0);
 		}
 	}
 	

@@ -11,7 +11,7 @@ public class Planeta{
 	private int id;
 	boolean mrtva = false;
 	double vzdalenost = Integer.MAX_VALUE;
-	ArrayList<Planeta> cesta = new ArrayList<Planeta>();
+	ArrayList<Planeta> cesta = new ArrayList<Planeta>(1);
 	
 	public Planeta(int id, int posX, int posY, int pop){
 		this.id = id;

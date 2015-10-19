@@ -234,6 +234,7 @@ public class Galaxie{
 			pole[i] = 0;
 		}	
 		Planeta vrchol = stanice;
+		vrchol.setCesta(new ArrayList<Planeta>());
 		vrchol.setVzdalenost(0);
 		fronta.add(vrchol);
 		while(!fronta.isEmpty()){
@@ -244,9 +245,9 @@ public class Galaxie{
 					pole[soused.getId()-1] = 1;
 					if(soused.getVzdalenost()>(node.getVzdalenost()+vzdalenostPlanet(node, soused))){
 						soused.setVzdalenost(node.getVzdalenost()+vzdalenostPlanet(node, soused));
-						soused.setCesta(new ArrayList<Planeta>());
-						soused.setCesta(node.getCesta());
-						soused.getCesta().add(node);
+						if(soused.getCesta().size()!=0){
+						soused.getCesta().set(0, node);
+						}else{soused.getCesta().add(node);}
 					}
 					fronta.add(soused);
 				}
