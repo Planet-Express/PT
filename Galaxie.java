@@ -149,7 +149,7 @@ public class Galaxie{
 				Planeta soused = pTo.getSousedi().get(j);
 				if(pFrom == soused){
 					existuje = true;
-					System.out.println("existuje");
+					//System.out.println("existuje");
 				}
 			}
 			if(!existuje){
@@ -244,8 +244,10 @@ public class Galaxie{
 					pole[soused.getId()-1] = 1;
 					if(soused.getVzdalenost()>(node.getVzdalenost()+vzdalenostPlanet(node, soused))){
 						soused.setVzdalenost(node.getVzdalenost()+vzdalenostPlanet(node, soused));
+						soused.setCesta(new ArrayList<Planeta>());
+						soused.setCesta(node.getCesta());
+						soused.getCesta().add(node);
 					}
-					soused.getCesta().add(node);
 					fronta.add(soused);
 				}
 			}

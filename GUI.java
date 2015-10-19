@@ -26,6 +26,14 @@ public class GUI{
 	final static Canvas canvas = new Canvas(800*quality,800*quality);
 	static GraphicsContext gc = canvas.getGraphicsContext2D();
 	
+	
+	////
+	public static int counter = 0;
+	
+	////
+	
+	
+	
 	public Parent createScene(Galaxie galaxy) {
 		g = galaxy;
 		BorderPane bp = new BorderPane();
@@ -34,7 +42,6 @@ public class GUI{
 		bp.setPrefSize(800, 600);
 		bp.setLeft(getControlBar());
 		bp.setCenter(getCenter());
-		System.out.println("dokoncena scena");
 		return bp;
 	}
 
@@ -56,6 +63,14 @@ public class GUI{
 			cas.start(g,this);
 		});
 		
+		Button test = new Button("Test");
+		test.setMinWidth(100);
+		test.setOnAction(event -> {
+			testCesty();
+			counter++;
+		});
+		
+		
 		Slider slid = new Slider();
 		slid.setPrefSize(100, 15);
 		slid.setMin(0);
@@ -67,7 +82,7 @@ public class GUI{
 			quality = 1 + zoom/(20);
 			prekresliPlatno();
 		});
-		vb.getChildren().addAll(start,generuj,slid);
+		vb.getChildren().addAll(test,start,generuj,slid);
 		return vb;
 	}
 
@@ -127,6 +142,18 @@ public class GUI{
 			gc.setFill(getColor(vzd));
 			gc.fillOval(x-2*quality, y-2*quality, 4*quality, 4*quality);
 		}		
+	}
+	
+	
+	public static void testCesty(){
+		Planeta z = g.getPlanety().get(30);
+		gc.setFill(Color.RED);
+		gc.fillOval(z.getPosX()-10, z.getPosY()-10, 20, 20);
+		gc.setFill(Color.WHITE);
+		for (int i = 0; i < z.getCesta().size(); i++) {
+			Planeta a = z.getCesta().get(counter);
+			gc.fillOval(a.getPosX()-3, a.getPosY()-3, 6, 6);
+		}
 	}
 	
 	public static void nakresliCesty(){

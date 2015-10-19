@@ -58,6 +58,10 @@ public class Planeta{
 		return cesta;
 	}
 	
+	public void setCesta(ArrayList<Planeta> a){
+		this.cesta = a;
+	}
+	
 	public void setVzdalenost(double vzd){
 		this.vzdalenost = vzd;
 	}
