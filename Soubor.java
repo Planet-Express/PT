@@ -15,7 +15,7 @@ public class Soubor {
 
 	public static Galaxie nacti(){
 		BufferedReader br = null;
-		Galaxie g = new Galaxie(800, 800);
+		Galaxie g = new Galaxie(800, 5000);
 		
 		try {
 			br = new BufferedReader(new FileReader(new File("Soubor.txt")));

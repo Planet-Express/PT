@@ -15,6 +15,7 @@ public class Galaxie{
 	private ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 	private int pocet = 0;
 	private int delka = 0;
+	private final int ODSAZENI = 175;
 	private int populace;
 	
 	public Galaxie(int delka, int pocet){
@@ -61,11 +62,10 @@ public class Galaxie{
 	}
 	
 	private void vytvorStanice() {
-		stanice.add(new Stanice(5001, 175, 175));
-		stanice.add(new Stanice(5002, 625, 175));
-		stanice.add(new Stanice(5003, 175, 625));
-		stanice.add(new Stanice(5004, 625, 625));
-		stanice.add(new Stanice(5005, 400, 400));
+		stanice.add(new Stanice(5001, ODSAZENI, ODSAZENI));
+		stanice.add(new Stanice(5002, delka - ODSAZENI, ODSAZENI));
+		stanice.add(new Stanice(5003, ODSAZENI, delka - ODSAZENI));
+		stanice.add(new Stanice(5004, delka - ODSAZENI, delka - ODSAZENI));
 		
 	}
 
