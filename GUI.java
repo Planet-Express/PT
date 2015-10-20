@@ -147,14 +147,25 @@ public class GUI{
 	
 	
 	public static void testCesty(){
-		Planeta z = g.getPlanety().get(30);
+		Planeta z = g.getPlanety().get((int)(Math.random()*300));
+		Planeta z1 = g.getPlanety().get((int)(Math.random()*300));
+		Planeta z2 = g.getPlanety().get((int)(Math.random()*300));
 		gc.setFill(Color.RED);
 		gc.fillOval(z.getPosX()-10, z.getPosY()-10, 20, 20);
+		gc.fillOval(z1.getPosX()-10, z1.getPosY()-10, 20, 20);
+		gc.fillOval(z2.getPosX()-10, z2.getPosY()-10, 20, 20);
 		gc.setFill(Color.WHITE);
-		Planeta a = z.getCesta().get(0);
-		for (int i = 0; i < 11; i++) {
+		for (int i = 0; i < z.getCesta().size(); i++) {
+			Planeta a = z.getCesta().get(i);
 			gc.fillOval(a.getPosX()-3, a.getPosY()-3, 6, 6);
-			a = a.getCesta().get(0);
+		}
+		for (int i = 0; i < z1.getCesta().size(); i++) {
+			Planeta a = z1.getCesta().get(i);
+			gc.fillOval(a.getPosX()-3, a.getPosY()-3, 6, 6);
+		}
+		for (int i = 0; i < z2.getCesta().size(); i++) {
+			Planeta a = z2.getCesta().get(i);
+			gc.fillOval(a.getPosX()-3, a.getPosY()-3, 6, 6);
 		}
 	}
 	

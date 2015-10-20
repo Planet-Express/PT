@@ -16,43 +16,23 @@ public class Hlavni extends Application{
 		//g.generujVesmir();
 		//Soubor.uloz("Soubor", g);
 		g = Soubor.nacti();
-		/*
-		for (int i = 0; i < g.getCesty().size(); i++) {
-			Planeta od = g.getCesty().get(i).getOd();
-			Planeta kam = g.getCesty().get(i).getKam();
-			if(!od.getSousedi().contains(kam)){
-				System.out.println("d/pridano");
-				od.getSousedi().add(kam);
-			}
-			if(!kam.getSousedi().contains(od)){
-				System.out.println("k/pridano");
-				double vzdalenost = g.vzdalenostPlanet(kam, od);
-				for (int k = 0; k < kam.getSousedi().size(); k++) {
-					if(vzdalenost <= g.vzdalenostPlanet(kam, kam.getSousedi().get(k))){
-						kam.getSousedi().add(k, od);
-						break;
-					}
-				}		
-				
-				
-			}
-		}
-		for (int i = 0; i < g.getPlanety().size(); i++) {
-			for (int j = 0; j < g.getPlanety().get(i).getSousedi().size(); j++) {
-				if(g.getPlanety().get(i).getSousedi().size()>5){
-				System.out.print(g.vzdalenostPlanet(g.getPlanety().get(i).getSousedi().get(j), g.getPlanety().get(i))+", ");
-				}
-			}
-			if(g.getPlanety().get(i).getSousedi().size()>5){
-			System.out.println();
-			}
-		}
-		*/
 		g.projdi(g.getPlanety(), g.getPlanety().get(5000));
 		g.projdi(g.getPlanety(), g.getPlanety().get(5001));
 		g.projdi(g.getPlanety(), g.getPlanety().get(5002));
 		g.projdi(g.getPlanety(), g.getPlanety().get(5003));
 		g.projdi(g.getPlanety(), g.getPlanety().get(5004));
+		for (int i = 0; i < g.getPlanety().size()-5; i++) {
+			Planeta a = g.getPlanety().get(i);
+			Planeta b = a.getCesta().get(0);
+			do{
+				if(b.getId()>5000){
+					a.getCesta().add(b);
+					break;
+				}
+				b = b.getCesta().get(0);
+				a.getCesta().add(b);
+			}while(b.getId()<=5000);		
+		}
 		launch();
 		gui.cas.stop();
 	}
