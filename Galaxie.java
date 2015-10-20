@@ -1,7 +1,6 @@
 package PT;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -45,6 +44,7 @@ public class Galaxie{
 		dohledejSousedy(planety);
 		vytvorCesty(planety);
 		generujNebezpecneCesty();
+		udelejDijkstra();
 	}
 	
 	public void simuluj(){
@@ -66,7 +66,7 @@ public class Galaxie{
 		stanice.add(new Stanice(5002, delka - ODSAZENI, ODSAZENI));
 		stanice.add(new Stanice(5003, ODSAZENI, delka - ODSAZENI));
 		stanice.add(new Stanice(5004, delka - ODSAZENI, delka - ODSAZENI));
-		
+		stanice.add(new Stanice(5005, (int)(delka/2.0), (int)(delka/2.0)));
 	}
 
 	public Planeta vytvorPlanetu(int id){
@@ -225,6 +225,26 @@ public class Galaxie{
 				}
 			}
 		return k;
+	}
+	
+	public void udelejDijkstra(){
+		projdi(getPlanety(), getPlanety().get(5000));
+		projdi(getPlanety(), getPlanety().get(5001));
+		projdi(getPlanety(), getPlanety().get(5002));
+		projdi(getPlanety(), getPlanety().get(5003));
+		projdi(getPlanety(), getPlanety().get(5004));
+		for (int i = 0; i < getPlanety().size()-5; i++) {
+			Planeta a = getPlanety().get(i);
+			Planeta b = a.getCesta().get(0);
+			do{
+				if(b.getId()>5000){
+					a.getCesta().add(b);
+					break;
+				}
+				b = b.getCesta().get(0);
+				a.getCesta().add(b);
+			}while(b.getId()<=5000);		
+		}
 	}
 	
 	public void projdi(ArrayList<Planeta> planety, Planeta stanice){

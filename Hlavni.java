@@ -9,30 +9,13 @@ public class Hlavni extends Application{
 	static Galaxie g;
 	
 	static GUI gui = new GUI();
-	private static final int ROZMER = 800;
 	
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args){
 		//g = new Galaxie(ROZMER,5000);
 		//g.generujVesmir();
 		//Soubor.uloz("Soubor", g);
 		g = Soubor.nacti();
-		g.projdi(g.getPlanety(), g.getPlanety().get(5000));
-		g.projdi(g.getPlanety(), g.getPlanety().get(5001));
-		g.projdi(g.getPlanety(), g.getPlanety().get(5002));
-		g.projdi(g.getPlanety(), g.getPlanety().get(5003));
-		g.projdi(g.getPlanety(), g.getPlanety().get(5004));
-		for (int i = 0; i < g.getPlanety().size()-5; i++) {
-			Planeta a = g.getPlanety().get(i);
-			Planeta b = a.getCesta().get(0);
-			do{
-				if(b.getId()>5000){
-					a.getCesta().add(b);
-					break;
-				}
-				b = b.getCesta().get(0);
-				a.getCesta().add(b);
-			}while(b.getId()<=5000);		
-		}
 		launch();
 		gui.cas.stop();
 	}

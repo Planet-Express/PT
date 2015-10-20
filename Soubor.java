@@ -20,20 +20,25 @@ public class Soubor {
 		try {
 			br = new BufferedReader(new FileReader(new File("Soubor.txt")));
 			try {
-				String[] pole;
+				String[] polePlaneta;
+				String[] poleCesta;
 				ArrayList<String[]> poleGalaxie = new ArrayList<String[]>(5005);
+				ArrayList<String[]> poleCest = new ArrayList<String[]>(5005);
 				br.readLine();
 				for(int j = 0; j < 5005; j++){
 					String nazev = br.readLine().trim();
-					pole = nazev.split(";");
-					poleGalaxie.add(pole);
+					polePlaneta = nazev.split(";");
+					poleGalaxie.add(polePlaneta);
+					nazev = br.readLine().trim();
+					poleCesta = nazev.split(";");
+					poleCest.add(poleCesta);
 				}
 				for (int i = 0; i < poleGalaxie.size(); i++) {					
-					pole = poleGalaxie.get(i);
-					int id = Integer.parseInt(pole[0]);
-					int posX = Integer.parseInt(pole[1]);
-					int posY = Integer.parseInt(pole[2]);
-					int pop = Integer.parseInt(pole[3]);
+					polePlaneta = poleGalaxie.get(i);
+					int id = Integer.parseInt(polePlaneta[0]);
+					int posX = Integer.parseInt(polePlaneta[1]);
+					int posY = Integer.parseInt(polePlaneta[2]);
+					int pop = Integer.parseInt(polePlaneta[3]);
 					if(i<5000){
 						g.planety.add(new Planeta(id, posX, posY, pop));						
 					}
@@ -43,11 +48,19 @@ public class Soubor {
 					}
 				}
 				for (int i = 0; i < poleGalaxie.size(); i++) {
-					pole = poleGalaxie.get(i);
-					for (int j = 4; j < pole.length; j++) {	
- 						int id = Integer.parseInt(pole[j]);
+					polePlaneta = poleGalaxie.get(i);
+					for (int j = 4; j < polePlaneta.length; j++) {	
+ 						int id = Integer.parseInt(polePlaneta[j]);
 						g.planety.get(i).getSousedi().add(g.planety.get(id-1));
 					}						
+				}
+				for (int i = 0; i < poleCest.size()-5; i++) {
+					poleCesta = poleCest.get(i);
+					Planeta p = g.planety.get(Integer.parseInt(poleCesta[0])-1);
+					p.setVzdalenost(Double.parseDouble(poleCesta[1]));
+					for (int j = 2; j < poleCesta.length; j++) {
+						p.cesta.add(g.planety.get(Integer.parseInt(poleCesta[j])-1));
+					}
 				}
 				g.vytvorCesty(g.planety);
 				g.generujNebezpecneCesty();
@@ -76,6 +89,11 @@ public class Soubor {
 				writer.print(a.getId()+";"+a.getPosX()+";"+a.getPosY()+";"+a.getPop());
 				for (int j = 0; j < a.getSousedi().size(); j++) {
 					writer.print(";"+a.getSousedi().get(j).getId());
+				}
+				writer.print("\n" + a.getId() + ";" + a.getVzdalenost());
+				for (int j = 0; j < a.getCesta().size(); j++) {
+					writer.print(";" + a.getCesta().get(j).getId());
+					
 				}
 				writer.print("\n");
 			}

@@ -5,6 +5,7 @@ public class Counter extends Thread{
 	Galaxie g;
 	GUI gui;
 	
+	@SuppressWarnings("static-access")
 	public void run(){
 		while(true){
 			try {

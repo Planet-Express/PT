@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
@@ -118,6 +117,7 @@ public class GUI{
 		return sc;
 	}
 	
+	@SuppressWarnings("unused")
 	private Node getScrollPane(){
 		ScrollPane sc = new ScrollPane();
 		return sc;
@@ -138,7 +138,7 @@ public class GUI{
 		for (int i = 0; i < g.getPlanety().size(); i++) {
 			int x = g.getPlanety().get(i).getPosX()*quality;
 			int y = g.getPlanety().get(i).getPosY()*quality;
-			int pop = g.getPlanety().get(i).getPop()/1000000;
+			//int pop = g.getPlanety().get(i).getPop()/1000000;
 			int vzd = (int)g.getPlanety().get(i).getVzdalenost()/10;
 			gc.setFill(getColor(vzd));
 			gc.fillOval(x-2*quality, y-2*quality, 4*quality, 4*quality);
