@@ -68,7 +68,7 @@ public class GUI{
 		slid.setMax(90);
 		slid.setValue(0);
 		slid.setOnMouseDragged(event -> {
-			zoom = (int)slid.getValue();
+			zoom = (int)(slid.getValue());
 			quality = 1 + zoom/(20);
 			GUI.canvas.setHeight(800*quality);
 			GUI.canvas.setWidth(800*quality);
