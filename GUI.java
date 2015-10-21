@@ -22,15 +22,8 @@ public class GUI{
 	static Galaxie g;
 	static int zoom = 0;
 	static int quality = 1;
-	final static Canvas canvas = new Canvas(800*quality,800*quality);
+	static Canvas canvas = new Canvas(800*quality,800*quality);
 	static GraphicsContext gc = canvas.getGraphicsContext2D();
-	
-	
-	////
-	public static int counter = 0;
-	
-	////
-	
 	
 	
 	public Parent createScene(Galaxie galaxy) {
@@ -56,7 +49,6 @@ public class GUI{
 			g = new Galaxie(800, 5000);
 			g.generujVesmir();
 			Soubor.uloz("Soubor", g);
-			g = Soubor.nacti();
 			prekresliPlatno();
 		});
 		start.setOnAction(event -> {
@@ -67,7 +59,6 @@ public class GUI{
 		test.setMinWidth(100);
 		test.setOnAction(event -> {
 			testCesty();
-			counter++;
 		});
 		
 		
@@ -77,9 +68,10 @@ public class GUI{
 		slid.setMax(90);
 		slid.setValue(0);
 		slid.setOnMouseDragged(event -> {
-			
 			zoom = (int)slid.getValue();
 			quality = 1 + zoom/(20);
+			GUI.canvas.setHeight(800*quality);
+			GUI.canvas.setWidth(800*quality);
 			prekresliPlatno();
 		});
 		vb.getChildren().addAll(test,start,generuj,slid);

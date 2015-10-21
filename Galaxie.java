@@ -16,6 +16,7 @@ public class Galaxie{
 	private int delka = 0;
 	private final int ODSAZENI = 175;
 	private int populace;
+	public long time = System.nanoTime();
 	
 	public Galaxie(int delka, int pocet){
 		this.pocet = pocet;
@@ -35,16 +36,21 @@ public class Galaxie{
 	
 	public void generujVesmir(){
 		vytvorStanice();
+		System.out.println(System.nanoTime()-time+" -- Vytvoreni planet");
 		for (int i = 1; i <= pocet; i++) {
 			planety.add(vytvorPlanetu(i));
 		}
+		System.out.println(System.nanoTime()-time+" -- Vytvoreni stanic");
 		for (int i = 0; i < stanice.size(); i++) {
 			planety.add(stanice.get(i));
 		}
 		dohledejSousedy(planety);
+		System.out.println(System.nanoTime()-time+" -- Dohledavam sousedy");
 		vytvorCesty(planety);
 		generujNebezpecneCesty();
+		System.out.println(System.nanoTime()-time+" -- Pruchod Dijkstrem");
 		udelejDijkstra();
+		System.out.println(System.nanoTime()-time+" -- Vykresluji");
 	}
 	
 	public void simuluj(){

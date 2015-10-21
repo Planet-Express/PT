@@ -12,7 +12,7 @@ public class Hlavni extends Application{
 	
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args){
-		//g = new Galaxie(ROZMER,5000);
+		//g = new Galaxie(800,5000);
 		//g.generujVesmir();
 		//Soubor.uloz("Soubor", g);
 		g = Soubor.nacti();

@@ -16,7 +16,8 @@ public class Soubor {
 	public static Galaxie nacti(){
 		BufferedReader br = null;
 		Galaxie g = new Galaxie(800, 5000);
-		
+		long time = System.nanoTime();
+		System.out.println(System.nanoTime()-time+" -- Start");
 		try {
 			br = new BufferedReader(new FileReader(new File("Soubor.txt")));
 			try {
@@ -33,6 +34,7 @@ public class Soubor {
 					poleCesta = nazev.split(";");
 					poleCest.add(poleCesta);
 				}
+				System.out.println(System.nanoTime()-time+" -- pole vytvoreno");
 				for (int i = 0; i < poleGalaxie.size(); i++) {					
 					polePlaneta = poleGalaxie.get(i);
 					int id = Integer.parseInt(polePlaneta[0]);
@@ -47,6 +49,7 @@ public class Soubor {
 						g.stanice.add(new Stanice(id, posX, posY));
 					}
 				}
+				System.out.println(System.nanoTime()-time+" -- planety vytvoreny");
 				for (int i = 0; i < poleGalaxie.size(); i++) {
 					polePlaneta = poleGalaxie.get(i);
 					for (int j = 4; j < polePlaneta.length; j++) {	
@@ -54,6 +57,7 @@ public class Soubor {
 						g.planety.get(i).getSousedi().add(g.planety.get(id-1));
 					}						
 				}
+				System.out.println(System.nanoTime()-time+" -- pridani sousedi");
 				for (int i = 0; i < poleCest.size()-5; i++) {
 					poleCesta = poleCest.get(i);
 					Planeta p = g.planety.get(Integer.parseInt(poleCesta[0])-1);
@@ -62,6 +66,7 @@ public class Soubor {
 						p.cesta.add(g.planety.get(Integer.parseInt(poleCesta[j])-1));
 					}
 				}
+				System.out.println(System.nanoTime()-time+" -- pridana min cesta");
 				g.vytvorCesty(g.planety);
 				g.generujNebezpecneCesty();
 			} catch (IOException e) {
