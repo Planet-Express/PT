@@ -46,10 +46,12 @@ public class GUI{
 		Button start = new Button("Start");
 		start.setMinWidth(100);
 		generuj.setOnAction(event -> {
-			g = new Galaxie(800, 5000);
-			g.generujVesmir();
-			Soubor.uloz("Soubor", g);
-			prekresliPlatno();
+			if(cas.getState().toString().equals("WAITING")){
+				g = new Galaxie(800, 5000);
+				g.generujVesmir();
+				Soubor.uloz("Soubor", g);
+				prekresliPlatno();
+			}
 		});
 		start.setOnAction(event -> {
 			if(!cas.isAlive()){
