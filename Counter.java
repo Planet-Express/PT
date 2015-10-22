@@ -1,24 +1,30 @@
 package PT;
 
+import java.util.ArrayList;
+
 public class Counter extends Thread{
 
 	Galaxie g;
 	GUI gui;
+	ArrayList<Lod> lode = new ArrayList<Lod>();
+	int den = 0;
 	
 	@SuppressWarnings("static-access")
 	public void run(){
-		while(true){
-			try {
-				Thread.sleep(100);
-				System.out.println("test");
-				int c = (int)(Math.random()*5000);
-				g.getPlanety().get(c).pop = 999999999;
-				gui.nakresliPlanety();
-				gui.nakresliStanice();
+		synchronized (this) {
+			while(true){
+				System.out.println("Zaèíná den "+(den+1));
 				
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
+				
+				
+				
+				den++;
+				try {
+					this.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -26,7 +32,6 @@ public class Counter extends Thread{
 	public void start(Galaxie g, GUI gui){
 		super.start();
 		this.g = g;
-		this.gui = gui;
 	}
 	
 }

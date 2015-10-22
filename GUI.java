@@ -52,7 +52,12 @@ public class GUI{
 			prekresliPlatno();
 		});
 		start.setOnAction(event -> {
+			if(!cas.isAlive()){
 			cas.start(g,this);
+			}else{synchronized (cas) {
+				cas.notify();
+			}}
+						
 		});
 		
 		Button test = new Button("Test");
