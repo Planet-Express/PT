@@ -14,7 +14,7 @@ public class Galaxie{
 	private ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 	private int pocet = 0;
 	private int delka = 0;
-	private final int ODSAZENI = 175;
+	private final int ODSAZENI = 160;
 	private int populace;
 	public long time = System.nanoTime();
 	

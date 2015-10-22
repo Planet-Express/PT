@@ -121,8 +121,6 @@ public class GUI{
 			int y = g.getStanice().get(i).getPosY()*quality;
 			gc.setFill(Color.BLUE);
 			gc.fillOval(x-3*quality, y-3*quality, 6*quality, 6*quality);
-			gc.setStroke(Color.BLUE);
-			gc.strokeOval(x-150*quality, y-150*quality, 300*quality, 300*quality);
 		}
 	}
 
