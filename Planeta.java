@@ -2,7 +2,7 @@ package PT;
 
 import java.util.ArrayList;
 
-public class Planeta{
+public class Planeta extends Lokace{
 
 	private ArrayList<Planeta> sousedi = new ArrayList<Planeta>();
 	private int posX;

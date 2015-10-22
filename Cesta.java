@@ -1,6 +1,6 @@
 package PT;
 
-public class Cesta {
+public class Cesta extends Lokace{
 	
 	private Planeta od;
 	private Planeta kam;
