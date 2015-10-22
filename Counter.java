@@ -15,8 +15,8 @@ public class Counter extends Thread{
 		synchronized (this) {
 			while(true){
 				System.out.println("Zaèíná den "+(den+1));
-				
-				objednavky = g.getObjednavky();
+					objednavky = g.getObjednavky();
+					
 				
 				den++;
 				System.out.println("Den "+den+" skonèil");

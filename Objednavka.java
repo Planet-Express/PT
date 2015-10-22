@@ -12,7 +12,7 @@ public class Objednavka {
 		this.kam = kam;
 		this.kolik = kolik;
 		this.vzdalenost = vzdalenost;
-		System.out.println("Planeta "+kam.getId()+" si objednala "+kolik+" lékù");
+		//System.out.println("Planeta "+kam.getId()+" si objednala "+kolik+" lékù");
 	}
 	
 	

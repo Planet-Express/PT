@@ -54,7 +54,7 @@ public class GUI{
 		start.setOnAction(event -> {
 			if(!cas.isAlive()){
 			cas.start(g,this);
-			}else{synchronized (cas) {
+			}else if(cas.getState().toString().equals("WAITING")){synchronized (cas) {
 				cas.notify();
 			}}
 						

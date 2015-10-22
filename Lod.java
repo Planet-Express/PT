@@ -1,5 +1,7 @@
 package PT;
 
+import java.util.ArrayList;
+
 public class Lod {
 
 	private int posX;
@@ -8,6 +10,8 @@ public class Lod {
 	
 	private Lokace lokace;
 	private Planeta cil;
+	
+	private ArrayList<Cesta> cestovalaPres = new ArrayList<Cesta>();
 	
 	private Lod(Stanice start, int naklad, Planeta cil){
 		this.naklad = naklad;
