@@ -280,4 +280,16 @@ public class Galaxie{
 			}
 		}
 	}
+	
+	public ArrayList<Objednavka> getObjednavky(){
+		ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
+		
+		for (int i = 0; i < planety.size()-5; i++) {
+			Planeta a = planety.get(i);
+			int objednavka = a.getPop()-a.vyrobLeky();
+			Objednavka ob = new Objednavka(a, objednavka, a.getVzdalenost(), i+1);
+			objednavky.add(ob);
+		}
+ 		return objednavky;
+	}
 }

@@ -13,6 +13,7 @@ public class Planeta extends Lokace{
 	double vzdalenost = Integer.MAX_VALUE;
 	ArrayList<Planeta> cesta = new ArrayList<Planeta>(1);
 	
+	
 	public Planeta(int id, int posX, int posY, int pop){
 		this.id = id;
 		this.posX = posX;
@@ -73,4 +74,7 @@ public class Planeta extends Lokace{
 		this.mrtva = b;
 	}
 	
+	public int vyrobLeky(){
+		return (int)(pop*0.345);
+	}
 }
