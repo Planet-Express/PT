@@ -37,6 +37,9 @@ public class Counter extends Thread{
 							l.setStav(1);
 							ob.setPotencial(ob.getPotencial()+l.getNaklad());
 							System.out.println("Lod è."+l.getId()+" se nakládá v doku "+((Stanice)l.getLokace()).getId());					
+							if(l.getCil().size()>10){
+								ob.getOd().getDok().remove(0);
+							}
 						}
 						if(ob.getKolik()-ob.getPotencial()>0){
 							i--;
