@@ -43,7 +43,10 @@ public class Counter extends Thread{
 						}
 					
 				}
-				
+				for (int i = 0; i < lode.size(); i++) {
+					Lod l = lode.get(i);
+					System.out.println(l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
+				}
 				for (int i = 0; i < 30; i++) {
 					////////////// ZACATEK DNE
 					System.out.println("Zaèíná den "+(den+1)+", mìsíc "+(mesic));
