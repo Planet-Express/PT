@@ -2,7 +2,7 @@ package PT;
 
 import java.util.ArrayList;
 
-public class Planeta extends Lokace{
+public class Planeta{
 
 	private ArrayList<Planeta> sousedi = new ArrayList<Planeta>();
 	private int posX;
@@ -75,6 +75,8 @@ public class Planeta extends Lokace{
 	}
 	
 	public int vyrobLeky(){
-		return (int)(pop*0.345);
+		double pravdepodobnost = Math.random()*0.6+0.2;
+		return (int)(pop*pravdepodobnost);
 	}
+
 }

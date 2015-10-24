@@ -34,7 +34,7 @@ public class GUI{
 		bp.setPrefSize(800, 600);
 		bp.setLeft(getControlBar());
 		bp.setCenter(getCenter());
-		testCesty();
+		//testCesty();
 		return bp;
 	}
 

@@ -287,7 +287,8 @@ public class Galaxie{
 		for (int i = 0; i < planety.size()-5; i++) {
 			Planeta a = planety.get(i);
 			int objednavka = a.getPop()-a.vyrobLeky();
-			Objednavka ob = new Objednavka(a, objednavka, a.getVzdalenost(), i+1);
+			Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
+			Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost(), i+1);
 			objednavky.add(ob);
 		}
  		return objednavky;

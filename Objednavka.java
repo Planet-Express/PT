@@ -3,13 +3,60 @@ package PT;
 public class Objednavka {
 
 	private Planeta kam;
+	private Stanice od;
 	private int kolik;
+	private int potencial = 0;
+	
+	public Stanice getOd() {
+		return od;
+	}
+
+
+	public void setOd(Stanice od) {
+		this.od = od;
+	}
+
+
+	public int getPotencial() {
+		return potencial;
+	}
+
+
+	public void setPotencial(int potencial) {
+		this.potencial = potencial;
+	}
+
+
+	public int getStav() {
+		return stav;
+	}
+
+
+	public void setStav(int stav) {
+		this.stav = stav;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public void setVzdalenost(double vzdalenost) {
+		this.vzdalenost = vzdalenost;
+	}
 	private double vzdalenost;
 	private int stav = 0;
 	private int id;
 	
-	public Objednavka(Planeta kam, int kolik, double vzdalenost, int id){
+	public Objednavka(Planeta kam, Stanice od, int kolik, double vzdalenost, int id){
 		this.kam = kam;
+		this.od = od;
 		this.kolik = kolik;
 		this.vzdalenost = vzdalenost;
 		//System.out.println("Planeta "+kam.getId()+" si objednala "+kolik+" lékù");

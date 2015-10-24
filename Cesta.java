@@ -1,6 +1,6 @@
 package PT;
 
-public class Cesta extends Lokace{
+public class Cesta{
 	
 	private Planeta od;
 	private Planeta kam;
@@ -42,4 +42,5 @@ public class Cesta extends Lokace{
 	public int getBY(){
 		return kam.getPosY();
 	}
+
 }

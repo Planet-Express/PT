@@ -63,7 +63,11 @@ public class Soubor {
 					Planeta p = g.planety.get(Integer.parseInt(poleCesta[0])-1);
 					p.setVzdalenost(Double.parseDouble(poleCesta[1]));
 					for (int j = 2; j < poleCesta.length; j++) {
-						p.cesta.add(g.planety.get(Integer.parseInt(poleCesta[j])-1));
+						if(j<(poleCesta.length-1)){
+							p.cesta.add(g.planety.get(Integer.parseInt(poleCesta[j])-1));
+						}else{
+							p.cesta.add(g.stanice.get(Integer.parseInt(poleCesta[j])-5001));
+						}
 					}
 				}
 				System.out.println(System.nanoTime()-time+" -- pridana min cesta");
