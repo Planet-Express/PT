@@ -26,6 +26,7 @@ public class Soubor {
 				ArrayList<String[]> poleGalaxie = new ArrayList<String[]>(5005);
 				ArrayList<String[]> poleCest = new ArrayList<String[]>(5005);
 				br.readLine();
+				br.readLine();
 				for(int j = 0; j < 5005; j++){
 					String nazev = br.readLine().trim();
 					polePlaneta = nazev.split(";");
@@ -93,6 +94,7 @@ public class Soubor {
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));
 			writer.print("id planety;x souradnice;y souradnice;pocet obyvatel;id sousedicich planet....\n");
+			writer.print("id planety;vzdalenost od stanice;id planet na ceste;...;id stanice\n");
 			for (int i = 0; i < g.getPlanety().size(); i++) {
 				Planeta a = g.getPlanety().get(i);
 				writer.print(a.getId()+";"+a.getPosX()+";"+a.getPosY()+";"+a.getPop());
