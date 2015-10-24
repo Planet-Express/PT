@@ -20,36 +20,47 @@ public class Counter extends Thread{
 				////////////////ZACATEK MESICE
 				objednavky = g.getObjednavky();
 				objednavky.sort(new FarComparator());
-				for (int i = 0; i < objednavky.size(); i++) {
-					Objednavka ob = objednavky.get(i);
+				int cntr = 0;
+				while (potrebaLeku()>0) {
+					Objednavka ob = objednavky.get(cntr);
 					int unosnost = 5000000;
 					Lod l = getLod(ob.getOd());
 						if(ob.getKolik()>unosnost){
-								l.setNaklad(unosnost);
-								l.getCil().push(ob.getKam());
-								l.setStav(1);
-								ob.setPotencial(ob.getPotencial()+l.getNaklad());
-								System.out.println("Lod è."+l.getId()+" se nakládá v doku "+((Stanice)l.getLokace()).getId());
-								ob.getOd().getDok().remove(0);
+							obsluzObjednavku(l, ob, unosnost);
+							ob.getOd().getDok().remove(0);
 						}else{
-							l.setNaklad(ob.getKolik());
-							l.getCil().push(ob.getKam());
-							l.setStav(1);
-							ob.setPotencial(ob.getPotencial()+l.getNaklad());
-							System.out.println("Lod è."+l.getId()+" se nakládá v doku "+((Stanice)l.getLokace()).getId());					
-							if(l.getCil().size()>10){
-								ob.getOd().getDok().remove(0);
+							obsluzObjednavku(l, ob, ob.getKolik());	
+							for (int j = 0; j < ob.getKam().getCesta().size()-1; j++) {
+								if(l.getNaklad()<unosnost){
+									for (int j2 = 0; j2 < objednavky.size(); j2++) {
+										Objednavka dalsiOb = objednavky.get(j2);
+										Planeta dalsiP = ob.getKam().getCesta().get(j);
+										if(dalsiOb.getKam().equals(dalsiP)){
+											if(dalsiOb.getKolik()+l.getNaklad()<=unosnost){
+												obsluzObjednavku(l, dalsiOb, dalsiOb.getKolik());
+												break;
+											}else{
+												obsluzObjednavku(l, dalsiOb, unosnost-l.getNaklad());
+												ob.getOd().getDok().remove(0);
+												break;
+											}
+										}
+									}
+								}
 							}
 						}
-						if(ob.getKolik()-ob.getPotencial()>0){
-							i--;
-						}
-					
+					cntr++;
+					System.out.println(potrebaLeku());
+					for (int i = 0; i < objednavky.size(); i++) {
+						if(objednavky.get(i).getPotencial()>objednavky.get(i).getKolik()){System.out.println("fail");}
+					}
 				}
+				/*
 				for (int i = 0; i < lode.size(); i++) {
 					Lod l = lode.get(i);
 					System.out.println(l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
 				}
+				*/
 				for (int i = 0; i < 30; i++) {
 					////////////// ZACATEK DNE
 					System.out.println("Zaèíná den "+(den+1)+", mìsíc "+(mesic));
@@ -65,6 +76,21 @@ public class Counter extends Thread{
 				mesic++;
 			}
 		}
+	}
+	
+	public long potrebaLeku(){
+		long leku = 0;
+		for (int i = 0; i < objednavky.size(); i++) {
+			leku += (objednavky.get(i).getKolik()-objednavky.get(i).getPotencial());
+		}
+		return leku;
+	}
+	public void obsluzObjednavku(Lod l, Objednavka ob, int naklad){
+		l.setNaklad(l.getNaklad()+naklad);
+		l.getCil().push(ob.getKam());
+		l.setStav(1);
+		ob.setPotencial(ob.getPotencial()+l.getNaklad());
+		//System.out.println("Lod è."+l.getId()+" se nakládá v doku "+((Stanice)l.getLokace()).getId());
 	}
 	private int counter = 1;
 	public Lod getLod(Stanice s){

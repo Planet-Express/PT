@@ -15,7 +15,7 @@ public class Lod {
 	
 	
 	private Object lokace;
-	private  Stack<Planeta> cil = new Stack<Planeta>();
+	private Stack<Planeta> cil = new Stack<Planeta>();
 	
 	private ArrayList<Cesta> cestovalaPres = new ArrayList<Cesta>();
 	
