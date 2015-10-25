@@ -12,6 +12,10 @@ public class Objednavka {
 	}
 
 
+	public int getPotreba(){
+		return this.kolik - this.potencial;
+	}
+	
 	public void setOd(Stanice od) {
 		this.od = od;
 	}
