@@ -26,8 +26,10 @@ public class Counter extends Thread{
 					int unosnost = 5000000;
 					Lod l = getLod(ob.getOd());
 						if(ob.getPotreba()+l.getNaklad()>unosnost){
+							if(l.getNaklad()!=0){
 							ob.getOd().getDok().remove(0);
 							l = getLod(ob.getOd());
+							}
 							obsluzObjednavku(l, ob, unosnost);
 						//	System.out.println("1. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
 							cntr--;
@@ -61,10 +63,6 @@ public class Counter extends Thread{
 					if(cntr==5000){cntr = 0;}
 				}
 				
-				for (int i = 0; i < lode.size(); i++) {
-					Lod l = lode.get(i);
-					System.out.println(l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
-				}
 				
 				for (int i = 0; i < 30; i++) {
 					////////////// ZACATEK DNE
@@ -86,7 +84,7 @@ public class Counter extends Thread{
 	public long potrebaLeku(){
 		long leku = 0;
 		for (int i = 0; i < objednavky.size(); i++) {
-			leku += (objednavky.get(i).getKolik()-objednavky.get(i).getPotencial());
+			leku += (objednavky.get(i).getPotreba());
 		}
 		return leku;
 	}
@@ -102,7 +100,7 @@ public class Counter extends Thread{
 			try {
 				throw new Exception();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				System.out.println(("Naklad se nevesel na lod"));
 				e.printStackTrace();
 			}
 		}
