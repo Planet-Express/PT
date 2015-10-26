@@ -1,5 +1,7 @@
 package PT;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -7,8 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -34,8 +38,28 @@ public class GUI{
 		bp.setPrefSize(800, 600);
 		bp.setLeft(getControlBar());
 		bp.setCenter(getCenter());
+		bp.setRight(getInfoPane());
 		//testCesty();
 		return bp;
+	}
+
+	private Node getInfoPane() {
+		VBox vb = new VBox();
+		ListView<String> lv = new ListView<String>();
+		lv.setItems(getLode());
+		lv.setCellFactory(TextFieldListCell.forListView());
+		Button show = new Button("show");
+		show.setOnAction(event -> lv.setItems(getLode()));
+		vb.getChildren().addAll(lv, show);
+		return vb;
+	}
+
+	private ObservableList<String> getLode() {
+		ObservableList<String> ol = FXCollections.observableArrayList();
+		for (int i = 0; i < cas.lode.size(); i++) {
+			ol.add(cas.lode.get(i).toString());
+		}
+		return ol;
 	}
 
 	private Node getControlBar() {

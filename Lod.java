@@ -3,6 +3,8 @@ package PT;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 public class Lod {
 
 	private int posX;
@@ -85,6 +87,11 @@ public class Lod {
 
 	public Stack<Planeta> getCil() {
 		return cil;
+	}
+	
+	public String toString(){
+		return "id = " + getId() + ", size = " + getCil().size() + ", naklad = " + getNaklad() + ", stav = " + getStav();
+		
 	}
 
 }
