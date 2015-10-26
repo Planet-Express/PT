@@ -91,7 +91,6 @@ public class Lod {
 	
 	public String toString(){
 		return "id = " + getId() + ", size = " + getCil().size() + ", naklad = " + getNaklad() + ", stav = " + getStav();
-		
 	}
 
 }

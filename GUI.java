@@ -50,6 +50,17 @@ public class GUI{
 		lv.setCellFactory(TextFieldListCell.forListView());
 		Button show = new Button("show");
 		show.setOnAction(event -> lv.setItems(getLode()));
+		lv.setOnMouseClicked(event -> {
+			if(lv.getSelectionModel().getSelectedIndex()>=0){
+				prekresliPlatno();
+				for (int i = 0; i < cas.lode.get(lv.getSelectionModel().getSelectedIndex()).getCil().size(); i++) {
+					Planeta a = cas.lode.get(lv.getSelectionModel().getSelectedIndex()).getCil().get(i);
+					gc.setFill(Color.PEACHPUFF);
+					gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
+				}
+			}
+		}
+		);
 		vb.getChildren().addAll(lv, show);
 		return vb;
 	}

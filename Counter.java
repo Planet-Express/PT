@@ -58,6 +58,11 @@ public class Counter extends Thread{
 									}
 								}
 							}
+							if(ob.getOd().getDok().size()==1){
+								if(ob.getOd().getDok().get(0).getNaklad()>0){
+									ob.getOd().getDok().remove(0);
+								}
+							}
 						}
 					cntr++;
 					if(cntr==5000){cntr = 0;}
