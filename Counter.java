@@ -63,7 +63,7 @@ public class Counter extends Thread{
 					if(cntr==5000){cntr = 0;}
 				}
 				for (int i = 0; i < lode.size(); i++) {
-					System.out.println("Lod "+lode.get(i).getId()+" ma naklad "+ lode.get(i).getNaklad()+" a obleti "+lode.get(i).getCil().size()+" planet");
+				//	System.out.println("Lod "+lode.get(i).getId()+" ma naklad "+ lode.get(i).getNaklad()+" a obleti "+lode.get(i).getCil().size()+" planet");
 				}
 				
 				for (int i = 0; i < 30; i++) {
