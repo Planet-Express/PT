@@ -47,6 +47,7 @@ public class Galaxie{
 		dohledejSousedy(planety);
 		System.out.println(System.nanoTime()-time+" -- Dohledavam sousedy");
 		vytvorCesty(planety);
+		ostatniSousedi();
 		generujNebezpecneCesty();
 		System.out.println(System.nanoTime()-time+" -- Pruchod Dijkstrem");
 		udelejDijkstra();
@@ -90,7 +91,7 @@ public class Galaxie{
 					}
 				for (int i = 0; i < planety.size(); i++) {
 					double vzdalenost = vzdalenostBodu(planety.get(i), x, y);
-					if(vzdalenost<=2){break;}
+					if(vzdalenost<=3){break;}
 					
 					if((i+1)==planety.size()){lze = true;}
 				}
@@ -146,7 +147,9 @@ public class Galaxie{
 				}
 			}
 		}
-		
+	}
+	
+	public void ostatniSousedi(){
 		for(int i = 0; i < cesty.size(); i++){
 			boolean existuje = false;
 			Planeta pFrom = cesty.get(i).getOd();
@@ -155,11 +158,11 @@ public class Galaxie{
 				Planeta soused = pTo.getSousedi().get(j);
 				if(pFrom == soused){
 					existuje = true;
-					//System.out.println("existuje");
 				}
 			}
 			if(!existuje){
-				pTo.getSousedi().add(pFrom);				
+				//System.out.println("nexistuje");
+				pTo.getSousedi().add(pFrom);		
 			}
 		}
 	}
