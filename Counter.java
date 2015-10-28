@@ -1,10 +1,16 @@
 package PT;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Counter extends Thread{
-
+	
 	Galaxie g;
 	GUI gui;
 	ArrayList<Lod> lode = new ArrayList<Lod>();
@@ -14,6 +20,7 @@ public class Counter extends Thread{
 	
 	@SuppressWarnings("static-access")
 	public void run(){
+		
 		synchronized (this) {
 			while(true){
 				
@@ -73,10 +80,12 @@ public class Counter extends Thread{
 				
 				for (int i = 0; i < 30; i++) {
 					////////////// ZACATEK DNE
-					System.out.println("Zaèíná den "+(den+1)+", mìsíc "+(mesic));
+					Soubor.getLoger().log(Level.INFO, "Zaèíná den "+(den+1)+", mìsíc "+(mesic));
+					//System.out.println("Zaèíná den "+(den+1)+", mìsíc "+(mesic));
 					
 					den++;
-					System.out.println("Den "+den+" skonèil");
+					Soubor.getLoger().log(Level.INFO, "Den "+den+" skonèil");
+					//System.out.println("Den "+den+" skonèil");
 					try {
 						this.wait();
 					} catch (InterruptedException e) {

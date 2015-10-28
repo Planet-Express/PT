@@ -5,10 +5,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Galaxie{
-
 	public ArrayList<Planeta> planety = new ArrayList<Planeta>(5005);
 	public ArrayList<Stanice> stanice = new ArrayList<Stanice>(5);
 	private ArrayList<Cesta> cesty = new ArrayList<Cesta>();
@@ -293,6 +294,7 @@ public class Galaxie{
 			Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
 			Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost(), i+1);
 			objednavky.add(ob);
+			Soubor.getLoger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednávku na "+objednavka+" lékù.");
 		}
  		return objednavky;
 	}

@@ -10,9 +10,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Soubor {
 
+	//private final static Logger LOGGER = Logger.getLogger(Soubor.class.getName());
+	
 	public static Galaxie nacti(){
 		BufferedReader br = null;
 		Galaxie g = new Galaxie(800, 5000);
@@ -88,6 +94,22 @@ public class Soubor {
 		}
 		return g;
 	}
+	
+	public static Logger getLoger(){
+		Logger LOGGER = Logger.getLogger(Soubor.class.getName());
+		FileHandler f = null;
+		try {
+			f = new FileHandler("Log.log", false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		SimpleFormatter formater = new SimpleFormatter();
+		f.setFormatter(formater);
+		f.setLevel(Level.INFO);
+		LOGGER.addHandler(f);
+		return LOGGER;
+	}
+	
 	
 	public static void uloz(String nazev, Galaxie g){
 		PrintWriter writer = null;
