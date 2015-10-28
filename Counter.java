@@ -20,7 +20,7 @@ public class Counter extends Thread{
 	
 	@SuppressWarnings("static-access")
 	public void run(){
-		
+		Soubor.initLogger();
 		synchronized (this) {
 			while(true){
 				
@@ -74,18 +74,22 @@ public class Counter extends Thread{
 					cntr++;
 					if(cntr==5000){cntr = 0;}
 				}
+	
 				for (int i = 0; i < lode.size(); i++) {
-				//	System.out.println("Lod "+lode.get(i).getId()+" ma naklad "+ lode.get(i).getNaklad()+" a obleti "+lode.get(i).getCil().size()+" planet");
+					Lod l = lode.get(i);
+					if(l.getCil().size()>0){
+					int cas = 0;
+					int vzdalenost = (int)(l.getCil().get(l.getCil().size()-1).vzdalenost/25);
+					cas = vzdalenost + l.getCil().size();
+					int casB = cas + vzdalenost;
+					Soubor.getLogger().log(Level.INFO, "Lod è."+l.getId()+" doruèí svùj celý náklad "+cas+" den. A vrátí se "+casB+" den.");
+					}
 				}
-				
 				for (int i = 0; i < 30; i++) {
 					////////////// ZACATEK DNE
-					Soubor.getLoger().log(Level.INFO, "Zaèíná den "+(den+1)+", mìsíc "+(mesic));
-					//System.out.println("Zaèíná den "+(den+1)+", mìsíc "+(mesic));
-					
+					Soubor.getLogger().log(Level.INFO, "Zaèíná den "+(den+1)+", mìsíc "+(mesic));
 					den++;
-					Soubor.getLoger().log(Level.INFO, "Den "+den+" skonèil");
-					//System.out.println("Den "+den+" skonèil");
+					Soubor.getLogger().log(Level.INFO, "Den "+den+" skonèil");
 					try {
 						this.wait();
 					} catch (InterruptedException e) {
@@ -111,6 +115,10 @@ public class Counter extends Thread{
 			l.getCil().push(ob.getKam());
 			l.setStav(1);
 			l = getLod(ob.getOd());
+			Soubor.getLogger().log(Level.INFO, "Lod è. "+l.getId()+
+					" doveze "+naklad+" lékù na planetu "+ob.getKam().getJmeno()+
+					". Loï je naplnìna z "+(int)(l.getNaklad()/50000.0)+
+					"% a cestou bude zásobovat "+l.getCil().size()+" planet(u).");
 		}
 		if(l.getNaklad()>5000000){
 			try {
@@ -129,6 +137,7 @@ public class Counter extends Thread{
 			Lod l = new Lod(s, counter);
 			counter++;
 			lode.add(l);
+			Soubor.getLogger().log(Level.INFO, "Probìhla výroba nové lodi è."+counter+" v doku Stanice "+(s.getId()-5000));
 			return l;
 		}else{return s.getDok().get(0);}
 	}

@@ -17,7 +17,7 @@ import java.util.logging.SimpleFormatter;
 
 public class Soubor {
 
-	//private final static Logger LOGGER = Logger.getLogger(Soubor.class.getName());
+	private final  static Logger LOGGER = Logger.getLogger(Soubor.class.getName());
 	
 	public static Galaxie nacti(){
 		BufferedReader br = null;
@@ -95,8 +95,11 @@ public class Soubor {
 		return g;
 	}
 	
-	public static Logger getLoger(){
-		Logger LOGGER = Logger.getLogger(Soubor.class.getName());
+	public static Logger getLogger(){
+		return LOGGER;
+	}
+	
+	public static void initLogger(){
 		FileHandler f = null;
 		try {
 			f = new FileHandler("Log.log", false);
@@ -107,7 +110,7 @@ public class Soubor {
 		f.setFormatter(formater);
 		f.setLevel(Level.INFO);
 		LOGGER.addHandler(f);
-		return LOGGER;
+		
 	}
 	
 	
