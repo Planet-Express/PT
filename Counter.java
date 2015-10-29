@@ -1,13 +1,8 @@
 package PT;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class Counter extends Thread{
 	
@@ -18,7 +13,6 @@ public class Counter extends Thread{
 	int den = 0;
 	int mesic = 0;
 	
-	@SuppressWarnings("static-access")
 	public void run(){
 		Soubor.initLogger();
 		synchronized (this) {
@@ -82,14 +76,14 @@ public class Counter extends Thread{
 					int vzdalenost = (int)(l.getCil().get(l.getCil().size()-1).vzdalenost/25);
 					cas = vzdalenost + l.getCil().size();
 					int casB = cas + vzdalenost;
-					Soubor.getLogger().log(Level.INFO, "Lod è."+l.getId()+" doruèí svùj celý náklad "+cas+" den. A vrátí se "+casB+" den.");
+					Soubor.getLogger().log(Level.INFO, "Lod ï¿½."+l.getId()+" doruï¿½ï¿½ svï¿½j celï¿½ nï¿½klad "+cas+" den. A vrï¿½tï¿½ se "+casB+" den.");
 					}
 				}
 				for (int i = 0; i < 30; i++) {
 					////////////// ZACATEK DNE
-					Soubor.getLogger().log(Level.INFO, "Zaèíná den "+(den+1)+", mìsíc "+(mesic));
+					Soubor.getLogger().log(Level.INFO, "Zaï¿½ï¿½nï¿½ den "+(den+1)+", mï¿½sï¿½c "+(mesic));
 					den++;
-					Soubor.getLogger().log(Level.INFO, "Den "+den+" skonèil");
+					Soubor.getLogger().log(Level.INFO, "Den "+den+" skonï¿½il");
 					try {
 						this.wait();
 					} catch (InterruptedException e) {
@@ -115,10 +109,10 @@ public class Counter extends Thread{
 			l.getCil().push(ob.getKam());
 			l.setStav(1);
 			l = getLod(ob.getOd());
-			Soubor.getLogger().log(Level.INFO, "Lod è. "+l.getId()+
-					" doveze "+naklad+" lékù na planetu "+ob.getKam().getJmeno()+
-					". Loï je naplnìna z "+(int)(l.getNaklad()/50000.0)+
-					"% a cestou bude zásobovat "+l.getCil().size()+" planet(u).");
+			Soubor.getLogger().log(Level.INFO, "Lod ï¿½. "+l.getId()+
+					" doveze "+naklad+" lï¿½kï¿½ na planetu "+ob.getKam().getJmeno()+
+					". Loï¿½ je naplnï¿½na z "+(int)(l.getNaklad()/50000.0)+
+					"% a cestou bude zï¿½sobovat "+l.getCil().size()+" planet(u).");
 		}
 		if(l.getNaklad()>5000000){
 			try {
@@ -128,7 +122,7 @@ public class Counter extends Thread{
 				e.printStackTrace();
 			}
 		}
-		//System.out.println("Lod è."+l.getId()+" se nakládá v doku "+((Stanice)l.getLokace()).getId());
+		//System.out.println("Lod ï¿½."+l.getId()+" se naklï¿½dï¿½ v doku "+((Stanice)l.getLokace()).getId());
 	}
 	
 	private int counter = 1;
@@ -137,7 +131,7 @@ public class Counter extends Thread{
 			Lod l = new Lod(s, counter);
 			counter++;
 			lode.add(l);
-			Soubor.getLogger().log(Level.INFO, "Probìhla výroba nové lodi è."+counter+" v doku Stanice "+(s.getId()-5000));
+			Soubor.getLogger().log(Level.INFO, "Probï¿½hla vï¿½roba novï¿½ lodi ï¿½."+counter+" v doku Stanice "+(s.getId()-5000));
 			return l;
 		}else{return s.getDok().get(0);}
 	}

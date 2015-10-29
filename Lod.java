@@ -3,7 +3,6 @@ package PT;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class Lod {
 

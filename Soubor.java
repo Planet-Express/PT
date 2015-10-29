@@ -49,11 +49,11 @@ public class Soubor {
 					int posY = Integer.parseInt(polePlaneta[2]);
 					int pop = Integer.parseInt(polePlaneta[3]);
 					if(i<5000){
-						g.planety.add(new Planeta(id, posX, posY, pop));						
+						g.getPlanety().add(new Planeta(id, posX, posY, pop));						
 					}
 					else{
-						g.planety.add(new Planeta(id, posX, posY, pop));
-						g.stanice.add(new Stanice(id, posX, posY));
+						g.getPlanety().add(new Planeta(id, posX, posY, pop));
+						g.getStanice().add(new Stanice(id, posX, posY));
 					}
 				}
 				System.out.println(System.nanoTime()-time+" -- planety vytvoreny");
@@ -61,24 +61,24 @@ public class Soubor {
 					polePlaneta = poleGalaxie.get(i);
 					for (int j = 4; j < polePlaneta.length; j++) {	
  						int id = Integer.parseInt(polePlaneta[j]);
-						g.planety.get(i).getSousedi().add(g.planety.get(id-1));
+						g.getPlanety().get(i).getSousedi().add(g.getPlanety().get(id-1));
 					}						
 				}
 				System.out.println(System.nanoTime()-time+" -- pridani sousedi");
 				for (int i = 0; i < poleCest.size()-5; i++) {
 					poleCesta = poleCest.get(i);
-					Planeta p = g.planety.get(Integer.parseInt(poleCesta[0])-1);
+					Planeta p = g.getPlanety().get(Integer.parseInt(poleCesta[0])-1);
 					p.setVzdalenost(Double.parseDouble(poleCesta[1]));
 					for (int j = 2; j < poleCesta.length; j++) {
 						if(j<(poleCesta.length-1)){
-							p.cesta.add(g.planety.get(Integer.parseInt(poleCesta[j])-1));
+							p.cesta.add(g.getPlanety().get(Integer.parseInt(poleCesta[j])-1));
 						}else{
-							p.cesta.add(g.stanice.get(Integer.parseInt(poleCesta[j])-5001));
+							p.cesta.add(g.getStanice().get(Integer.parseInt(poleCesta[j])-5001));
 						}
 					}
 				}
 				System.out.println(System.nanoTime()-time+" -- pridana min cesta");
-				g.vytvorCesty(g.planety);
+				g.vytvorCesty(g.getPlanety());
 				g.generujNebezpecneCesty();
 			} catch (IOException e) {
 				e.printStackTrace();

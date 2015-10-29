@@ -7,7 +7,7 @@ public class Planeta{
 	private ArrayList<Planeta> sousedi = new ArrayList<Planeta>();
 	private int posX;
 	private int posY;
-	int pop;
+	private int pop;
 	private int id;
 	boolean mrtva = false;
 	double vzdalenost = Integer.MAX_VALUE;
@@ -42,8 +42,8 @@ public class Planeta{
 		return pop;
 	}
 	
-	public void vypis(){
-		System.out.println("{"+id+"}"+posX+"/"+posY+ " " + pop);
+	public String toString(){
+		return "{"+getJmeno()+"}"+posX+"/"+posY+ " " + pop;
 	}
 	
 	public void trimSousedi(){
@@ -80,7 +80,6 @@ public class Planeta{
 	}
 	
 	public String getJmeno(){
-		char z = 'a';
 		String s = "";
 		int c = (id-1)%26;
 		int zbytek = (id-1)/26;

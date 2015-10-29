@@ -6,12 +6,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class Galaxie{
-	public ArrayList<Planeta> planety = new ArrayList<Planeta>(5005);
-	public ArrayList<Stanice> stanice = new ArrayList<Stanice>(5);
+	private ArrayList<Planeta> planety = new ArrayList<Planeta>(5005);
+	private ArrayList<Stanice> stanice = new ArrayList<Stanice>(5);
 	private ArrayList<Cesta> cesty = new ArrayList<Cesta>();
 	private int pocet = 0;
 	private int delka = 0;
@@ -53,20 +52,6 @@ public class Galaxie{
 		System.out.println(System.nanoTime()-time+" -- Pruchod Dijkstrem");
 		udelejDijkstra();
 		System.out.println(System.nanoTime()-time+" -- Vykresluji");
-	}
-	
-	public void simuluj(){
-		while(true){
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			int c = (int)(Math.random()*5000);
-			planety.get(c).pop = 99999999;
-			System.out.println(planety.get(c).getId());
-		}
 	}
 	
 	private void vytvorStanice() {
@@ -294,7 +279,7 @@ public class Galaxie{
 			Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
 			Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost(), i+1);
 			objednavky.add(ob);
-			Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednávku na "+objednavka+" lékù.");
+			Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednï¿½vku na "+objednavka+" lï¿½kï¿½.");
 		}
  		return objednavky;
 	}

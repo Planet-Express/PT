@@ -12,7 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -61,7 +64,7 @@ public class GUI{
 			}
 		}
 		);
-		vb.getChildren().addAll(lv, show);
+		vb.getChildren().addAll(lv, show, getTree());
 		return vb;
 	}
 
@@ -71,6 +74,52 @@ public class GUI{
 			ol.add(cas.lode.get(i).toString());
 		}
 		return ol;
+	}
+	
+	private Node getTree() {
+		TreeView<String>treeView = new TreeView<String>();
+		treeView.setCellFactory(TextFieldTreeCell.forTreeView());	
+		treeView.setRoot(createDefaultChildren());
+		treeView.setShowRoot(false);
+		treeView.setEditable(false);
+		return treeView;
+	}
+
+	@SuppressWarnings("unchecked")
+	private TreeItem<String> createDefaultChildren() {
+		TreeItem<String> root = new TreeItem<String>("");
+		TreeItem<String> s1 = new TreeItem<String>("Stanice 1");
+		TreeItem<String> s2 = new TreeItem<String>("Stanice 2");
+		TreeItem<String> s3 = new TreeItem<String>("Stanice 3");
+		TreeItem<String> s4 = new TreeItem<String>("Stanice 4");
+		TreeItem<String> s5 = new TreeItem<String>("Stanice 5");
+		for(int i = 0; i < 5000; i++){
+			Planeta tmp = g.getPlanety().get(i);
+			Planeta stanice = tmp.getCesta().get(tmp.getCesta().size()-1);
+			switch (stanice.getId()-5000) {
+			case 1:
+				s1.getChildren().add(new TreeItem<String>(tmp.toString()));
+				break;
+			case 2:
+				s2.getChildren().add(new TreeItem<String>(tmp.toString()));
+				break;
+			case 3:
+				s3.getChildren().add(new TreeItem<String>(tmp.toString()));
+				break;
+			case 4:
+				s4.getChildren().add(new TreeItem<String>(tmp.toString()));
+				break;
+			case 5:
+				s5.getChildren().add(new TreeItem<String>(tmp.toString()));
+				break;
+			default:
+				System.out.println("chyba prirazeni stanice");
+				break;
+			}
+		}
+		root.getChildren().addAll(s1, s2, s3, s4, s5);
+		return root;
+		
 	}
 
 	private Node getControlBar() {
@@ -137,9 +186,8 @@ public class GUI{
 	
 	private static Node getCenter() {
 		ScrollPane sc = new ScrollPane();
+		sc.setMinWidth(730);
 		af = gc.getTransform();
-	//	fp.setScaleX(0.85);
-	//	fp.setScaleY(0.85);
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, 800*quality, 800*quality);
 		nakresliCesty();
@@ -148,12 +196,6 @@ public class GUI{
 		Group g = new Group();
 		g.getChildren().addAll(canvas);
 		sc.setContent(g);
-		return sc;
-	}
-	
-	@SuppressWarnings("unused")
-	private Node getScrollPane(){
-		ScrollPane sc = new ScrollPane();
 		return sc;
 	}
 
@@ -171,7 +213,6 @@ public class GUI{
 			int x = g.getPlanety().get(i).getPosX()*quality;
 			int y = g.getPlanety().get(i).getPosY()*quality;
 			int pop = g.getPlanety().get(i).getPop()/1000000;
-			int vzd = (int)g.getPlanety().get(i).getVzdalenost()/10;
 			gc.setFill(getColor(pop));
 			gc.fillOval(x-2*quality, y-2*quality, 4*quality, 4*quality);
 		}		
