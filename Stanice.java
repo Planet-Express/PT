@@ -1,16 +1,17 @@
 package PT;
 
-import java.util.ArrayList;
+
+import java.util.Stack;
 
 public class Stanice extends Planeta{
 
-	private ArrayList<Lod> dok = new ArrayList<Lod>();
+	private Stack<Lod> dok = new Stack<Lod>();
 	
-	public ArrayList<Lod> getDok() {
+	public Stack<Lod> getDok() {
 		return dok;
 	}
 
-	public void setDok(ArrayList<Lod> dok) {
+	public void setDok(Stack<Lod> dok) {
 		this.dok = dok;
 	}
 

@@ -108,7 +108,8 @@ public class Soubor {
 		} 
 		SimpleFormatter formater = new SimpleFormatter();
 		f.setFormatter(formater);
-		f.setLevel(Level.INFO);
+		f.setLevel(Level.OFF);
+		LOGGER.setLevel(Level.SEVERE);
 		LOGGER.addHandler(f);
 		
 	}

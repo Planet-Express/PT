@@ -58,8 +58,13 @@ public class GUI{
 				prekresliPlatno();
 				for (int i = 0; i < cas.lode.get(lv.getSelectionModel().getSelectedIndex()).getCil().size(); i++) {
 					Planeta a = cas.lode.get(lv.getSelectionModel().getSelectedIndex()).getCil().get(i);
+					Lod l = cas.lode.get(lv.getSelectionModel().getSelectedIndex());
 					gc.setFill(Color.PEACHPUFF);
 					gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
+					gc.setFill(Color.SANDYBROWN);
+					if(l.getChciNa()!=null){
+					gc.fillRect((l.getChciNa().getPosX()-3)*quality, (l.getChciNa().getPosY()-3)*quality, 6*quality, 6*quality);
+					}
 				}
 			}
 		}
@@ -130,7 +135,7 @@ public class GUI{
 		Button start = new Button("Start");
 		start.setMinWidth(100);
 		generuj.setOnAction(event -> {
-			if(cas.getState().toString().equals("WAITING")){
+			if(!cas.getState().toString().equals("RUNNING")){
 				g = new Galaxie(800, 5000);
 				g.generujVesmir();
 				Soubor.uloz("Soubor", g);

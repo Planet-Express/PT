@@ -279,7 +279,7 @@ public class Galaxie{
 			Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
 			Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost(), i+1);
 			objednavky.add(ob);
-			Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednï¿½vku na "+objednavka+" lï¿½kï¿½.");
+			Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednávku na "+objednavka+" lékù.");
 		}
  		return objednavky;
 	}

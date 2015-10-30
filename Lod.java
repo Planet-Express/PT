@@ -16,6 +16,7 @@ public class Lod {
 	
 	
 	private Object lokace;
+	private Planeta chciNa;
 	private Stack<Planeta> cil = new Stack<Planeta>();
 	
 	private ArrayList<Cesta> cestovalaPres = new ArrayList<Cesta>();
@@ -25,7 +26,7 @@ public class Lod {
 		this.posX = start.getPosX();
 		this.posY = start.getPosY();
 		this.lokace = start;
-		start.getDok().add(this);
+		start.getDok().push(this);
 	}
 	
 	public int getId() {
@@ -91,5 +92,25 @@ public class Lod {
 	public String toString(){
 		return "id = " + getId() + ", size = " + getCil().size() + ", naklad = " + getNaklad() + ", stav = " + getStav();
 	}
+
+	public Planeta getChciNa() {
+		return chciNa;
+	}
+
+	public void setChciNa() {
+		if(this.lokace instanceof Planeta){
+			if(this.cil.size()!=0){
+				for (int i = this.cil.peek().getCesta().size()-1; i >= 0; i--) {
+					if(this.cil.peek().getCesta().get(i)==(Planeta)this.lokace){
+						if((i-1)>=0){
+							this.chciNa = this.cil.peek().getCesta().get(i-1);	
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
 
 }
