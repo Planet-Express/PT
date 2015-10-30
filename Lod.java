@@ -14,11 +14,10 @@ public class Lod {
 	
 	private int id;
 	
-	
+	private double procentaCesty;
 	private Object lokace;
 	private Planeta chciNa;
 	private Stack<Planeta> cil = new Stack<Planeta>();
-	
 	private ArrayList<Cesta> cestovalaPres = new ArrayList<Cesta>();
 	
 	public Lod(Stanice start, int id){
@@ -82,6 +81,10 @@ public class Lod {
 	}
 
 	public void setLokace(Object lokace) {
+		if(lokace==null){
+			System.out.println(this.procentaCesty);
+			System.out.println(this.lokace);
+		}
 		this.lokace = lokace;
 	}
 
@@ -100,15 +103,28 @@ public class Lod {
 	public void setChciNa() {
 		if(this.lokace instanceof Planeta){
 			if(this.cil.size()!=0){
-				for (int i = this.cil.peek().getCesta().size()-1; i >= 0; i--) {
-					if(this.cil.peek().getCesta().get(i)==(Planeta)this.lokace){
-						if((i-1)>=0){
-							this.chciNa = this.cil.peek().getCesta().get(i-1);	
+				if(this.cil.peek().getCesta().get(0)==(Planeta)this.lokace){this.chciNa = this.cil.peek();}
+				else{
+					for (int i = this.cil.peek().getCesta().size()-1; i >= 0; i--) {
+						if(this.cil.peek().getCesta().get(i)==(Planeta)this.lokace){
+							if((i-1)>=0){
+								this.chciNa = this.cil.peek().getCesta().get(i-1);	
+							}
 						}
 					}
 				}
+			}else{
+				this.chciNa=((Planeta)lokace).getCesta().get(0);
 			}
 		}
+	}
+
+	public double getProcentaCesty() {
+		return procentaCesty;
+	}
+
+	public void setProcentaCesty(double procentaCesty) {
+		this.procentaCesty = procentaCesty;
 	}
 	
 	

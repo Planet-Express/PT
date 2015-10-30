@@ -61,9 +61,18 @@ public class GUI{
 					Lod l = cas.lode.get(lv.getSelectionModel().getSelectedIndex());
 					gc.setFill(Color.PEACHPUFF);
 					gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
-					gc.setFill(Color.SANDYBROWN);
+					gc.setFill(Color.CRIMSON);
 					if(l.getChciNa()!=null){
-					gc.fillRect((l.getChciNa().getPosX()-3)*quality, (l.getChciNa().getPosY()-3)*quality, 6*quality, 6*quality);
+						gc.fillRect((l.getChciNa().getPosX()-3)*quality, (l.getChciNa().getPosY()-3)*quality, 6*quality, 6*quality);
+					}
+					if(l.getLokace() instanceof Cesta){
+						gc.setStroke(Color.DARKSLATEBLUE);
+						Cesta c = (Cesta)l.getLokace();
+						gc.strokeLine(c.getOd().getPosX(), c.getOd().getPosY(), c.getKam().getPosX(), c.getKam().getPosY());
+					}else{
+						a = (Planeta)l.getLokace();
+						gc.setFill(Color.DARKSLATEBLUE);
+						gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
 					}
 				}
 			}
@@ -135,7 +144,7 @@ public class GUI{
 		Button start = new Button("Start");
 		start.setMinWidth(100);
 		generuj.setOnAction(event -> {
-			if(!cas.getState().toString().equals("RUNNING")){
+			if(!cas.getState().toString().equals("WAITING")||!cas.isAlive()){
 				g = new Galaxie(800, 5000);
 				g.generujVesmir();
 				Soubor.uloz("Soubor", g);

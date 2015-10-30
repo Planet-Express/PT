@@ -31,7 +31,7 @@ public class Counter extends Thread{
 					////////////// ZACATEK DNE
 					Soubor.getLogger().log(Level.SEVERE, "Začíná den "+(den+1)+", měsíc "+(mesic));
 					for (int j = 0; j < lode.size(); j++) {
-						posunLeticiLode(j);
+						posunLeticiLode(lode.get(j));
 					}
 										
 					den++;
@@ -48,14 +48,53 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public void posunLeticiLode(int i){
-		if(lode.get(i).getStav()==0){
-			lode.get(i).setChciNa();
-			for (int urazeno = 1; urazeno < 26; urazeno++) {
-				if(lode.get(i).getLokace() instanceof Planeta){
-					lode.get(i).setLokace(najdiCestu((Planeta)lode.get(i).getLokace(),lode.get(i).getChciNa()));
-				}else if(lode.get(i).getLokace() instanceof Cesta){
-					
+	public void posunLeticiLode(Lod l){
+		double doleti = 25;
+		if(l.getStav()==0){
+			l.setChciNa();
+			double cesta = 0;
+			double velikost = 0;
+			if(l.getLokace() instanceof Planeta){
+				cesta = g.vzdalenostPlanet((Planeta)l.getLokace(), l.getChciNa());
+			}else{
+				velikost = g.vzdalenostPlanet(((Cesta)l.getLokace()).getOd(),((Cesta)l.getLokace()).getKam());
+				cesta = velikost - velikost*l.getProcentaCesty();
+			}
+			if(cesta<doleti){
+				while(cesta<doleti){
+					l.setLokace(l.getChciNa());
+					l.setChciNa();
+					doleti-=cesta;
+					if(l.getLokace() instanceof Planeta){
+						if(l.getLokace() == l.getCil().peek()){
+							l.setStav(2);
+							l.getCil().pop();
+							break;
+						}
+						else{
+							cesta = g.vzdalenostPlanet((Planeta)l.getLokace(), l.getChciNa());
+						}
+					}else{
+						velikost = g.vzdalenostPlanet(((Cesta)l.getLokace()).getOd(),((Cesta)l.getLokace()).getKam());
+						cesta = velikost - velikost*l.getProcentaCesty();
+					}
+				}				
+			}
+			if(cesta>=doleti){		// zustavam na ceste
+				if(l.getLokace() instanceof Planeta){
+					l.setChciNa();
+					l.setLokace(najdiCestu((Planeta)l.getLokace(), l.getChciNa()));
+					l.setProcentaCesty((cesta-doleti)/cesta);
+					if(cesta==doleti){
+						l.setLokace(l.getChciNa());
+						l.setChciNa();
+					}
+				}else{
+					l.setProcentaCesty(l.getProcentaCesty()+(cesta-doleti)/velikost);
+					if(cesta==doleti){
+						l.setLokace(l.getChciNa());
+						l.setChciNa();
+					}
 				}
 			}
 		}
