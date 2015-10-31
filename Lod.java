@@ -82,8 +82,7 @@ public class Lod {
 
 	public void setLokace(Object lokace) {
 		if(lokace==null){
-			System.out.println(this.procentaCesty);
-			System.out.println(this.lokace);
+			
 		}
 		this.lokace = lokace;
 	}

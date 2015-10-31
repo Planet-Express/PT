@@ -12,7 +12,7 @@ public class Counter extends Thread{
 	ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
 	int den = 0;
 	int mesic = 0;
-	
+	final int RYCHLOST = 25;
 	public void run(){
 		Soubor.initLogger();
 		synchronized (this) {
@@ -49,7 +49,7 @@ public class Counter extends Thread{
 	}
 	
 	public void posunLeticiLode(Lod l){
-		double doleti = 25;
+		double doleti = RYCHLOST;
 		if(l.getStav()==0){
 			l.setChciNa();
 			double cesta = 0;
@@ -84,13 +84,13 @@ public class Counter extends Thread{
 				if(l.getLokace() instanceof Planeta){
 					l.setChciNa();
 					l.setLokace(najdiCestu((Planeta)l.getLokace(), l.getChciNa()));
-					l.setProcentaCesty((cesta-doleti)/cesta);
+					l.setProcentaCesty(1-((cesta-doleti)/cesta));
 					if(cesta==doleti){
 						l.setLokace(l.getChciNa());
 						l.setChciNa();
 					}
 				}else{
-					l.setProcentaCesty(l.getProcentaCesty()+(cesta-doleti)/velikost);
+					l.setProcentaCesty(l.getProcentaCesty()+(1-(cesta-doleti)/velikost));
 					if(cesta==doleti){
 						l.setLokace(l.getChciNa());
 						l.setChciNa();
@@ -102,7 +102,9 @@ public class Counter extends Thread{
 	
 	public Cesta najdiCestu(Planeta od, Planeta kam){
 		for (int i = 0; i < g.getCesty().size(); i++) {
-			if((g.getCesty().get(i).getOd()==od&&g.getCesty().get(i).getKam()==kam)||(g.getCesty().get(i).getOd()==kam&&g.getCesty().get(i).getKam()==od)){
+			//if((g.getCesty().get(i).getOd()==od&&g.getCesty().get(i).getKam()==kam)||(g.getCesty().get(i).getOd()==kam&&g.getCesty().get(i).getKam()==od)){
+			if((g.getCesty().get(i).getOd().getId()==od.getId()&&g.getCesty().get(i).getKam().getId()==kam.getId())||(g.getCesty().get(i).getOd().getId()==kam.getId()&&g.getCesty().get(i).getKam().getId()==od.getId())){
+	
 				return g.getCesty().get(i);
 			}
 		}
