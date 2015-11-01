@@ -31,12 +31,14 @@ public class Counter extends Thread{
 					////////////// ZACATEK DNE
 					Soubor.getLogger().log(Level.SEVERE, "Začíná den "+(den+1)+", měsíc "+(mesic));
 					for (int j = 0; j < lode.size(); j++) {
-						posunLeticiLode(lode.get(j));
+						vylozLod(lode.get(j));
+						posunLeticiLod(lode.get(j));
 					}
 										
 					den++;
 					Soubor.getLogger().log(Level.SEVERE, "Den "+den+" skončil");
 					vysliNalozeneLode();
+					zacniVykladatLode();
 					try {
 						this.wait();
 					} catch (InterruptedException e) {
@@ -48,7 +50,21 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public void posunLeticiLode(Lod l){
+	public void vylozLod(Lod l){
+		if(l.getStav()==3){
+			if(l.getCil().size()==0){
+				System.out.println(l.getId());
+			}
+			l.getCil().pop();
+			l.setStav(0);
+		}
+	}
+	
+	public void posunLeticiLod(Lod l){
+		if(l.getLokace()==l.getChciNa()&&l.getChciNa().getId()>5000){
+			l.getStart().getDok().add(l);
+			l.setStav(-1);
+		}
 		double doleti = RYCHLOST;
 		if(l.getStav()==0){
 			l.setChciNa();
@@ -66,13 +82,15 @@ public class Counter extends Thread{
 					l.setChciNa();
 					doleti-=cesta;
 					if(l.getLokace() instanceof Planeta){
-						if(l.getLokace() == l.getCil().peek()){
-							l.setStav(2);
-							l.getCil().pop();
-							break;
-						}
-						else{
-							cesta = g.vzdalenostPlanet((Planeta)l.getLokace(), l.getChciNa());
+						if(l.getCil().size()>0){
+							if(l.getLokace() == l.getCil().peek()){
+								l.setStav(2);
+								cesta = 0;
+								break;
+							}
+							else{
+								cesta = g.vzdalenostPlanet((Planeta)l.getLokace(), l.getChciNa());
+							}
 						}
 					}else{
 						velikost = g.vzdalenostPlanet(((Cesta)l.getLokace()).getOd(),((Cesta)l.getLokace()).getKam());
@@ -80,7 +98,7 @@ public class Counter extends Thread{
 					}
 				}				
 			}
-			if(cesta>=doleti){		// zustavam na ceste
+			if(cesta>=doleti&&cesta!=0){		// zustavam na ceste
 				if(l.getLokace() instanceof Planeta){
 					l.setChciNa();
 					l.setLokace(najdiCestu((Planeta)l.getLokace(), l.getChciNa()));
@@ -116,6 +134,15 @@ public class Counter extends Thread{
 			if(lode.get(i).getStav()==1){
 				lode.get(i).setStav(0);
 				Soubor.getLogger().log(Level.FINE, "Lod č."+lode.get(i).getId()+" byla vyslána na cestu.");
+			}
+		}
+	}
+	
+	public void zacniVykladatLode(){
+		for (int i = 0; i < lode.size(); i++) {
+			if(lode.get(i).getStav()==2){
+				lode.get(i).setStav(3);
+				
 			}
 		}
 	}

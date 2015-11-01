@@ -13,6 +13,7 @@ public class Lod {
 	private int stav = -1;
 	
 	private int id;
+	private Stanice start;
 	
 	private double procentaCesty;
 	private Object lokace;
@@ -25,6 +26,7 @@ public class Lod {
 		this.posX = start.getPosX();
 		this.posY = start.getPosY();
 		this.lokace = start;
+		this.start = start;
 		start.getDok().push(this);
 	}
 	
@@ -98,6 +100,10 @@ public class Lod {
 	public Planeta getChciNa() {
 		return chciNa;
 	}
+	
+	public Stanice getStart(){
+		return start;
+	}
 
 	public void setChciNa() {
 		if(this.lokace instanceof Planeta){
@@ -113,7 +119,14 @@ public class Lod {
 					}
 				}
 			}else{
-				this.chciNa=((Planeta)lokace).getCesta().get(0);
+				if(((Planeta) lokace).getId()>5000){
+					start.getDok().push(this);
+					stav = -1;
+					this.chciNa = start;
+				}
+				else{
+					this.chciNa=((Planeta)lokace).getCesta().get(0);
+				}
 			}
 		}
 	}
