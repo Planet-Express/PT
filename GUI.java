@@ -32,6 +32,8 @@ public class GUI{
 	static Canvas canvas = new Canvas(800*quality,800*quality);
 	static GraphicsContext gc = canvas.getGraphicsContext2D();
 	
+	private ObservablePlanet oPlaneta = new ObservablePlanet("AlphaAlpha");
+	private ObservingLabel oLabel;
 	
 	public Parent createScene(Galaxie galaxy) {
 		g = galaxy;
@@ -47,6 +49,8 @@ public class GUI{
 	}
 
 	private Node getInfoPane() {
+		oLabel = new ObservingLabel();
+		oPlaneta.addObserver(oLabel);
 		VBox vb = new VBox();
 		ListView<String> lv = new ListView<String>();
 		lv.setItems(getLode());
@@ -78,7 +82,7 @@ public class GUI{
 			}
 		}
 		);
-		vb.getChildren().addAll(lv, show, getTree());
+		vb.getChildren().addAll(getTree(), oLabel, lv, show);
 		return vb;
 	}
 
@@ -96,6 +100,19 @@ public class GUI{
 		treeView.setRoot(createDefaultChildren());
 		treeView.setShowRoot(false);
 		treeView.setEditable(false);
+		treeView.setOnMouseClicked(event -> {
+			String popisek = treeView.getSelectionModel().getSelectedItem().toString();
+			int pocatek = popisek.indexOf('{');
+			int konec = popisek.indexOf('}');
+			String nazev;
+			if(pocatek != -1){				
+				nazev = popisek.substring(pocatek + 1, konec);
+			}
+			else{
+				nazev = "stanice";
+			}
+			oPlaneta.setPlaneta(nazev);
+		});
 		return treeView;
 	}
 

@@ -138,17 +138,17 @@ public class Galaxie{
 	public void ostatniSousedi(){
 		for(int i = 0; i < cesty.size(); i++){
 			boolean existuje = false;
-			Planeta pFrom = cesty.get(i).getOd();
-			Planeta pTo = cesty.get(i).getKam();
-			for(int j = 0; j < pTo.getSousedi().size(); j++){
-				Planeta soused = pTo.getSousedi().get(j);
-				if(pFrom == soused){
+			Planeta planetaOd = cesty.get(i).getOd();
+			Planeta planetaDo = cesty.get(i).getKam();
+			for(int j = 0; j < planetaDo.getSousedi().size(); j++){
+				Planeta soused = planetaDo.getSousedi().get(j);
+				if(planetaOd == soused){
 					existuje = true;
 				}
 			}
 			if(!existuje){
 				//System.out.println("nexistuje");
-				pTo.getSousedi().add(pFrom);		
+				planetaDo.getSousedi().add(planetaOd);		
 			}
 		}
 	}
@@ -279,7 +279,7 @@ public class Galaxie{
 			Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
 			Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost(), i+1);
 			objednavky.add(ob);
-			Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednávku na "+objednavka+" lékù.");
+			Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednï¿½vku na "+objednavka+" lï¿½kï¿½.");
 		}
  		return objednavky;
 	}
