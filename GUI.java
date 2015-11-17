@@ -12,14 +12,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.TextFieldListCell;
-import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
+import javafx.util.Callback;
 
 public class GUI{
 
@@ -95,53 +96,52 @@ public class GUI{
 	}
 	
 	private Node getTree() {
-		TreeView<String>treeView = new TreeView<String>();
-		treeView.setCellFactory(TextFieldTreeCell.forTreeView());	
+		TreeView<Planeta>treeView = new TreeView<Planeta>();
 		treeView.setRoot(createDefaultChildren());
 		treeView.setShowRoot(false);
 		treeView.setEditable(false);
+		treeView.setCellFactory(new Callback<TreeView<Planeta>, TreeCell<Planeta>>() {
+			
+			@Override
+			public TreeCell<Planeta> call(TreeView<Planeta> arg0) {
+				return new PlanetCell();
+			}
+		});	
 		treeView.setOnMouseClicked(event -> {
-			String popisek = treeView.getSelectionModel().getSelectedItem().toString();
-			int pocatek = popisek.indexOf('{');
-			int konec = popisek.indexOf('}');
-			String nazev;
-			if(pocatek != -1){				
-				nazev = popisek.substring(pocatek + 1, konec);
+			if(!treeView.getSelectionModel().isEmpty()){
+				oPlaneta.setPlaneta(treeView.getSelectionModel().getSelectedItem().getValue().getJmeno());				
 			}
-			else{
-				nazev = "stanice";
-			}
-			oPlaneta.setPlaneta(nazev);
 		});
 		return treeView;
 	}
 
+	
 	@SuppressWarnings("unchecked")
-	private TreeItem<String> createDefaultChildren() {
-		TreeItem<String> root = new TreeItem<String>("");
-		TreeItem<String> s1 = new TreeItem<String>("Stanice 1");
-		TreeItem<String> s2 = new TreeItem<String>("Stanice 2");
-		TreeItem<String> s3 = new TreeItem<String>("Stanice 3");
-		TreeItem<String> s4 = new TreeItem<String>("Stanice 4");
-		TreeItem<String> s5 = new TreeItem<String>("Stanice 5");
+	private TreeItem<Planeta> createDefaultChildren() {
+		TreeItem<Planeta> root = new TreeItem<Planeta>();
+		TreeItem<Planeta> s1 = new TreeItem<Planeta>(g.getPlanety().get(5000));
+		TreeItem<Planeta> s2 = new TreeItem<Planeta>(g.getPlanety().get(5001));
+		TreeItem<Planeta> s3 = new TreeItem<Planeta>(g.getPlanety().get(5002));
+		TreeItem<Planeta> s4 = new TreeItem<Planeta>(g.getPlanety().get(5003));
+		TreeItem<Planeta> s5 = new TreeItem<Planeta>(g.getPlanety().get(5004));
 		for(int i = 0; i < 5000; i++){
 			Planeta tmp = g.getPlanety().get(i);
 			Planeta stanice = tmp.getCesta().get(tmp.getCesta().size()-1);
 			switch (stanice.getId()-5000) {
 			case 1:
-				s1.getChildren().add(new TreeItem<String>(tmp.toString()));
+				s1.getChildren().add(new TreeItem<Planeta>(tmp));
 				break;
 			case 2:
-				s2.getChildren().add(new TreeItem<String>(tmp.toString()));
+				s2.getChildren().add(new TreeItem<Planeta>(tmp));
 				break;
 			case 3:
-				s3.getChildren().add(new TreeItem<String>(tmp.toString()));
+				s3.getChildren().add(new TreeItem<Planeta>(tmp));
 				break;
 			case 4:
-				s4.getChildren().add(new TreeItem<String>(tmp.toString()));
+				s4.getChildren().add(new TreeItem<Planeta>(tmp));
 				break;
 			case 5:
-				s5.getChildren().add(new TreeItem<String>(tmp.toString()));
+				s5.getChildren().add(new TreeItem<Planeta>(tmp));
 				break;
 			default:
 				System.out.println("chyba prirazeni stanice");
