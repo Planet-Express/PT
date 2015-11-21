@@ -62,24 +62,24 @@ public class GUI{
 		lv.setOnMouseClicked(event -> {
 			if(lv.getSelectionModel().getSelectedIndex()>=0){
 				prekresliPlatno();
+				Lod l = cas.lode.get(lv.getSelectionModel().getSelectedIndex());
 				for (int i = 0; i < cas.lode.get(lv.getSelectionModel().getSelectedIndex()).getCil().size(); i++) {
 					Planeta a = cas.lode.get(lv.getSelectionModel().getSelectedIndex()).getCil().get(i);
-					Lod l = cas.lode.get(lv.getSelectionModel().getSelectedIndex());
 					gc.setFill(Color.PEACHPUFF);
 					gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
-					gc.setFill(Color.CRIMSON);
-					if(l.getChciNa()!=null){
-						gc.fillRect((l.getChciNa().getPosX()-3)*quality, (l.getChciNa().getPosY()-3)*quality, 6*quality, 6*quality);
-					}
-					if(l.getLokace() instanceof Cesta){
-						gc.setStroke(Color.DARKSLATEBLUE);
-						Cesta c = (Cesta)l.getLokace();
-						gc.strokeLine(c.getOd().getPosX(), c.getOd().getPosY(), c.getKam().getPosX(), c.getKam().getPosY());
-					}else{
-						a = (Planeta)l.getLokace();
-						gc.setFill(Color.DARKSLATEBLUE);
-						gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
-					}
+				}
+				gc.setFill(Color.CRIMSON);
+				if(l.getChciNa()!=null){
+					gc.fillRect((l.getChciNa().getPosX()-3)*quality, (l.getChciNa().getPosY()-3)*quality, 6*quality, 6*quality);
+				}
+				if(l.getLokace() instanceof Cesta){
+					gc.setStroke(Color.DARKSLATEBLUE);
+					Cesta c = (Cesta)l.getLokace();
+					gc.strokeLine(c.getOd().getPosX(), c.getOd().getPosY(), c.getKam().getPosX(), c.getKam().getPosY());
+				}else{
+					Planeta a = (Planeta)l.getLokace();
+					gc.setFill(Color.DARKSLATEBLUE);
+					gc.fillOval((a.getPosX()-5)*quality, (a.getPosY()-5)*quality, 10*quality, 10*quality);
 				}
 			}
 		}
