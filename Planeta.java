@@ -9,7 +9,7 @@ public class Planeta{
 	private int posY;
 	private int pop;
 	private int id;
-	boolean mrtva = false;
+	private boolean mrtva = false;
 	double vzdalenost = Integer.MAX_VALUE;
 	ArrayList<Planeta> cesta = new ArrayList<Planeta>(1);
 	private Objednavka objednavka;
@@ -79,13 +79,18 @@ public class Planeta{
 		return (int)(pop*pravdepodobnost);
 	}
 	
+	public boolean isMrtva(){
+		return mrtva;
+	}
+	
 	public void zabij(int lidi){
 		this.pop = this.pop - lidi;
 		if(this.pop<40000){
 			mrtva = true;
+			System.out.println("Na planetu "+id+" už nemá cenu letìt.");
 		}
 		if(lidi>0){
-			System.out.println("Na planetì "+id+" zemøelo "+lidi+" lidí.");
+		//	System.out.println("Na planetì "+id+" zemøelo "+lidi+" lidí.");
 		}
 	}
 	

@@ -23,14 +23,14 @@ public class Counter extends Thread{
 				for (int i = 0; i < 30; i++) {
 					////////////// ZACATEK DNE
 					Soubor.getLogger().log(Level.SEVERE, "Začíná den "+(den+1)+", měsíc "+(mesic));
-					int cntr = 0;
-					while (potrebaLeku()>0) {
-						while(objednavky.get(cntr).getPotreba()>0){
-							obsluzObjednavku(cntr);
-							System.out.println(cntr);
+					for (int j = 0; j < objednavky.size(); j++) {
+						if((objednavky.get(j).getKam().getVzdalenost()/25+7+den%30)<30){
+							if(!objednavky.get(j).getKam().isMrtva()){
+								while(objednavky.get(j).getPotreba()>0){
+									obsluzObjednavku(j);
+								}
+							}
 						}
-						cntr++;
-						if(cntr==5000){cntr = 0;}
 					}
 					for (int j = 0; j < lode.size(); j++) {
 						posunLeticiLod(lode.get(j));
@@ -51,12 +51,14 @@ public class Counter extends Thread{
 					vysliNalozeneLode();
 					if(den%30==0){
 						zabijLidi();
+						System.out.println(nadvyrobenoLeku());
 					}
 					try {
 						this.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					
 				}
 				mesic++;
 			}
@@ -91,7 +93,7 @@ public class Counter extends Thread{
 			}
 		}
 		l.getCil().clear();
-		System.out.println("Lod "+l.getId()+" byla okradena. "+ okradeno +" za tento rok."+l.getCil().size());
+		//System.out.println("Lod "+l.getId()+" byla okradena. "+ okradeno +" za tento rok.");
 	}
 	
 	public void posunLeticiLod(Lod l){
@@ -282,6 +284,14 @@ public class Counter extends Thread{
 		}
 		return leku;
 	}
+
+	public long nadvyrobenoLeku(){
+		long leku = 0;
+		for (int i = 0; i < objednavky.size(); i++) {
+			leku += (objednavky.get(i).getPotencial());
+		}
+		return leku;
+	}
 	
 	public void logLod(Lod l){
 		if(l.getCil().size()>0){
@@ -357,7 +367,7 @@ public class Counter extends Thread{
 			ob.getKam().zabij(ob.getPotreba());
 			mrtvych+=ob.getPotreba();
 		}
-		System.out.println("Zemřelo "+mrtvych+" lidí.");
+		//System.out.println("Zemřelo "+mrtvych+" lidí.");
 	}
 	
 	public void start(Galaxie g, GUI gui){

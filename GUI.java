@@ -175,7 +175,7 @@ public class GUI{
 			}else if(cas.getState().toString().equals("WAITING")){synchronized (cas) {
 				cas.notify();
 			}}
-						
+			prekresliPlatno();			
 		});
 		
 		Button test = new Button("Test");
@@ -245,7 +245,11 @@ public class GUI{
 			int x = g.getPlanety().get(i).getPosX()*quality;
 			int y = g.getPlanety().get(i).getPosY()*quality;
 			int pop = g.getPlanety().get(i).getPop()/1000000;
-			gc.setFill(getColor(pop));
+			if(g.getPlanety().get(i).isMrtva()){
+				gc.setFill(Color.DODGERBLUE);
+			}else{
+				gc.setFill(getColor(pop));
+			}
 			gc.fillOval(x-2*quality, y-2*quality, 4*quality, 4*quality);
 		}		
 	}
