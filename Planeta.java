@@ -79,6 +79,16 @@ public class Planeta{
 		return (int)(pop*pravdepodobnost);
 	}
 	
+	public void zabij(int lidi){
+		this.pop = this.pop - lidi;
+		if(this.pop<40000){
+			mrtva = true;
+		}
+		if(lidi>0){
+			System.out.println("Na planetì "+id+" zemøelo "+lidi+" lidí.");
+		}
+	}
+	
 	public String getJmeno(){
 		String s = "";
 		int c = (id-1)%26;
