@@ -19,6 +19,7 @@ public class Lod {
 	private Object lokace;
 	private Planeta chciNa;
 	private Stack<Planeta> cil = new Stack<Planeta>();
+	private Stack<Integer> rozpis = new Stack<Integer>();
 	private ArrayList<Cesta> cestovalaPres = new ArrayList<Cesta>();
 	
 	public Lod(Stanice start, int id){
@@ -84,7 +85,7 @@ public class Lod {
 
 	public void setLokace(Object lokace) {
 		if(lokace==null){
-			
+			System.out.println(id);
 		}
 		this.lokace = lokace;
 	}
@@ -120,9 +121,14 @@ public class Lod {
 				}
 			}else{
 				if(((Planeta) lokace).getId()>5000){
-					start.getDok().push(this);
+					/*
+					if(stav != -1){
+						start.getDok().push(this);
+					}
 					stav = -1;
+					*/
 					this.chciNa = start;
+					this.lokace = start;
 				}
 				else{
 					this.chciNa=((Planeta)lokace).getCesta().get(0);
@@ -137,6 +143,14 @@ public class Lod {
 
 	public void setProcentaCesty(double procentaCesty) {
 		this.procentaCesty = procentaCesty;
+	}
+
+	public Stack<Integer> getRozpis() {
+		return rozpis;
+	}
+
+	public void setRozpis(Stack<Integer> rozpis) {
+		this.rozpis = rozpis;
 	}
 	
 	

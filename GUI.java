@@ -53,6 +53,7 @@ public class GUI{
 		oLabel = new ObservingLabel();
 		oPlaneta.addObserver(oLabel);
 		VBox vb = new VBox();
+		vb.setPrefWidth(300);
 		ListView<String> lv = new ListView<String>();
 		lv.setItems(getLode());
 		lv.setCellFactory(TextFieldListCell.forListView());

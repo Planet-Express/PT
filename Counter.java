@@ -22,11 +22,12 @@ public class Counter extends Thread{
 				vytvorObjednavky();
 				int cntr = 0;
 				while (potrebaLeku()>0) {
-					obsluzObjednavku(cntr);
+					while(objednavky.get(cntr).getPotreba()>0){
+						obsluzObjednavku(cntr);
+					}
 					cntr++;
 					if(cntr==5000){cntr = 0;}
 				}
-	
 				for (int i = 0; i < 30; i++) {
 					////////////// ZACATEK DNE
 					Soubor.getLogger().log(Level.SEVERE, "Začíná den "+(den+1)+", měsíc "+(mesic));
@@ -34,7 +35,15 @@ public class Counter extends Thread{
 						vylozLod(lode.get(j));
 						posunLeticiLod(lode.get(j));
 					}
-										
+					/*
+					for (int j = 0; j < g.getStanice().size(); j++) {
+						for (int j2 = 0; j2 < g.getStanice().get(j).getDok().size(); j2++) {
+							if(g.getStanice().get(j).getDok().get(j2).getStav()==-1){
+								System.out.println(g.getStanice().get(j).getDok().get(j2).getId());
+							}
+						}
+					}	
+					*/				
 					den++;
 					Soubor.getLogger().log(Level.SEVERE, "Den "+den+" skončil");
 					vysliNalozeneLode();
@@ -50,20 +59,31 @@ public class Counter extends Thread{
 		}
 	}
 	
+	int i = 0;
 	public void vylozLod(Lod l){
 		if(l.getStav()==3){
-			if(l.getCil().size()==0){
-				System.out.println(l.getId());
+			Planeta a = l.getCil().pop();
+			int naklad = l.getRozpis().pop();
+			l.setNaklad(l.getNaklad()-naklad);
+			a.getObjednavka().setKolik(a.getObjednavka().getKolik()-naklad);
+			a.getObjednavka().setPotencial(a.getObjednavka().getPotencial()-naklad);
+			if(a.getObjednavka().getKolik() == 0){
+				//System.out.println("Objednavka "+ a.getId()+ " kolik? " + a.getObjednavka().getKolik()+ " "+ i);
 			}
-			l.getCil().pop();
 			l.setStav(0);
 		}
 	}
 	
 	public void posunLeticiLod(Lod l){
-		if(l.getLokace()==l.getChciNa()&&l.getChciNa().getId()>5000){
-			l.getStart().getDok().add(l);
-			l.setStav(-1);
+		l.setChciNa();
+		if(l.getLokace() instanceof Planeta){
+			if(((Planeta)l.getLokace()).getId() == l.getChciNa().getId()&&l.getChciNa().getId()>5000&&l.getCil().size()==0){
+				if(l.getStav()!=-1){
+					l.getStart().getDok().push(l);
+					l.setStav(-1);
+				}
+			}
+			
 		}
 		double doleti = RYCHLOST;
 		if(l.getStav()==0){
@@ -83,13 +103,21 @@ public class Counter extends Thread{
 					doleti-=cesta;
 					if(l.getLokace() instanceof Planeta){
 						if(l.getCil().size()>0){
-							if(l.getLokace() == l.getCil().peek()){
+							if(l.getLokace().equals(l.getCil().peek())){
 								l.setStav(2);
 								cesta = 0;
 								break;
 							}
 							else{
 								cesta = g.vzdalenostPlanet((Planeta)l.getLokace(), l.getChciNa());
+							}
+						}else{
+							if(((Planeta)l.getLokace()).getId() == l.getStart().getId()){
+								if(l.getStav()!=-1){
+								l.getStart().getDok().push(l);
+								l.setStav(-1);
+								}
+								break;
 							}
 						}
 					}else{
@@ -101,8 +129,10 @@ public class Counter extends Thread{
 			if(cesta>=doleti&&cesta!=0){		// zustavam na ceste
 				if(l.getLokace() instanceof Planeta){
 					l.setChciNa();
+					if(!l.getLokace().equals(l.getChciNa())){
 					l.setLokace(najdiCestu((Planeta)l.getLokace(), l.getChciNa()));
 					l.setProcentaCesty(1-((cesta-doleti)/cesta));
+					}
 					if(cesta==doleti){
 						l.setLokace(l.getChciNa());
 						l.setChciNa();
@@ -142,61 +172,65 @@ public class Counter extends Thread{
 		for (int i = 0; i < lode.size(); i++) {
 			if(lode.get(i).getStav()==2){
 				lode.get(i).setStav(3);
-				
 			}
 		}
 	}
 	
 	public void obsluzObjednavku(int kterou){
 		Objednavka ob = objednavky.get(kterou);
-		int unosnost = 5000000;
-		Lod l = getLod(ob.getOd());
-			if(ob.getPotreba()+l.getNaklad()>unosnost){
-				if(l.getNaklad()!=0){
-				ob.getOd().getDok().pop();
-				logLod(l);
-				l = getLod(ob.getOd());
-				}
-				naplnLod(l, ob, unosnost);
-			//	System.out.println("1. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
-				kterou--;
-			}else{
-				naplnLod(l, ob, ob.getPotreba());
-				for (int j = 0; j < ob.getKam().getCesta().size()-1; j++) {
-					if(l.getNaklad()<unosnost){
-						for (int j2 = 0; j2 < objednavky.size(); j2++) {
-							Objednavka dalsiOb = objednavky.get(j2);
-							Planeta dalsiP = ob.getKam().getCesta().get(j);
-							if(dalsiOb.getKam().equals(dalsiP)){
-								if((dalsiOb.getPotreba()+l.getNaklad())<unosnost){
-									naplnLod(l, dalsiOb, dalsiOb.getPotreba());
-								//	System.out.println("2. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
-									if(unosnost-l.getNaklad()!=0){
+		if(ob.getPotreba()>0){
+			int unosnost = 5000000;
+			Lod l = getLod(ob.getOd());
+				if((ob.getPotreba()+l.getNaklad())>unosnost){
+					if(l.getNaklad()!=0){
+					ob.getOd().getDok().pop();
+					logLod(l);
+					l = getLod(ob.getOd());
+					}
+					naplnLod(l, ob, unosnost);
+					l.getStart().getDok().pop();
+					l = getLod(ob.getOd());
+				//System.out.println("1. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
+				}else{
+					naplnLod(l, ob, ob.getPotreba());
+					for (int j = 0; j < ob.getKam().getCesta().size()-1; j++) {
+						if(l.getNaklad()<unosnost){
+							for (int j2 = 0; j2 < objednavky.size(); j2++) {
+								Objednavka dalsiOb = objednavky.get(j2);
+								Planeta dalsiP = ob.getKam().getCesta().get(j);
+								if(dalsiOb.getKam().equals(dalsiP)){
+									if((dalsiOb.getPotreba()+l.getNaklad())<unosnost){
+										naplnLod(l, dalsiOb, dalsiOb.getPotreba());
+									//	System.out.println("2. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
+										if(unosnost-l.getNaklad()!=0){
+											break;
+											}
+									}else{
+										naplnLod(l, dalsiOb, unosnost-l.getNaklad());
+									//	System.out.println("3. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
+										ob.getOd().getDok().pop();
+										logLod(l);
+										l=getLod(ob.getOd());
 										break;
-										}
-								}else{
-									naplnLod(l, dalsiOb, unosnost-l.getNaklad());
-								//	System.out.println("3. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
-									ob.getOd().getDok().pop();
-									logLod(l);
-									break;
-									
+										
+									}
 								}
 							}
 						}
 					}
-				}
-				if(ob.getOd().getDok().size()==1){
-					if(ob.getOd().getDok().peek().getNaklad()>0){
-						ob.getOd().getDok().pop();
-						logLod(l);
+					if(ob.getOd().getDok().size()>0){
+						if(ob.getOd().getDok().peek().getNaklad()>0){
+							ob.getOd().getDok().pop();
+							logLod(l);
+							l = getLod(ob.getOd());
+						}
 					}
 				}
-			}
+		}
 	}
 	
 	public void vytvorObjednavky(){
-		objednavky = g.getObjednavky();
+		objednavky = getObjednavky();
 		objednavky.sort(new FarComparator());
 	}
 	
@@ -226,11 +260,11 @@ public class Counter extends Thread{
 			ob.setPotencial(ob.getPotencial()+naklad);
 			l.setNaklad(l.getNaklad()+naklad);
 			l.getCil().push(ob.getKam());
+			l.getRozpis().push(naklad);
 			l.setStav(1);
 			l.setLokace(ob.getOd());
 			l.setPosX(ob.getOd().getPosX());
 			l.setPosY(ob.getOd().getPosY());
-			l = getLod(ob.getOd());
 			/*Soubor.getLogger().log(Level.INFO, "Lod �. "+l.getId()+
 					" doveze "+naklad+" l�k� na planetu "+ob.getKam().getJmeno()+
 					". Lo� je napln�na z "+(int)(l.getNaklad()/50000.0)+
@@ -241,7 +275,7 @@ public class Counter extends Thread{
 			try {
 				throw new Exception();
 			} catch (Exception e) {
-				System.out.println(("Naklad se nevesel na lod"));
+				System.out.println(("Naklad se nevesel na lod "+l.getId()));
 				e.printStackTrace();
 			}
 		}
@@ -257,6 +291,22 @@ public class Counter extends Thread{
 			Soubor.getLogger().log(Level.INFO, "Proběhla výroba nové lodi č."+counter+" v doku Stanice "+(s.getId()-5000));
 			return l;
 		}else{return s.getDok().peek();}
+	}
+	
+	
+	public ArrayList<Objednavka> getObjednavky(){
+		ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
+		
+		for (int i = 0; i < g.getPlanety().size()-5; i++) {
+			Planeta a = g.getPlanety().get(i);
+			int objednavka = a.getPop()-a.vyrobLeky();
+			Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
+			Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost(), i+1);
+			objednavky.add(ob);
+			Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednávku na "+objednavka+" léků.");
+			a.setObjednavka(ob);
+		}
+ 		return objednavky;
 	}
 	
 	public void start(Galaxie g, GUI gui){

@@ -12,7 +12,7 @@ public class Planeta{
 	boolean mrtva = false;
 	double vzdalenost = Integer.MAX_VALUE;
 	ArrayList<Planeta> cesta = new ArrayList<Planeta>(1);
-	
+	private Objednavka objednavka;
 	
 	public Planeta(int id, int posX, int posY, int pop){
 		this.id = id;
@@ -119,5 +119,13 @@ public class Planeta{
 		int cisla = ((id-1)/676)%10;
 		s += (cisla+1);
 		return s;
+	}
+
+	public Objednavka getObjednavka() {
+		return objednavka;
+	}
+
+	public void setObjednavka(Objednavka objednavka) {
+		this.objednavka = objednavka;
 	}
 }
