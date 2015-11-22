@@ -6,6 +6,18 @@ public class Objednavka {
 	private Stanice od;
 	private int kolik;
 	private int potencial = 0;
+	private double vzdalenost;
+	private int stav = 0;
+	private int id;
+	
+	public Objednavka(Planeta kam, Stanice od, int kolik, double vzdalenost, int id){
+		this.kam = kam;
+		this.od = od;
+		this.kolik = kolik;
+		this.vzdalenost = vzdalenost;
+		//System.out.println("Planeta "+kam.getId()+" si objednala "+kolik+" lékù");
+	}
+	
 	
 	public Stanice getOd() {
 		return od;
@@ -54,18 +66,6 @@ public class Objednavka {
 	public void setVzdalenost(double vzdalenost) {
 		this.vzdalenost = vzdalenost;
 	}
-	private double vzdalenost;
-	private int stav = 0;
-	private int id;
-	
-	public Objednavka(Planeta kam, Stanice od, int kolik, double vzdalenost, int id){
-		this.kam = kam;
-		this.od = od;
-		this.kolik = kolik;
-		this.vzdalenost = vzdalenost;
-		//System.out.println("Planeta "+kam.getId()+" si objednala "+kolik+" lékù");
-	}
-	
 	
 	public Planeta getKam() {
 		return kam;

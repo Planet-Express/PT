@@ -3,6 +3,8 @@ package PT;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import com.sun.xml.internal.ws.encoding.RootOnlyCodec;
+
 
 public class Lod {
 
@@ -20,8 +22,7 @@ public class Lod {
 	private Planeta chciNa;
 	private Stack<Planeta> cil = new Stack<Planeta>();
 	private Stack<Integer> rozpis = new Stack<Integer>();
-	private ArrayList<Cesta> cestovalaPres = new ArrayList<Cesta>();
-	
+
 	public Lod(Stanice start, int id){
 		this.id = id;
 		this.posX = start.getPosX();
@@ -47,13 +48,6 @@ public class Lod {
 		this.stav = stav;
 	}
 
-	public ArrayList<Cesta> getCestovalaPres() {
-		return cestovalaPres;
-	}
-
-	public void setCestovalaPres(ArrayList<Cesta> cestovalaPres) {
-		this.cestovalaPres = cestovalaPres;
-	}
 
 	public int getPosX() {
 		return posX;
@@ -135,6 +129,12 @@ public class Lod {
 				}
 			}
 		}
+	}
+	
+	public void resetLod(){
+		cil.clear();
+		rozpis.clear();
+		naklad = 0;
 	}
 
 	public double getProcentaCesty() {

@@ -24,7 +24,7 @@ public class Counter extends Thread{
 					////////////// ZACATEK DNE
 					Soubor.getLogger().log(Level.SEVERE, "Začíná den "+(den+1)+", měsíc "+(mesic));
 					for (int j = 0; j < objednavky.size(); j++) {
-						if((objednavky.get(j).getKam().getVzdalenost()/25+7+den%30)<30){
+						if((objednavky.get(j).getKam().getVzdalenost()/10+8+den%30)<30){
 							if(!objednavky.get(j).getKam().isMrtva()){
 								while(objednavky.get(j).getPotreba()>0){
 									obsluzObjednavku(j);
@@ -52,12 +52,21 @@ public class Counter extends Thread{
 					if(den%30==0){
 						zabijLidi();
 						System.out.println(nadvyrobenoLeku());
+						for (int j = 0; j < lode.size(); j++) {
+							if(lode.get(i).getNaklad()!=0){
+							//	lode.get(i).resetLod();
+							}
+						}
 					}
+					/*
 					try {
 						this.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					*/
+					
+					
 					
 				}
 				mesic++;
@@ -88,11 +97,15 @@ public class Counter extends Thread{
 			for (int j = 0; j < objednavky.size(); j++) {
 				Objednavka ob = objednavky.get(j);
 				if(ob.getKam().equals(p)){
-					ob.setPotencial(ob.getPotencial()-l.getRozpis().pop());
+					if(ob.getPotencial()<l.getRozpis().get(i)){
+						System.out.println(ob.getPotencial()+" "+l.getRozpis().get(i));
+					}
+					ob.setPotencial(ob.getPotencial()-l.getRozpis().get(i));
 				}
 			}
 		}
 		l.getCil().clear();
+		l.getRozpis().clear();
 		//System.out.println("Lod "+l.getId()+" byla okradena. "+ okradeno +" za tento rok.");
 	}
 	
@@ -103,6 +116,7 @@ public class Counter extends Thread{
 				if(l.getStav()!=-1){
 					l.getStart().getDok().push(l);
 					l.setStav(-1);
+					l.resetLod();
 				}
 			}
 			
@@ -140,6 +154,7 @@ public class Counter extends Thread{
 								if(l.getStav()!=-1){
 								l.getStart().getDok().push(l);
 								l.setStav(-1);
+								l.resetLod();
 								}
 								break;
 							}
@@ -288,7 +303,17 @@ public class Counter extends Thread{
 	public long nadvyrobenoLeku(){
 		long leku = 0;
 		for (int i = 0; i < objednavky.size(); i++) {
+			if(objednavky.get(i).getPotencial()>0){
 			leku += (objednavky.get(i).getPotencial());
+			for (int j = 0; j < lode.size(); j++) {
+				Lod l = lode.get(j);
+				for (int j2 = 0; j2 < l.getCil().size(); j2++) {
+					if(l.getCil().get(j2).equals(objednavky.get(i).getKam())){
+						System.out.println(l.getId());
+					}
+				}
+			}
+			}
 		}
 		return leku;
 	}
@@ -350,12 +375,14 @@ public class Counter extends Thread{
 		
 		for (int i = 0; i < g.getPlanety().size()-5; i++) {
 			Planeta a = g.getPlanety().get(i);
-			int objednavka = a.getPop()-a.vyrobLeky();
-			Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
-			Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost(), i+1);
-			objednavky.add(ob);
-			Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednávku na "+objednavka+" léků.");
-			a.setObjednavka(ob);
+			if(!a.isMrtva()){
+				int objednavka = a.getPop()-a.vyrobLeky();
+				Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
+				Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost(), i+1);
+				objednavky.add(ob);
+				Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednávku na "+objednavka+" léků.");
+				a.setObjednavka(ob);
+			}
 		}
  		return objednavky;
 	}
@@ -365,6 +392,9 @@ public class Counter extends Thread{
 		for (int i = 0; i < objednavky.size(); i++) {
 			Objednavka ob = objednavky.get(i);
 			ob.getKam().zabij(ob.getPotreba());
+			if(ob.getKam().isMrtva()){
+				objednavky.remove(i);
+			}
 			mrtvych+=ob.getPotreba();
 		}
 		//System.out.println("Zemřelo "+mrtvych+" lidí.");
