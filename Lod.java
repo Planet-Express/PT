@@ -1,9 +1,7 @@
 package PT;
 
-import java.util.ArrayList;
-import java.util.Stack;
 
-import com.sun.xml.internal.ws.encoding.RootOnlyCodec;
+import java.util.Stack;
 
 
 public class Lod {

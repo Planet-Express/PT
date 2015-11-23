@@ -9,7 +9,7 @@ public class ObservingLabel extends Label implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		setText(arg.toString() + "");
+		setText(((Planeta) arg).getJmeno() + "");
 		
 	}
 

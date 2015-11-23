@@ -33,8 +33,10 @@ public class GUI{
 	static Canvas canvas = new Canvas(800*quality,800*quality);
 	static GraphicsContext gc = canvas.getGraphicsContext2D();
 	
-	private ObservablePlanet oPlaneta = new ObservablePlanet("AlphaAlpha");
+	private static ObservablePlanet oPlaneta = new ObservablePlanet(new Planeta(0, 0, 0, 0));
 	private ObservingLabel oLabel;
+	
+	private static Lod l = new Lod(new Stanice(0, 0, 0), 0);
 	
 	public Parent createScene(Galaxie galaxy) {
 		g = galaxy;
@@ -45,7 +47,6 @@ public class GUI{
 		bp.setLeft(getControlBar());
 		bp.setCenter(getCenter());
 		bp.setRight(getInfoPane());
-		//testCesty();
 		return bp;
 	}
 
@@ -61,26 +62,8 @@ public class GUI{
 		show.setOnAction(event -> lv.setItems(getLode()));
 		lv.setOnMouseClicked(event -> {
 			if(lv.getSelectionModel().getSelectedIndex()>=0){
+				l = cas.lode.get(lv.getSelectionModel().getSelectedIndex());
 				prekresliPlatno();
-				Lod l = cas.lode.get(lv.getSelectionModel().getSelectedIndex());
-				for (int i = 0; i < cas.lode.get(lv.getSelectionModel().getSelectedIndex()).getCil().size(); i++) {
-					Planeta a = cas.lode.get(lv.getSelectionModel().getSelectedIndex()).getCil().get(i);
-					gc.setFill(Color.PEACHPUFF);
-					gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
-				}
-				gc.setFill(Color.CRIMSON);
-				if(l.getChciNa()!=null){
-					gc.fillRect((l.getChciNa().getPosX()-3)*quality, (l.getChciNa().getPosY()-3)*quality, 6*quality, 6*quality);
-				}
-				if(l.getLokace() instanceof Cesta){
-					gc.setStroke(Color.DARKSLATEBLUE);
-					Cesta c = (Cesta)l.getLokace();
-					gc.strokeLine(c.getOd().getPosX(), c.getOd().getPosY(), c.getKam().getPosX(), c.getKam().getPosY());
-				}else{
-					Planeta a = (Planeta)l.getLokace();
-					gc.setFill(Color.DARKSLATEBLUE);
-					gc.fillOval((a.getPosX()-5)*quality, (a.getPosY()-5)*quality, 10*quality, 10*quality);
-				}
 			}
 		}
 		);
@@ -110,7 +93,8 @@ public class GUI{
 		});	
 		treeView.setOnMouseClicked(event -> {
 			if(!treeView.getSelectionModel().isEmpty()){
-				oPlaneta.setPlaneta(treeView.getSelectionModel().getSelectedItem().getValue().getJmeno());				
+				oPlaneta.setPlaneta(treeView.getSelectionModel().getSelectedItem().getValue());
+				prekresliPlatno();
 			}
 		});
 		return treeView;
@@ -178,11 +162,6 @@ public class GUI{
 			prekresliPlatno();			
 		});
 		
-		Button test = new Button("Test");
-		test.setMinWidth(100);
-		test.setOnAction(event -> {
-			testCesty();
-		});
 		
 		
 		Slider slid = new Slider();
@@ -197,25 +176,51 @@ public class GUI{
 			GUI.canvas.setWidth(800*quality);
 			prekresliPlatno();
 		});
-		vb.getChildren().addAll(test,start,generuj,slid);
+		vb.getChildren().addAll(start,generuj,slid);
 		return vb;
 	}
 
 	
-	public static void prekresliPlatno() {
+	public void prekresliPlatno() {
 		canvas.setScaleX(1.0/quality*0.9  * 100.0/(101-zoom));
 		canvas.setScaleY(1.0/quality*0.9  * 100.0/(101-zoom));
-		//gc.setTransform(af);
-		//gc.scale(100.0/(101-zoom),100.0/(101-zoom));
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, 800*quality, 800*quality);
 		nakresliCesty();
 		nakresliPlanety();
 		nakresliStanice();
+		Planeta p = oPlaneta.getPlaneta();
+		gc.setFill(Color.WHITE);
+		gc.fillOval((p.getPosX()-3)*quality, (p.getPosY()-3)*quality, 6*quality, 6*quality);
+		testCesty(p);
+		if(l.getStart().getId() != 0){			
+			nakresliLod();
+		}
 	}
 
 	
 	
+	private static void nakresliLod() {
+		for (int i = 0; i < l.getCil().size(); i++) {
+			Planeta a = l.getCil().get(i);
+			gc.setFill(Color.PEACHPUFF);
+			gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
+		}
+		gc.setFill(Color.CRIMSON);
+		if(l.getChciNa()!=null){
+			gc.fillRect((l.getChciNa().getPosX()-3)*quality, (l.getChciNa().getPosY()-3)*quality, 6*quality, 6*quality);
+		}
+		if(l.getLokace() instanceof Cesta){
+			gc.setStroke(Color.DARKSLATEBLUE);
+			Cesta c = (Cesta)l.getLokace();
+			gc.strokeLine(c.getOd().getPosX(), c.getOd().getPosY(), c.getKam().getPosX(), c.getKam().getPosY());
+		}else{
+			Planeta a = (Planeta)l.getLokace();
+			gc.setFill(Color.DARKSLATEBLUE);
+			gc.fillOval((a.getPosX()-5)*quality, (a.getPosY()-5)*quality, 10*quality, 10*quality);
+		}
+	}
+
 	private static Node getCenter() {
 		ScrollPane sc = new ScrollPane();
 		sc.setMinWidth(730);
@@ -255,26 +260,11 @@ public class GUI{
 	}
 	
 	
-	public static void testCesty(){
-		Planeta z = g.getPlanety().get((int)(Math.random()*300));
-		Planeta z1 = g.getPlanety().get((int)(Math.random()*300));
-		Planeta z2 = g.getPlanety().get((int)(Math.random()*300));
-		gc.setFill(Color.RED);
-		gc.fillOval(z.getPosX()-10, z.getPosY()-10, 20, 20);
-		gc.fillOval(z1.getPosX()-10, z1.getPosY()-10, 20, 20);
-		gc.fillOval(z2.getPosX()-10, z2.getPosY()-10, 20, 20);
-		gc.setFill(Color.WHITE);
+	public static void testCesty(Planeta z){
+		gc.setFill(Color.GRAY);
 		for (int i = 0; i < z.getCesta().size(); i++) {
 			Planeta a = z.getCesta().get(i);
-			gc.fillOval(a.getPosX()-3, a.getPosY()-3, 6, 6);
-		}
-		for (int i = 0; i < z1.getCesta().size(); i++) {
-			Planeta a = z1.getCesta().get(i);
-			gc.fillOval(a.getPosX()-3, a.getPosY()-3, 6, 6);
-		}
-		for (int i = 0; i < z2.getCesta().size(); i++) {
-			Planeta a = z2.getCesta().get(i);
-			gc.fillOval(a.getPosX()-3, a.getPosY()-3, 6, 6);
+			gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
 		}
 	}
 	
