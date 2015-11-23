@@ -10,7 +10,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
@@ -50,13 +52,15 @@ public class GUI{
 		return bp;
 	}
 
+	private ListView<String> lv = new ListView<String>();
+	
 	private Node getInfoPane() {
 		oLabel = new ObservingLabel();
 		oPlaneta.addObserver(oLabel);
 		VBox vb = new VBox();
 		vb.setPrefWidth(300);
-		ListView<String> lv = new ListView<String>();
 		lv.setItems(getLode());
+		lv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		lv.setCellFactory(TextFieldListCell.forListView());
 		Button show = new Button("show");
 		show.setOnAction(event -> lv.setItems(getLode()));
@@ -193,14 +197,20 @@ public class GUI{
 		gc.setFill(Color.WHITE);
 		gc.fillOval((p.getPosX()-3)*quality, (p.getPosY()-3)*quality, 6*quality, 6*quality);
 		testCesty(p);
-		if(l.getStart().getId() != 0){			
-			nakresliLod();
+		for (int i = 0; i < lv.getSelectionModel().getSelectedItems().size(); i++) {
+			for (int j = 0; j < cas.lode.size(); j++) {
+				String id = lv.getSelectionModel().getSelectedItems().get(i).split(",")[0].split(" ")[2];
+				if((""+cas.lode.get(j).getId()).equals(id)){
+					nakresliLod(cas.lode.get(j));
+					break;
+				}
+			}
 		}
 	}
 
 	
 	
-	private static void nakresliLod() {
+	private static void nakresliLod(Lod l) {
 		for (int i = 0; i < l.getCil().size(); i++) {
 			Planeta a = l.getCil().get(i);
 			gc.setFill(Color.PEACHPUFF);
