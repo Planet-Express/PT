@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.logging.Level;
 
+import javafx.application.Platform;
+
 public class Counter extends Thread{
 	
 	Galaxie g;
@@ -24,7 +26,7 @@ public class Counter extends Thread{
 					////////////// ZACATEK DNE
 					Soubor.getLogger().log(Level.SEVERE, "Začíná den "+(den+1)+", měsíc "+(mesic));
 					for (int j = 0; j < objednavky.size(); j++) {
-						if((objednavky.get(j).getKam().getVzdalenost()/10+8+den%30)<30){
+						if((objednavky.get(j).getKam().getVzdalenost()/10+6+den%30)<30){
 							if(!objednavky.get(j).getKam().isMrtva()){
 								while(objednavky.get(j).getPotreba()>0){
 									obsluzObjednavku(j);
@@ -46,6 +48,12 @@ public class Counter extends Thread{
 					}	
 					*/				
 					den++;
+					Platform.runLater(new Runnable() {
+				            @Override
+				            public void run() {
+				            	gui.prekresliPlatno();				              
+				            }
+				    });    
 					Soubor.getLogger().log(Level.SEVERE, "Den "+den+" skončil");
 					zacniVykladatLode();
 					vysliNalozeneLode();
@@ -403,6 +411,7 @@ public class Counter extends Thread{
 	public void start(Galaxie g, GUI gui){
 		super.start();
 		this.g = g;
+		this.gui = gui;
 	}
 	
 }
