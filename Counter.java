@@ -51,7 +51,7 @@ public class Counter extends Thread{
 					Platform.runLater(new Runnable() {
 				            @Override
 				            public void run() {
-				            	gui.prekresliPlatno();				              
+				            	gui.prekresliPlatno();
 				            }
 				    });    
 					Soubor.getLogger().log(Level.SEVERE, "Den "+den+" skončil");
@@ -66,13 +66,13 @@ public class Counter extends Thread{
 							}
 						}
 					}
-					/*
+					
 					try {
-						this.wait();
+						this.wait(500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					*/
+					
 					
 					
 					

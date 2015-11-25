@@ -1,5 +1,7 @@
 package PT;
 
+
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -9,20 +11,23 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 public class GUI{
 
@@ -37,9 +42,9 @@ public class GUI{
 	
 	private static ObservablePlanet oPlaneta = new ObservablePlanet(new Planeta(0, 0, 0, 0));
 	private ObservingLabel oLabel;
-	
-	private static Lod l = new Lod(new Stanice(0, 0, 0), 0);
-	
+
+	private TableView<Lod> tv;
+
 	public Parent createScene(Galaxie galaxy) {
 		g = galaxy;
 		BorderPane bp = new BorderPane();
@@ -52,33 +57,98 @@ public class GUI{
 		return bp;
 	}
 
-	private ListView<String> lv = new ListView<String>();
 	
 	private Node getInfoPane() {
+		VBox vb = new VBox();
 		oLabel = new ObservingLabel();
 		oPlaneta.addObserver(oLabel);
-		VBox vb = new VBox();
+		TextField tf = new TextField("Zadej objednávku");
+		Button objednat = new Button("Objednat");
+		objednat.setOnAction(event ->{
+		System.out.println("objednáno: " + tf.getText());
+		oPlaneta.getPlaneta().getObjednavka().setKolik(Integer.parseInt(tf.getText()));});
 		vb.setPrefWidth(300);
-		lv.setItems(getLode());
-		lv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		lv.setCellFactory(TextFieldListCell.forListView());
-		Button show = new Button("show");
-		show.setOnAction(event -> lv.setItems(getLode()));
-		lv.setOnMouseClicked(event -> {
-			if(lv.getSelectionModel().getSelectedIndex()>=0){
-				l = cas.lode.get(lv.getSelectionModel().getSelectedIndex());
-				prekresliPlatno();
-			}
-		}
-		);
-		vb.getChildren().addAll(getTree(), oLabel, lv, show);
+		tv = getTableView();
+		vb.getChildren().addAll(getTree(), oLabel, tf, objednat, tv);
 		return vb;
 	}
 
-	private ObservableList<String> getLode() {
-		ObservableList<String> ol = FXCollections.observableArrayList();
+	private TableView<Lod> getTableView() {
+		TableView<Lod> tableView = new TableView<Lod>();
+		TableColumn<Lod, Integer> id = new TableColumn<Lod, Integer>("Id");
+		TableColumn<Lod, Integer> naklad = new TableColumn<Lod, Integer>("Naklad");
+		TableColumn<Lod, Integer> stav = new TableColumn<Lod, Integer>("Stav");
+		TableColumn<Lod, Stanice> stanice = new TableColumn<Lod, Stanice>("Stanice");
+		
+		id.setCellValueFactory(new PropertyValueFactory<Lod, Integer>("id"));
+		id.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+			public String toString(Integer arg0) {
+				return arg0 + "";
+			}
+			public Integer fromString(String arg0){ 
+				try{
+					return Integer.parseInt((arg0));
+				}
+				catch(NumberFormatException nfe){
+					return 0;
+				}
+			}
+		}));
+		
+		naklad.setCellValueFactory(new PropertyValueFactory<Lod, Integer>("naklad"));
+		naklad.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+			public String toString(Integer arg0) {
+				return arg0 + "";
+			}
+			public Integer fromString(String arg0){ 
+				try{
+					return Integer.parseInt((arg0));
+				}
+				catch(NumberFormatException nfe){
+					return 0;
+				}
+			}
+		}));
+		
+		stav.setCellValueFactory(new PropertyValueFactory<Lod, Integer>("stav"));
+		stav.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+			public String toString(Integer arg0) {
+				return arg0 + "";
+			}
+			public Integer fromString(String arg0){ 
+				try{
+					return Integer.parseInt((arg0));
+				}
+				catch(NumberFormatException nfe){
+					return 0;
+				}
+			}
+		}));
+		
+		stanice.setCellValueFactory(new PropertyValueFactory<Lod, Stanice>("start"));
+		stanice.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Stanice>() {
+			public String toString(Stanice arg0) {
+				return "Stanice" + (arg0.getId()-5000);
+			}
+
+			@Override
+			public Stanice fromString(String arg0) {
+				return null;
+			}
+		}));
+		
+		tableView.getColumns().addAll(id, naklad, stav, stanice);
+		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);;
+		tableView.setItems(getLode());
+		return tableView;
+	}
+
+
+	private ObservableList<Lod> getLode() {
+		ObservableList<Lod> ol = FXCollections.observableArrayList();
 		for (int i = 0; i < cas.lode.size(); i++) {
-			ol.add(cas.lode.get(i).toString());
+			ol.add(cas.lode.get(i));
 		}
 		return ol;
 	}
@@ -105,7 +175,6 @@ public class GUI{
 	}
 
 	
-	@SuppressWarnings("unchecked")
 	private TreeItem<Planeta> createDefaultChildren() {
 		TreeItem<Planeta> root = new TreeItem<Planeta>();
 		TreeItem<Planeta> s1 = new TreeItem<Planeta>(g.getPlanety().get(5000));
@@ -193,41 +262,33 @@ public class GUI{
 		nakresliCesty();
 		nakresliPlanety();
 		nakresliStanice();
-		Planeta p = oPlaneta.getPlaneta();
-		gc.setFill(Color.WHITE);
-		gc.fillOval((p.getPosX()-3)*quality, (p.getPosY()-3)*quality, 6*quality, 6*quality);
-		testCesty(p);
-		for (int i = 0; i < lv.getSelectionModel().getSelectedItems().size(); i++) {
-			for (int j = 0; j < cas.lode.size(); j++) {
-				String id = lv.getSelectionModel().getSelectedItems().get(i).split(",")[0].split(" ")[2];
-				if((""+cas.lode.get(j).getId()).equals(id)){
-					nakresliLod(cas.lode.get(j));
-					break;
-				}
-			}
+		testCesty(oPlaneta.getPlaneta());
+		//tv.getItems().clear();
+		tv.setItems(getLode());
+		tv.getColumns().get(0).setVisible(false);
+		tv.getColumns().get(0).setVisible(true);
+		for (int i = 0; i < tv.getSelectionModel().getSelectedItems().size(); i++) {			
+			nakresliLod(tv.getSelectionModel().getSelectedItems().get(i));			
 		}
 	}
 
 	
 	
 	private static void nakresliLod(Lod l) {
-		for (int i = 0; i < l.getCil().size(); i++) {
-			Planeta a = l.getCil().get(i);
-			gc.setFill(Color.PEACHPUFF);
-			gc.fillOval((a.getPosX()-3)*quality, (a.getPosY()-3)*quality, 6*quality, 6*quality);
-		}
-		gc.setFill(Color.CRIMSON);
-		if(l.getChciNa()!=null){
-			gc.fillRect((l.getChciNa().getPosX()-3)*quality, (l.getChciNa().getPosY()-3)*quality, 6*quality, 6*quality);
-		}
-		if(l.getLokace() instanceof Cesta){
-			gc.setStroke(Color.DARKSLATEBLUE);
-			Cesta c = (Cesta)l.getLokace();
-			gc.strokeLine(c.getOd().getPosX(), c.getOd().getPosY(), c.getKam().getPosX(), c.getKam().getPosY());
-		}else{
-			Planeta a = (Planeta)l.getLokace();
-			gc.setFill(Color.DARKSLATEBLUE);
-			gc.fillOval((a.getPosX()-5)*quality, (a.getPosY()-5)*quality, 10*quality, 10*quality);
+		if(l != null){
+			gc.setFill(Color.CRIMSON);
+			if(l.getChciNa()!=null){
+				gc.fillRect((l.getChciNa().getPosX()-3)*quality, (l.getChciNa().getPosY()-3)*quality, 6*quality, 6*quality);
+			}
+			if(l.getLokace() instanceof Cesta){
+				gc.setStroke(Color.DARKSLATEBLUE);
+				Cesta c = (Cesta)l.getLokace();
+				gc.strokeLine(c.getOd().getPosX(), c.getOd().getPosY(), c.getKam().getPosX(), c.getKam().getPosY());
+			}else{
+				Planeta a = (Planeta)l.getLokace();
+				gc.setFill(Color.DARKSLATEBLUE);
+				gc.fillOval((a.getPosX()-5)*quality, (a.getPosY()-5)*quality, 10*quality, 10*quality);
+			}
 		}
 	}
 
@@ -271,6 +332,8 @@ public class GUI{
 	
 	
 	public static void testCesty(Planeta z){
+		gc.setFill(Color.WHITE);
+		gc.fillOval((z.getPosX()-3)*quality, (z.getPosY()-3)*quality, 6*quality, 6*quality);
 		gc.setFill(Color.GRAY);
 		for (int i = 0; i < z.getCesta().size(); i++) {
 			Planeta a = z.getCesta().get(i);
