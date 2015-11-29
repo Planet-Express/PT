@@ -1,6 +1,7 @@
 package PT;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.logging.Level;
 
@@ -26,17 +27,14 @@ public class Counter extends Thread{
 					////////////// ZACATEK DNE
 					Soubor.getLogger().log(Level.SEVERE, "Začíná den "+(den+1)+", měsíc "+(mesic));
 					for (int j = 0; j < objednavky.size(); j++) {
-						if((objednavky.get(j).getKam().getVzdalenost()/10+6+den%30)<30){
 							if(!objednavky.get(j).getKam().isMrtva()){
-								while(objednavky.get(j).getPotreba()>0){
-									obsluzObjednavku(j);
-								}
-							}
-						}
+									obsluzObjednavku(j, den);
+									}
 					}
 					for (int j = 0; j < lode.size(); j++) {
 						posunLeticiLod(lode.get(j));
 						vylozLod(lode.get(j));
+						
 					}
 					/*
 					for (int j = 0; j < g.getStanice().size(); j++) {
@@ -59,20 +57,18 @@ public class Counter extends Thread{
 					vysliNalozeneLode();
 					if(den%30==0){
 						zabijLidi();
-						System.out.println(nadvyrobenoLeku());
-						for (int j = 0; j < lode.size(); j++) {
-							if(lode.get(i).getNaklad()!=0){
-							//	lode.get(i).resetLod();
-							}
+						if(nadvyrobenoLeku()!=0){
+							
+							throw new RuntimeException("Byly vyrobeny léky, které jsme nestihli dodat.");
 						}
 					}
-					
+					/*
 					try {
 						this.wait(500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					
+					*/
 					
 					
 					
@@ -85,8 +81,12 @@ public class Counter extends Thread{
 	int i = 0;
 	public void vylozLod(Lod l){
 		if(l.getStav()==3){
+
 			Planeta a = l.getCil().pop();
 			int naklad = l.getRozpis().pop();
+			Soubor.getLogger().log(Level.FINE,"Lod č."+l.getId()+
+					" vyložila na "+a.toString()+
+					" náklad "+naklad+" léků.");
 			l.setNaklad(l.getNaklad()-naklad);
 			a.getObjednavka().setKolik(a.getObjednavka().getKolik()-naklad);
 			a.getObjednavka().setPotencial(a.getObjednavka().getPotencial()-naklad);
@@ -118,6 +118,10 @@ public class Counter extends Thread{
 	}
 	
 	public void posunLeticiLod(Lod l){
+		if(l.getStav() == 0){
+			Soubor.getLogger().log(Level.FINE,"Lod č."+l.getId()+
+					" letí na "+Arrays.toString(l.getCil().toArray())+
+					" s nakladem "+l.getNaklad());
 		l.setChciNa();
 		if(l.getLokace() instanceof Planeta){
 			if(((Planeta)l.getLokace()).getId() == l.getChciNa().getId()&&l.getChciNa().getId()>5000&&l.getCil().size()==0){
@@ -195,6 +199,7 @@ public class Counter extends Thread{
 				}
 			}
 		}
+		}
 	}
 	
 	public Cesta najdiCestu(Planeta od, Planeta kam){
@@ -242,17 +247,18 @@ public class Counter extends Thread{
 		return false;
 	}
 	
-	public void obsluzObjednavku(int kterou){
+	public void obsluzObjednavku(int kterou, int den){
 		Objednavka ob = objednavky.get(kterou);
-		if(ob.getPotreba()>0){
+		while(ob.getPotreba()>0){
 			int unosnost = 5000000;
 			Lod l = getLod(ob.getOd());
+			if(l.getNaklad()!=0){
+				ob.getOd().getDok().pop();
+				logLod(l,den);
+				l = getLod(ob.getOd());
+				}
+			if(l.stihne(ob, den)){
 				if((ob.getPotreba()+l.getNaklad())>unosnost){
-					if(l.getNaklad()!=0){
-					ob.getOd().getDok().pop();
-					logLod(l);
-					l = getLod(ob.getOd());
-					}
 					naplnLod(l, ob, unosnost);
 					l.getStart().getDok().pop();
 					l = getLod(ob.getOd());
@@ -260,11 +266,11 @@ public class Counter extends Thread{
 				}else{
 					naplnLod(l, ob, ob.getPotreba());
 					for (int j = 0; j < ob.getKam().getCesta().size()-1; j++) {
-						if(l.getNaklad()<unosnost){
+						if(l.getNaklad()<unosnost&&l.stihne(ob, den)){
 							for (int j2 = 0; j2 < objednavky.size(); j2++) {
 								Objednavka dalsiOb = objednavky.get(j2);
 								Planeta dalsiP = ob.getKam().getCesta().get(j);
-								if(dalsiOb.getKam().equals(dalsiP)){
+								if(dalsiOb.getKam().equals(dalsiP)&&l.stihne(ob, den)){
 									if((dalsiOb.getPotreba()+l.getNaklad())<unosnost){
 										naplnLod(l, dalsiOb, dalsiOb.getPotreba());
 									//	System.out.println("2. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
@@ -275,7 +281,7 @@ public class Counter extends Thread{
 										naplnLod(l, dalsiOb, unosnost-l.getNaklad());
 									//	System.out.println("3. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
 										ob.getOd().getDok().pop();
-										logLod(l);
+										logLod(l,den);
 										l=getLod(ob.getOd());
 										break;
 										
@@ -287,11 +293,12 @@ public class Counter extends Thread{
 					if(ob.getOd().getDok().size()>0){
 						if(ob.getOd().getDok().peek().getNaklad()>0){
 							ob.getOd().getDok().pop();
-							logLod(l);
+							logLod(l,den);
 							l = getLod(ob.getOd());
 						}
 					}
 				}
+			}else{break;}
 		}
 	}
 	
@@ -318,6 +325,13 @@ public class Counter extends Thread{
 				for (int j2 = 0; j2 < l.getCil().size(); j2++) {
 					if(l.getCil().get(j2).equals(objednavky.get(i).getKam())){
 						System.out.println(l.getId());
+						/*try {
+							this.wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						*/
 					}
 				}
 			}
@@ -326,13 +340,13 @@ public class Counter extends Thread{
 		return leku;
 	}
 	
-	public void logLod(Lod l){
+	public void logLod(Lod l, int den){
 		if(l.getCil().size()>0){
 		int cas = 0;
 		int vzdalenost = (int)(l.getCil().get(l.getCil().size()-1).vzdalenost/25);
-		cas = vzdalenost + l.getCil().size();
+		cas = vzdalenost + l.getCil().size()+den;
 		int casB = cas + vzdalenost;
-		Soubor.getLogger().log(Level.INFO, "Lod č. "+l.getId()+
+		Soubor.getLogger().log(Level.INFO,"Lod č. "+l.getId()+
 				" veze "+l.getNaklad()+" léků na "+l.getCil().size()+
 				" planet. Loď je naplněna z "+(int)(l.getNaklad()/50000.0)+
 				"%."+" Lod č."+l.getId()+" doručí svůj celý náklad "+cas+" den. A vrátí se "+casB+" den.");

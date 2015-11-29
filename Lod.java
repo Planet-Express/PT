@@ -42,6 +42,15 @@ public class Lod {
 		return stav;
 	}
 
+	public boolean stihne(Objednavka ob, int den){
+		int cas = (int)(ob.getVzdalenost()/25 + cil.size()*2+2);
+		if(cas+den%30>=30){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
 	public void setStav(int stav) {
 		this.stav = stav;
 	}
