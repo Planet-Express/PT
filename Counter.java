@@ -12,9 +12,9 @@ public class Counter extends Thread{
 	
 	Galaxie g;
 	GUI gui;
-	ArrayList<Lod> lode = new ArrayList<Lod>();
-	ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
-	ArrayList<ArrayList<Objednavka>> statistikaObjednavek = new ArrayList<ArrayList<Objednavka>>();
+	List<Lod> lode = new ArrayList<Lod>();
+	List<Objednavka> objednavky = new ArrayList<Objednavka>();
+	List<ArrayList<Objednavka>> statistikaObjednavek = new ArrayList<ArrayList<Objednavka>>();
 	List<Long> celkoveVyrobeno = new ArrayList<Long>();
 	List<Long> celkoveUkradeno = new ArrayList<Long>();
 	List<Long> celkovaPopulace = new ArrayList<Long>();
@@ -98,11 +98,11 @@ public class Counter extends Thread{
 		return this.celkoveUmrti;
 	}
 	
-	public ArrayList<Lod> getLode(){
+	public List<Lod> getLode(){
 		return this.lode;
 	}
 	
-	public ArrayList<ArrayList<Objednavka>> getStatistikaObjednavek(){
+	public List<ArrayList<Objednavka>> getStatistikaObjednavek(){
 		return this.statistikaObjednavek;
 	}
 	
@@ -131,9 +131,6 @@ public class Counter extends Thread{
 			l.setNaklad(l.getNaklad()-naklad);
 			a.getObjednavka().setKolik(a.getObjednavka().getKolik()-naklad);
 			a.getObjednavka().setPotencial(a.getObjednavka().getPotencial()-naklad);
-			if(a.getObjednavka().getKolik() == 0){
-				//System.out.println("Objednavka "+ a.getId()+ " kolik? " + a.getObjednavka().getKolik()+ " "+ i);
-			}
 			l.setStav(0);
 		}
 	}
@@ -170,14 +167,12 @@ public class Counter extends Thread{
 				
 			}
 		l.setChciNa();
-		if(l.getLokace() instanceof Planeta){
-			if(((Planeta)l.getLokace()).getId() == l.getChciNa().getId()&&l.getChciNa().getId()>5000&&l.getCil().size()==0){
-				if(l.getStav()!=-1){
-					l.getStart().getDok().push(l);
-					l.setStav(-1);
-					l.resetLod();
-				}
-			}
+		if(l.getLokace() instanceof Planeta &&
+		((Planeta)l.getLokace()).getId() == l.getChciNa().getId()&&l.getChciNa().getId()>5000&&l.getCil().size()==0 
+		&& l.getStav()!=-1){
+			l.getStart().getDok().push(l);
+			l.setStav(-1);
+			l.resetLod();
 			
 		}
 		double doleti = RYCHLOST;
@@ -278,17 +273,11 @@ public class Counter extends Thread{
 	
 	public boolean budeOkradena(Lod l){
 		l.setChciNa();
-		if(l.getNaklad()>0){
-			if(l.getLokace() instanceof Planeta){
-				if(((Planeta)l.getLokace()).getId()!=l.getChciNa().getId()){
-					Cesta c = najdiCestu((Planeta)l.getLokace(), l.getChciNa());
-					if(c.isNebezpecna()){
-						if(Math.random()<0.1){
-							okradLod(l);
-							return true;
-						}
-					}
-				}
+		if(l.getNaklad()>0 && l.getLokace() instanceof Planeta &&((Planeta)l.getLokace()).getId()!=l.getChciNa().getId()){
+			Cesta c = najdiCestu((Planeta)l.getLokace(), l.getChciNa());
+			if(c.isNebezpecna() && Math.random()<0.1){
+				okradLod(l);
+				return true;		
 			}
 		}
 		return false;
@@ -337,12 +326,10 @@ public class Counter extends Thread{
 							}
 						}
 					}
-					if(ob.getOd().getDok().size()>0){
-						if(ob.getOd().getDok().peek().getNaklad()>0){
-							ob.getOd().getDok().pop();
-							logLod(l,den);
-							l = getLod(ob.getOd());
-						}
+					if(ob.getOd().getDok().size()>0 && ob.getOd().getDok().peek().getNaklad()>0){
+						ob.getOd().getDok().pop();
+						logLod(l,den);
+						l = getLod(ob.getOd());
 					}
 				}
 			}else{break;}
@@ -438,7 +425,7 @@ public class Counter extends Thread{
 		}else{return s.getDok().peek();}
 	}
 	
-	public ArrayList<Objednavka> getObjednavky(){
+	public List<Objednavka> getObjednavky(){
 		ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
 		
 		for (int i = 0; i < g.getPlanety().size()-5; i++) {
