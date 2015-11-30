@@ -1,0 +1,72 @@
+C:\Users\Michal\prog\PT\src\PT\Cesta.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\Cesta.java:5:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Cesta.java:6:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:10:	class 'Counter' je prilis slozita (Cyclomatic Complexity of 5 (Highest = 23)).
+C:\Users\Michal\prog\PT\src\PT\Counter.java:14:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:15:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:93:	Nepouzivejte prazdne bloky if
+C:\Users\Michal\prog\PT\src\PT\Counter.java:120:	Ruznych cest pruchodu metodou 'posunLeticiLod()' je 871, doporuceny limit je 200 (NPath complexity).
+C:\Users\Michal\prog\PT\src\PT\Counter.java:120:	method 'posunLeticiLod' je prilis slozita (Cyclomatic Complexity of 23).
+C:\Users\Michal\prog\PT\src\PT\Counter.java:127:	Doporucujeme spojit dva prikazy if do jednoho se spojenim podminek.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:127:	Mnoho vnorenych prikazu if..then se spatne cte.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:128:	Doporucujeme spojit dva prikazy if do jednoho se spojenim podminek.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:235:	Doporucujeme spojit dva prikazy if do jednoho se spojenim podminek.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:236:	Doporucujeme spojit dva prikazy if do jednoho se spojenim podminek.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:239:	Doporucujeme spojit dva prikazy if do jednoho se spojenim podminek.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:250:	method 'obsluzObjednavku' je prilis slozita (Cyclomatic Complexity of 15).
+C:\Users\Michal\prog\PT\src\PT\Counter.java:294:	Doporucujeme spojit dva prikazy if do jednoho se spojenim podminek.
+C:\Users\Michal\prog\PT\src\PT\Counter.java:395:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\GUI.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\GUI.java:32:	class 'GUI' je prilis slozita (Cyclomatic Complexity of 3 (Highest = 12)).
+C:\Users\Michal\prog\PT\src\PT\GUI.java:44:	Datovy atribut 'oLabel' se pouziva pouze v jedne metode. Pravdepodobne se muze zmenit na lokalni promennou metody.
+C:\Users\Michal\prog\PT\src\PT\GUI.java:77:	method 'getTableView' je prilis slozita (Cyclomatic Complexity of 12).
+C:\Users\Michal\prog\PT\src\PT\GUI.java:143:	Za ukoncovaci slozenou zavorkou nemusi byt uveden strednik.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:11:	class 'Galaxie' je prilis slozita (Cyclomatic Complexity of 3 (Highest = 10)).
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:12:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:12:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:13:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:13:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:14:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:14:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:15:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:16:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:18:	Datovy atribut 'populace' se pouziva pouze v jedne metode. Pravdepodobne se muze zmenit na lokalni promennou metody.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:65:	method 'vytvorPlanetu' je prilis slozita (Cyclomatic Complexity of 10).
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:102:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:126:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:192:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:196:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:200:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:245:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Galaxie.java:273:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Hlavni.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\Hlavni.java:24:	V hlavicce konstruktoru ci metody by se nemela vyhazovat vyjimka Exception, ale konkretni potomek
+C:\Users\Michal\prog\PT\src\PT\Lod.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\Lod.java:16:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Lod.java:21:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Lod.java:47:	Prikaz if..then..else je zbytecny, pokud se pouze vraci hodnota boolean.
+C:\Users\Michal\prog\PT\src\PT\Lod.java:117:	Doporucujeme spojit dva prikazy if do jednoho se spojenim podminek.
+C:\Users\Michal\prog\PT\src\PT\Objednavka.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\Objednavka.java:44:	Formalni parametr metody 'id' neni nikde v metode pouzity.
+C:\Users\Michal\prog\PT\src\PT\ObservablePlanet.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\ObservingLabel.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\PlanetCell.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:13:	class 'Planeta' je prilis slozita (Cyclomatic Complexity of 3 (Highest = 28)).
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:16:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:19:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:22:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:28:	Identifikuje privatni atributy, ktere nikdy nemeni hodnotu po inicializaci v deklaraci atributu nebo v konstruktoru. Pomoc pri konverzi stavajicich trid do trid nemennych.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:37:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:65:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:133:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:144:	Pro oznaceni typu promenne nepouzivejte konkretni tridu 'ArrayList'; vhodnejsi je pouziti rozhrani.
+C:\Users\Michal\prog\PT\src\PT\Planeta.java:215:	method 'getJmeno' je prilis slozita (Cyclomatic Complexity of 28).
+C:\Users\Michal\prog\PT\src\PT\Soubor.java:1:	Jmeno balicku nema obsahovat velka pismena.
+C:\Users\Michal\prog\PT\src\PT\Soubor.java:24:	class 'Soubor' je prilis slozita (Cyclomatic Complexity of 5 (Highest = 12)).
+C:\Users\Michal\prog\PT\src\PT\Soubor.java:35:	method 'nacti' je prilis slozita (Cyclomatic Complexity of 12).
+C:\Users\Michal\prog\PT\src\PT\Soubor.java:139:	Nepouzivejte prazdne bloky catch
+C:\Users\Michal\prog\PT\src\PT\Soubor.java:140:	Nepouzivejte prazdne bloky finally
+C:\Users\Michal\prog\PT\src\PT\Stanice.java:1:	Jmeno balicku nema obsahovat velka pismena.
