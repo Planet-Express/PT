@@ -170,6 +170,7 @@ public class Soubor {
 					
 				}
 			}
+			System.out.println("Statistika dokončena");
 			
 			for (int i = 0; i < planety.size(); i++) {
 				writer.println("Planeta "+planety.get(i).getId()+" {"+
@@ -180,7 +181,6 @@ public class Soubor {
 			writer.println("z toho umřelo          "+Arrays.toString(cas.getCelkoveUmrti().toArray()));
 			writer.println("Bylo vyrobeno léků     "+ Arrays.toString(cas.getCelkoveVyrobeno().toArray()));
 			writer.println("z toho ukradeno        "+ Arrays.toString(cas.getCelkoveUkradeno().toArray()));
-
 		
 		}catch(Exception e){}finally{
 			try{writer.close();}finally{}
