@@ -157,6 +157,7 @@ public class Soubor {
 								cas.getStatistikaObjednavek()
 								.get(i).get(j).getPuvodni());
 					for (int j2 = 0; j2 < cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().size(); j2++) {
+						System.out.println(i+" "+j2);
 						if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2).getDen()/30==i){
 						writer.println("\tLoď "+cas.getStatistikaObjednavek()
 						.get(i).get(j).getKam().getDoruceno().get(j2).getLod().getId()+" doručila "+cas.getStatistikaObjednavek()
