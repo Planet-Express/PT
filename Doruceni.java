@@ -1,4 +1,4 @@
-package PT;
+package pt;
 
 public class Doruceni {
 	private int kolik;

@@ -1,4 +1,4 @@
-package PT;
+package pt;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

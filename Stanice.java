@@ -1,4 +1,4 @@
-package PT;
+package pt;
 
 
 import java.util.Stack;

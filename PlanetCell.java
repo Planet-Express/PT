@@ -1,4 +1,4 @@
-package PT;
+package pt;
 
 import javafx.scene.control.TreeCell;
 

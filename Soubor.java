@@ -1,4 +1,4 @@
-package PT;
+package pt;
 
 
 import java.io.BufferedReader;
@@ -165,8 +165,11 @@ public class Soubor {
 					if(a.getObyvatelsto().get(i)>a.getObyvatelsto().get(i+1)&&a.getObyvatelsto().size()>i+1){
 						writer.println("\tUmøelo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));
 					}
+					System.out.println("FUCK");
 				}
 			}
+			
+			
 		
 		}catch(Exception e){}finally{
 			try{writer.close();}finally{}
