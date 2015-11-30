@@ -67,7 +67,7 @@ public class Objednavka {
 		return kolik;
 	}
 	public void setKolik(int kolik) {
-		this.setPuvodni(this.getPuvodni() + this.kolik-kolik);
+	//	this.setPuvodni(this.getPuvodni() + this.kolik-kolik);
 		this.kolik = kolik;
 	}
 	public double getVzdalenost() {

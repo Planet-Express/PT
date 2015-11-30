@@ -146,7 +146,7 @@ public class Soubor {
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));
 			for (int i = 0; i < cas.getStatistikaObjednavek().size(); i++) {
-				writer.println("|||MÌSÍC "+i+".|||");
+				writer.println("..............---------/////////|||MÌSÍC "+i+".|||\\\\\\\\\\\\\\\\\\---------..............");
 				for (int j = 0; j < cas.getStatistikaObjednavek().get(i).size(); j++) {
 					writer.println("Planeta "+cas.getStatistikaObjednavek()
 								.get(i).get(j).getKam().getId()+" {"+
@@ -154,13 +154,16 @@ public class Soubor {
 								.get(i).get(j).getKam().getJmeno()+"} si objednala "+
 								cas.getStatistikaObjednavek()
 								.get(i).get(j).getPuvodni());
-					int cntr = 0;
-					while(cas.getStatistikaObjednavek()
-								.get(i).get(j).getKam().getDoruceno().get(cntr).getDen()/30==i){
+					for (int j2 = 0; j2 < cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().size(); j2++) {
+						if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2).getDen()/30==i){
 						writer.println("\tLod "+cas.getStatistikaObjednavek()
-						.get(i).get(j).getKam().getDoruceno().get(cntr).getLod().getId()+" doruèila "+cas.getStatistikaObjednavek()
-						.get(i).get(j).getKam().getDoruceno().get(cntr).getKolik());
-						cntr++;
+						.get(i).get(j).getKam().getDoruceno().get(j2).getLod().getId()+" doruèila "+cas.getStatistikaObjednavek()
+						.get(i).get(j).getKam().getDoruceno().get(j2).getKolik());
+						}
+					}
+					Planeta a = cas.getStatistikaObjednavek().get(i).get(j).getKam();
+					if(a.getObyvatelsto().get(i)>a.getObyvatelsto().get(i+1)&&a.getObyvatelsto().size()>i+1){
+						writer.println("\tUmøelo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));
 					}
 				}
 			}
