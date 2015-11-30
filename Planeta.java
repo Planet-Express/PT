@@ -1,34 +1,35 @@
 package pt;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Planeta{
 
-	private ArrayList<Planeta> sousedi = new ArrayList<Planeta>();
-	private int posX;
-	private int posY;
+	private List<Planeta> sousedi = new ArrayList<Planeta>();
+	private final int posX;
+	private final int posY;
 	private int pop;
-	private int id;
+	private final int id;
 	private boolean mrtva = false;
 	double vzdalenost = Integer.MAX_VALUE;
-	ArrayList<Planeta> cesta = new ArrayList<Planeta>(1);
+	List<Planeta> cesta = new ArrayList<Planeta>(1);
 	private Objednavka objednavka;
-	private ArrayList<Integer> obyvatelsto = new ArrayList<Integer>();
-	private ArrayList<Doruceni> doruceno = new ArrayList<Doruceni>();
+	private List<Integer> obyvatelsto = new ArrayList<Integer>();
+	private List<Doruceni> doruceno = new ArrayList<Doruceni>();
 	
-	public ArrayList<Integer> getObyvatelsto() {
+	public List<Integer> getObyvatelsto() {
 		return obyvatelsto;
 	}
 
-	public void setObyvatelsto(ArrayList<Integer> obyvatelsto) {
+	public void setObyvatelsto(List<Integer> obyvatelsto) {
 		this.obyvatelsto = obyvatelsto;
 	}
 
-	public ArrayList<Doruceni> getDoruceno() {
+	public List<Doruceni> getDoruceno() {
 		return doruceno;
 	}
 
-	public void setDoruceno(ArrayList<Doruceni> doruceno) {
+	public void setDoruceno(List<Doruceni> doruceno) {
 		this.doruceno = doruceno;
 	}
 
@@ -40,7 +41,7 @@ public class Planeta{
 		this.obyvatelsto.add(pop);
 	}
 	
-	public ArrayList<Planeta> getSousedi(){
+	public List<Planeta> getSousedi(){
 		return sousedi;
 	}
 	
@@ -73,11 +74,11 @@ public class Planeta{
 		
 	}
 	
-	public ArrayList<Planeta> getCesta(){
+	public List<Planeta> getCesta(){
 		return cesta;
 	}
 	
-	public void setCesta(ArrayList<Planeta> a){
+	public void setCesta(List<Planeta> a){
 		this.cesta = a;
 	}
 	
@@ -106,10 +107,7 @@ public class Planeta{
 		this.obyvatelsto.add(pop);
 		if(this.pop<40000){
 			mrtva = true;
-			System.out.println("Na planetu "+id+" už nemá cenu letìt.");
-		}
-		if(lidi>0){
-		//	System.out.println("Na planetì "+id+" zemøelo "+lidi+" lidí.");
+			System.out.println("Na planetu "+id+" uï¿½ nemï¿½ cenu letï¿½t.");
 		}
 	}
 	

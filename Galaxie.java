@@ -105,7 +105,7 @@ public class Galaxie{
 			for (int j = 0; j < planety.size(); j++) {
 				if(i!=j){
 					Planeta b = planety.get(j);
-					ArrayList<Planeta>sousedi = a.getSousedi();
+					List<Planeta>sousedi = a.getSousedi();
 					double vzdalenost = vzdalenostPlanet(a, b);
 					for(int l = 0; l < 5; l++){						
 						sousedi.add(new Planeta(0, Integer.MAX_VALUE, Integer.MAX_VALUE, 0));
