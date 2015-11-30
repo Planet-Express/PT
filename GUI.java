@@ -23,7 +23,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -43,7 +42,7 @@ public class GUI{
 	static GraphicsContext gc = canvas.getGraphicsContext2D();
 	
 	private static ObservablePlanet oPlaneta = new ObservablePlanet(new Planeta(0, 0, 0, 0));
-	private ObservingLabel oLabel;
+
 
 	private TableView<Lod> tv;
 
@@ -62,7 +61,7 @@ public class GUI{
 	
 	private Node getInfoPane() {
 		VBox vb = new VBox();
-		oLabel = new ObservingLabel();
+		ObservingLabel oLabel = new ObservingLabel();
 		oPlaneta.addObserver(oLabel);
 		TextField tf = new TextField("Zadej objednÃ¡vku");
 		Button objednat = new Button("Objednat");
@@ -141,7 +140,7 @@ public class GUI{
 		
 		tableView.getColumns().addAll(id, naklad, stav, stanice);
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);;
+		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableView.setItems(getLode());
 		return tableView;
 	}
@@ -222,7 +221,7 @@ public class GUI{
 		generuj.setMinWidth(100);
 		Button start = new Button("Start");
 		start.setMinWidth(100);
-		Button stats = new Button("Vytvoø statistiku");
+		Button stats = new Button("Vytvoï¿½ statistiku");
 		start.setMinWidth(100);
 		generuj.setOnAction(event -> {
 			if(!cas.getState().toString().equals("WAITING")||!cas.isAlive()){
