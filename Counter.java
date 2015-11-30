@@ -418,7 +418,7 @@ public class Counter extends Thread{
 			if(!a.isMrtva()){
 				int objednavka = a.getPop()-a.vyrobLeky();
 				Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
-				Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost(), i+1);
+				Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost());
 				objednavky.add(ob);
 				Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objednávku na "+objednavka+" léků.");
 				a.setObjednavka(ob);

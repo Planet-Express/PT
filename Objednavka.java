@@ -10,13 +10,13 @@ public class Objednavka {
 	private int stav = 0;
 	private int puvodni;
 	
-	public Objednavka(Planeta kam, Stanice od, int kolik, double vzdalenost, int id){
+	public Objednavka(Planeta kam, Stanice od, int kolik, double vzdalenost){
 		this.kam = kam;
 		this.od = od;
 		this.kolik = kolik;
 		this.vzdalenost = vzdalenost;
 		this.setPuvodni(kolik);
-		//System.out.println("Planeta "+kam.getId()+" si objednala "+kolik+" lékù");
+		//System.out.println("Planeta "+kam.getId()+" si objednala "+kolik+" lï¿½kï¿½");
 	}
 	
 	
