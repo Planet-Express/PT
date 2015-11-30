@@ -2,8 +2,8 @@ package pt;
 
 public class Cesta{
 	
-	private Planeta od;
-	private Planeta kam;
+	private final Planeta od;
+	private final Planeta kam;
 	private boolean nebezpecna = false;
 
 	public Cesta(Planeta od, Planeta kam){
