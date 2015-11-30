@@ -13,8 +13,8 @@ public class Galaxie{
 	private final List<Planeta> planety = new ArrayList<Planeta>(5005);
 	private final List<Stanice> stanice = new ArrayList<Stanice>(5);
 	private final List<Cesta> cesty = new ArrayList<Cesta>();
-	final private int pocet;
-	final private int delka;
+	private final int pocet;
+	private final int delka;
 	private final int ODSAZENI = 160;
 	public long time = System.nanoTime();
 	
