@@ -3,6 +3,7 @@ package pt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Level;
 
 import javafx.application.Platform;
@@ -14,6 +15,11 @@ public class Counter extends Thread{
 	ArrayList<Lod> lode = new ArrayList<Lod>();
 	ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
 	ArrayList<ArrayList<Objednavka>> statistikaObjednavek = new ArrayList<ArrayList<Objednavka>>();
+	List<Long> celkoveVyrobeno = new ArrayList<Long>();
+	List<Long> celkoveUkradeno = new ArrayList<Long>();
+	List<Long> celkovaPopulace = new ArrayList<Long>();
+	List<Long> celkoveUmrti = new ArrayList<Long>();
+
 	int den = 0;
 	int mesic = 0;
 	final int RYCHLOST = 25;
@@ -367,7 +373,12 @@ public class Counter extends Thread{
 	}
 	
 	public void naplnLod(Lod l, Objednavka ob, int naklad){
-		if(naklad != 0){		
+		if(naklad != 0){
+			if(celkoveVyrobeno.size()==mesic){
+				celkoveVyrobeno.add((long)naklad);
+			}else{
+				celkoveVyrobeno.set(mesic, celkoveVyrobeno.get(mesic)+naklad);
+			}
 			ob.setPotencial(ob.getPotencial()+naklad);
 			l.setNaklad(l.getNaklad()+naklad);
 			l.getCil().push(ob.getKam());
@@ -418,14 +429,17 @@ public class Counter extends Thread{
 	}
 	
 	public void zabijLidi(){
-		long mrtvych = 0;
 		for (int i = 0; i < g.getPlanety().size()-5; i++) {
 			if(g.getPlanety().get(i).isMrtva()){
 				g.getPlanety().get(i).zabij(g.getPlanety().get(i).getPop()-g.getPlanety().get(i).vyrobLeky());
 			}else{
 				Objednavka ob = g.getPlanety().get(i).getObjednavka();
 				ob.getKam().zabij(ob.getPotreba());
-				mrtvych+=ob.getPotreba();
+				if(celkoveUmrti.size()==mesic){
+					celkoveVyrobeno.add((long)ob.getPotreba());
+				}else{
+					celkoveUmrti.set(mesic, celkoveUmrti.get(mesic)+ob.getPotreba());
+				}
 			}
 		}
 		//System.out.println("Zemřelo "+mrtvych+" lidí.");

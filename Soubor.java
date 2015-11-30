@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -142,7 +143,7 @@ public class Soubor {
 		}
 	}
 	
-	public static void vytvorStatistiku(String nazev, Counter cas, ArrayList<Planeta> planety){
+	public static void vytvorStatistiku(String nazev, Counter cas, List<Planeta> planety){
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));
