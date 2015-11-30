@@ -4,6 +4,7 @@ package PT;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -22,6 +23,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -213,10 +215,14 @@ public class GUI{
 
 	private Node getControlBar() {
 		VBox vb = new VBox();
+		vb.setPadding(new Insets(10));
+		vb.setSpacing(10);
 		vb.setAlignment(Pos.CENTER);
 		Button generuj = new Button("Generuj");
 		generuj.setMinWidth(100);
 		Button start = new Button("Start");
+		start.setMinWidth(100);
+		Button stats = new Button("Vytvoø statistiku");
 		start.setMinWidth(100);
 		generuj.setOnAction(event -> {
 			if(!cas.getState().toString().equals("WAITING")||!cas.isAlive()){
@@ -235,6 +241,9 @@ public class GUI{
 			prekresliPlatno();			
 		});
 		
+		stats.setOnAction(event -> {
+				Soubor.vytvorStatistiku("Statistika", cas);
+		});
 		
 		
 		Slider slid = new Slider();
@@ -249,7 +258,7 @@ public class GUI{
 			GUI.canvas.setWidth(800*quality);
 			prekresliPlatno();
 		});
-		vb.getChildren().addAll(start,generuj,slid);
+		vb.getChildren().addAll(start,generuj,stats,slid);
 		return vb;
 	}
 

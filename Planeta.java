@@ -13,13 +13,31 @@ public class Planeta{
 	double vzdalenost = Integer.MAX_VALUE;
 	ArrayList<Planeta> cesta = new ArrayList<Planeta>(1);
 	private Objednavka objednavka;
+	private ArrayList<Integer> obyvatelsto = new ArrayList<Integer>();
+	private ArrayList<Doruceni> doruceno = new ArrayList<Doruceni>();
 	
+	public ArrayList<Integer> getObyvatelsto() {
+		return obyvatelsto;
+	}
+
+	public void setObyvatelsto(ArrayList<Integer> obyvatelsto) {
+		this.obyvatelsto = obyvatelsto;
+	}
+
+	public ArrayList<Doruceni> getDoruceno() {
+		return doruceno;
+	}
+
+	public void setDoruceno(ArrayList<Doruceni> doruceno) {
+		this.doruceno = doruceno;
+	}
+
 	public Planeta(int id, int posX, int posY, int pop){
 		this.id = id;
 		this.posX = posX;
 		this.posY = posY;
 		this.pop = pop;
-		
+		this.obyvatelsto.add(pop);
 	}
 	
 	public ArrayList<Planeta> getSousedi(){
@@ -85,6 +103,7 @@ public class Planeta{
 	
 	public void zabij(int lidi){
 		this.pop = this.pop - lidi;
+		this.obyvatelsto.add(pop);
 		if(this.pop<40000){
 			mrtva = true;
 			System.out.println("Na planetu "+id+" už nemá cenu letìt.");

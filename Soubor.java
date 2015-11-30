@@ -140,4 +140,33 @@ public class Soubor {
 			try{writer.close();}finally{}
 		}
 	}
+	
+	public static void vytvorStatistiku(String nazev, Counter cas){
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));
+			for (int i = 0; i < cas.getStatistikaObjednavek().size(); i++) {
+				writer.println("|||MÌSÍC "+i+".|||");
+				for (int j = 0; j < cas.getStatistikaObjednavek().get(i).size(); j++) {
+					writer.println("Planeta "+cas.getStatistikaObjednavek()
+								.get(i).get(j).getKam().getId()+" {"+
+								cas.getStatistikaObjednavek()
+								.get(i).get(j).getKam().getJmeno()+"} si objednala "+
+								cas.getStatistikaObjednavek()
+								.get(i).get(j).getPuvodni());
+					int cntr = 0;
+					while(cas.getStatistikaObjednavek()
+								.get(i).get(j).getKam().getDoruceno().get(cntr).getDen()/30==i){
+						writer.println("\tLod "+cas.getStatistikaObjednavek()
+						.get(i).get(j).getKam().getDoruceno().get(cntr).getLod().getId()+" doruèila "+cas.getStatistikaObjednavek()
+						.get(i).get(j).getKam().getDoruceno().get(cntr).getKolik());
+						cntr++;
+					}
+				}
+			}
+		
+		}catch(Exception e){}finally{
+			try{writer.close();}finally{}
+		}
+	}
 }

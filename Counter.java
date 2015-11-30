@@ -13,6 +13,7 @@ public class Counter extends Thread{
 	GUI gui;
 	ArrayList<Lod> lode = new ArrayList<Lod>();
 	ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
+	ArrayList<ArrayList<Objednavka>> statistikaObjednavek = new ArrayList<ArrayList<Objednavka>>();
 	int den = 0;
 	int mesic = 0;
 	final int RYCHLOST = 25;
@@ -58,17 +59,14 @@ public class Counter extends Thread{
 					if(den%30==0){
 						zabijLidi();
 						if(nadvyrobenoLeku()!=0){
-							
 							throw new RuntimeException("Byly vyrobeny léky, které jsme nestihli dodat.");
 						}
 					}
-					/*
 					try {
-						this.wait(500);
+						this.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					*/
 					
 					
 					
@@ -76,6 +74,14 @@ public class Counter extends Thread{
 				mesic++;
 			}
 		}
+	}
+	
+	public ArrayList<Lod> getLode(){
+		return this.lode;
+	}
+	
+	public ArrayList<ArrayList<Objednavka>> getStatistikaObjednavek(){
+		return this.statistikaObjednavek;
 	}
 	
 	int i = 0;
@@ -87,6 +93,7 @@ public class Counter extends Thread{
 			Soubor.getLogger().log(Level.FINE,"Lod č."+l.getId()+
 					" vyložila na "+a.toString()+
 					" náklad "+naklad+" léků.");
+			a.getDoruceno().add(new Doruceni(naklad, l, den));
 			l.setNaklad(l.getNaklad()-naklad);
 			a.getObjednavka().setKolik(a.getObjednavka().getKolik()-naklad);
 			a.getObjednavka().setPotencial(a.getObjednavka().getPotencial()-naklad);
@@ -119,9 +126,15 @@ public class Counter extends Thread{
 	
 	public void posunLeticiLod(Lod l){
 		if(l.getStav() == 0){
-			Soubor.getLogger().log(Level.FINE,"Lod č."+l.getId()+
+			if(l.getCil().size()>0){
+				Soubor.getLogger().log(Level.FINE,"Lod č."+l.getId()+
 					" letí na "+Arrays.toString(l.getCil().toArray())+
 					" s nakladem "+l.getNaklad());
+			}else{
+				Soubor.getLogger().log(Level.FINE,"Lod č."+l.getId()+
+						" se vrací do Stanice.");
+				
+			}
 		l.setChciNa();
 		if(l.getLokace() instanceof Planeta){
 			if(((Planeta)l.getLokace()).getId() == l.getChciNa().getId()&&l.getChciNa().getId()>5000&&l.getCil().size()==0){
@@ -370,12 +383,7 @@ public class Counter extends Thread{
 					*/
 		}
 		if(l.getNaklad()>5000000){
-			try {
-				throw new Exception();
-			} catch (Exception e) {
-				System.out.println(("Naklad se nevesel na lod "+l.getId()));
-				e.printStackTrace();
-			}
+			throw new RuntimeException("Moc velký náklad");
 		}
 		//System.out.println("Lod �."+l.getId()+" se nakl�d� v doku "+((Stanice)l.getLokace()).getId());
 	}
@@ -391,7 +399,6 @@ public class Counter extends Thread{
 		}else{return s.getDok().peek();}
 	}
 	
-	
 	public ArrayList<Objednavka> getObjednavky(){
 		ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
 		
@@ -406,18 +413,20 @@ public class Counter extends Thread{
 				a.setObjednavka(ob);
 			}
 		}
+		statistikaObjednavek.add(objednavky);
  		return objednavky;
 	}
 	
 	public void zabijLidi(){
 		long mrtvych = 0;
-		for (int i = 0; i < objednavky.size(); i++) {
-			Objednavka ob = objednavky.get(i);
-			ob.getKam().zabij(ob.getPotreba());
-			if(ob.getKam().isMrtva()){
-				objednavky.remove(i);
+		for (int i = 0; i < g.getPlanety().size()-5; i++) {
+			if(g.getPlanety().get(i).isMrtva()){
+				g.getPlanety().get(i).zabij(g.getPlanety().get(i).getPop()-g.getPlanety().get(i).vyrobLeky());
+			}else{
+				Objednavka ob = g.getPlanety().get(i).getObjednavka();
+				ob.getKam().zabij(ob.getPotreba());
+				mrtvych+=ob.getPotreba();
 			}
-			mrtvych+=ob.getPotreba();
 		}
 		//System.out.println("Zemřelo "+mrtvych+" lidí.");
 	}
