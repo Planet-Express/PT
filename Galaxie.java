@@ -3,19 +3,19 @@ package pt;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.logging.Level;
 
 
 public class Galaxie{
-	private ArrayList<Planeta> planety = new ArrayList<Planeta>(5005);
-	private ArrayList<Stanice> stanice = new ArrayList<Stanice>(5);
-	private ArrayList<Cesta> cesty = new ArrayList<Cesta>();
-	private int pocet = 0;
-	private int delka = 0;
+	private final List<Planeta> planety = new ArrayList<Planeta>(5005);
+	private final List<Stanice> stanice = new ArrayList<Stanice>(5);
+	private final List<Cesta> cesty = new ArrayList<Cesta>();
+	final private int pocet;
+	final private int delka;
 	private final int ODSAZENI = 160;
-	private int populace;
 	public long time = System.nanoTime();
 	
 	public Galaxie(int delka, int pocet){
@@ -94,12 +94,12 @@ public class Galaxie{
 				}
 		}
 		
-		populace = generujPopulaci();
+		int populace = generujPopulaci();
 		Planeta p = new Planeta(id,x,y,populace);
 		return p;
 	}
 	
-	public void dohledejSousedy(ArrayList<Planeta> planety){
+	public void dohledejSousedy(List<Planeta> planety){
 		for (int i = 0; i < planety.size(); i++) {
 			Planeta a = planety.get(i);
 			for (int j = 0; j < planety.size(); j++) {
@@ -123,7 +123,7 @@ public class Galaxie{
 		}
 	}
 	
-	public void vytvorCesty(ArrayList<Planeta> planety){
+	public void vytvorCesty(List<Planeta> planety){
 		for (int i = 0; i < planety.size(); i++) {
 			Planeta a = planety.get(i);
 			for (int j = 0; j < a.getSousedi().size(); j++) {
@@ -189,15 +189,15 @@ public class Galaxie{
 		return (int)(Math.random()*rozmezi)+odkud;
 	}
 
-	public ArrayList<Planeta> getPlanety(){
+	public List<Planeta> getPlanety(){
 		return planety;
 	}
 	
-	public ArrayList<Stanice> getStanice(){
+	public List<Stanice> getStanice(){
 		return stanice;
 	}
 	
-	public ArrayList<Cesta> getCesty(){
+	public List<Cesta> getCesty(){
 		return cesty;
 	}
 	
@@ -242,7 +242,7 @@ public class Galaxie{
 		}
 	}
 	
-	public void projdi(ArrayList<Planeta> planety, Planeta stanice){
+	public void projdi(List<Planeta> planety, Planeta stanice){
 		Queue<Planeta> fronta = new LinkedList<Planeta>();
 		int[] pole = new int[5005];
 		for (int i = 0; i < pole.length; i++) {
@@ -270,8 +270,8 @@ public class Galaxie{
 		}
 	}
 	
-	public ArrayList<Objednavka> getObjednavky(){
-		ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
+	public List<Objednavka> getObjednavky(){
+		List<Objednavka> objednavky = new ArrayList<Objednavka>();
 		
 		for (int i = 0; i < planety.size()-5; i++) {
 			Planeta a = planety.get(i);
