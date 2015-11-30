@@ -170,8 +170,7 @@ public class Soubor {
 					
 				}
 			}
-			System.out.println("Statistika dokončena");
-			
+	
 			for (int i = 0; i < planety.size(); i++) {
 				writer.println("Planeta "+planety.get(i).getId()+" {"+
 				planety.get(i).getJmeno()+"} vývoj populace "+Arrays.toString(planety.get(i).getObyvatelsto().toArray()));
