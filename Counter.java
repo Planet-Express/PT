@@ -27,7 +27,7 @@ public class Counter extends Thread{
 		Soubor.initLogger();
 		synchronized (this) {
 			while(true){
-				
+				setPopulace();
 				////////////////ZACATEK MESICE
 				vytvorObjednavky();
 				for (int i = 0; i < 30; i++) {
@@ -82,12 +82,40 @@ public class Counter extends Thread{
 		}
 	}
 	
+	public List<Long> getCelkoveVyrobeno(){
+		return this.celkoveVyrobeno;
+	}
+	
+	public List<Long> getCelkoveUkradeno(){
+		return this.celkoveUkradeno;
+	}
+	
+	public List<Long> getCelkovaPopulace(){
+		return this.celkovaPopulace;
+	}
+	
+	public List<Long> getCelkoveUmrti(){
+		return this.celkoveUmrti;
+	}
+	
 	public ArrayList<Lod> getLode(){
 		return this.lode;
 	}
 	
 	public ArrayList<ArrayList<Objednavka>> getStatistikaObjednavek(){
 		return this.statistikaObjednavek;
+	}
+	
+	public void setPopulace(){
+		long pop = 0;
+		for (int i = 0; i < g.getPlanety().size(); i++) {
+			pop += g.getPlanety().get(i).getPop();
+		}
+		if(celkovaPopulace.size()==mesic){
+			celkovaPopulace.add(pop);
+		}else{
+			celkovaPopulace.set(mesic, celkovaPopulace.get(mesic)+pop);
+		}
 	}
 	
 	int i = 0;
@@ -109,18 +137,18 @@ public class Counter extends Thread{
 			l.setStav(0);
 		}
 	}
-	int okradeno = 0;
 	public void okradLod(Lod l){
-		okradeno++;
+		if(celkoveUkradeno.size()==mesic){
+			celkoveUkradeno.add((long)l.getNaklad());
+		}else{
+			celkoveUkradeno.set(mesic, celkoveUkradeno.get(mesic)+l.getNaklad());
+		}
 		l.setNaklad(0);
 		for (int i = 0; i < l.getCil().size(); i++) {
 			Planeta p = l.getCil().get(i);
 			for (int j = 0; j < objednavky.size(); j++) {
 				Objednavka ob = objednavky.get(j);
 				if(ob.getKam().equals(p)){
-					if(ob.getPotencial()<l.getRozpis().get(i)){
-						System.out.println(ob.getPotencial()+" "+l.getRozpis().get(i));
-					}
 					ob.setPotencial(ob.getPotencial()-l.getRozpis().get(i));
 				}
 			}
