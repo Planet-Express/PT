@@ -242,7 +242,7 @@ public class GUI{
 		});
 		
 		stats.setOnAction(event -> {
-				Soubor.vytvorStatistiku("Statistika", cas);
+				Soubor.vytvorStatistiku("Statistika", cas,g.getPlanety());
 		});
 		
 		

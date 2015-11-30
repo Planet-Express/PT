@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -141,12 +142,12 @@ public class Soubor {
 		}
 	}
 	
-	public static void vytvorStatistiku(String nazev, Counter cas){
+	public static void vytvorStatistiku(String nazev, Counter cas, ArrayList<Planeta> planety){
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));
 			for (int i = 0; i < cas.getStatistikaObjednavek().size(); i++) {
-				writer.println("..............---------/////////|||MÌSÍC "+i+".|||\\\\\\\\\\\\\\\\\\---------..............");
+				writer.println("..............---------/////////|||MÄšSÃC "+i+".|||\\\\\\\\\\\\\\\\\\---------..............");
 				for (int j = 0; j < cas.getStatistikaObjednavek().get(i).size(); j++) {
 					writer.println("Planeta "+cas.getStatistikaObjednavek()
 								.get(i).get(j).getKam().getId()+" {"+
@@ -156,17 +157,22 @@ public class Soubor {
 								.get(i).get(j).getPuvodni());
 					for (int j2 = 0; j2 < cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().size(); j2++) {
 						if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2).getDen()/30==i){
-						writer.println("\tLod "+cas.getStatistikaObjednavek()
-						.get(i).get(j).getKam().getDoruceno().get(j2).getLod().getId()+" doruèila "+cas.getStatistikaObjednavek()
+						writer.println("\tLoÄ "+cas.getStatistikaObjednavek()
+						.get(i).get(j).getKam().getDoruceno().get(j2).getLod().getId()+" doruÄila "+cas.getStatistikaObjednavek()
 						.get(i).get(j).getKam().getDoruceno().get(j2).getKolik());
 						}
 					}
 					Planeta a = cas.getStatistikaObjednavek().get(i).get(j).getKam();
 					if(a.getObyvatelsto().get(i)>a.getObyvatelsto().get(i+1)&&a.getObyvatelsto().size()>i+1){
-						writer.println("\tUmøelo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));
+						writer.println("\tUmÅ™elo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));
 					}
-					System.out.println("FUCK");
+					
 				}
+			}
+			
+			for (int i = 0; i < planety.size(); i++) {
+				writer.println("Planeta "+planety.get(i).getId()+" {"+
+				planety.get(i).getJmeno()+"} vÃ½voj populace "+Arrays.toString(planety.get(i).getObyvatelsto().toArray()));
 			}
 			
 			
