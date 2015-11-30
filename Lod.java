@@ -1,7 +1,5 @@
 package pt;
 
-
-import java.util.ArrayList;
 import java.util.Stack;
 
 
@@ -14,12 +12,12 @@ public class Lod {
 	private int stav = -1;
 	
 	private int id;
-	private Stanice start;
+	private final Stanice start;
 	
 	private double procentaCesty;
 	private Object lokace;
 	private Planeta chciNa;
-	private Stack<Planeta> cil = new Stack<Planeta>();
+	private final Stack<Planeta> cil = new Stack<Planeta>();
 	private Stack<Integer> rozpis = new Stack<Integer>();
 
 	public Lod(Stanice start, int id){
@@ -45,11 +43,11 @@ public class Lod {
 
 	public boolean stihne(Objednavka ob, int den){
 		int cas = (int)(ob.getVzdalenost()/25 + cil.size()*2+2);
+		boolean podminka = true;
 		if(cas+den%30>=30){
-			return false;
-		}else{
-			return true;
+			podminka = false;
 		}
+		return podminka;
 	}
 	
 	public void setStav(int stav) {
@@ -114,10 +112,8 @@ public class Lod {
 				if(this.cil.peek().getCesta().get(0)==(Planeta)this.lokace){this.chciNa = this.cil.peek();}
 				else{
 					for (int i = this.cil.peek().getCesta().size()-1; i >= 0; i--) {
-						if(this.cil.peek().getCesta().get(i)==(Planeta)this.lokace){
-							if((i-1)>=0){
-								this.chciNa = this.cil.peek().getCesta().get(i-1);	
-							}
+						if(this.cil.peek().getCesta().get(i)==(Planeta)this.lokace && (i-1) >= 0){
+							this.chciNa = this.cil.peek().getCesta().get(i-1);	
 						}
 					}
 				}
