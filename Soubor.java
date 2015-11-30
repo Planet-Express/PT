@@ -157,22 +157,25 @@ public class Soubor {
 								cas.getStatistikaObjednavek()
 								.get(i).get(j).getPuvodni());
 					for (int j2 = 0; j2 < cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().size(); j2++) {
-						System.out.println(i+" "+j2);
+						if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2)!=null){
 						if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2).getDen()/30==i){
 						writer.println("\tLoď "+cas.getStatistikaObjednavek()
 						.get(i).get(j).getKam().getDoruceno().get(j2).getLod().getId()+" doručila "+cas.getStatistikaObjednavek()
 						.get(i).get(j).getKam().getDoruceno().get(j2).getKolik());
 						}
+						}
 					}
 					Planeta a = cas.getStatistikaObjednavek().get(i).get(j).getKam();
-					if(a.getObyvatelsto().get(i)>a.getObyvatelsto().get(i+1)&&a.getObyvatelsto().size()>i+1){
-						writer.println("\tUmřelo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));
+					if(a.getObyvatelsto().size()>i+1){
+						if(a.getObyvatelsto().get(i)>a.getObyvatelsto().get(i+1)){
+							writer.println("\tUmřelo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));
+						}
 					}
 					
 				}
 			}
 	
-			for (int i = 0; i < planety.size(); i++) {
+			for (int i = 0; i < planety.size()-5; i++) {
 				writer.println("Planeta "+planety.get(i).getId()+" {"+
 				planety.get(i).getJmeno()+"} vývoj populace "+Arrays.toString(planety.get(i).getObyvatelsto().toArray()));
 			}
@@ -182,7 +185,9 @@ public class Soubor {
 			writer.println("Bylo vyrobeno léků     "+ Arrays.toString(cas.getCelkoveVyrobeno().toArray()));
 			writer.println("z toho ukradeno        "+ Arrays.toString(cas.getCelkoveUkradeno().toArray()));
 		
-		}catch(Exception e){}finally{
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
 			try{writer.close();}finally{}
 		}
 	}

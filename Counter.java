@@ -68,12 +68,13 @@ public class Counter extends Thread{
 							throw new RuntimeException("Byly vyrobeny léky, které jsme nestihli dodat.");
 						}
 					}
+					/*
 					try {
 						this.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					
+					*/
 					
 					
 				}
@@ -464,7 +465,7 @@ public class Counter extends Thread{
 				Objednavka ob = g.getPlanety().get(i).getObjednavka();
 				ob.getKam().zabij(ob.getPotreba());
 				if(celkoveUmrti.size()==mesic){
-					celkoveVyrobeno.add((long)ob.getPotreba());
+					celkoveUmrti.add((long)ob.getPotreba());
 				}else{
 					celkoveUmrti.set(mesic, celkoveUmrti.get(mesic)+ob.getPotreba());
 				}
