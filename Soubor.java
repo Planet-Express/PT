@@ -176,7 +176,11 @@ public class Soubor {
 				planety.get(i).getJmeno()+"} vývoj populace "+Arrays.toString(planety.get(i).getObyvatelsto().toArray()));
 			}
 			
-			
+			writer.println("Vývoj celkové populace "+Arrays.toString(cas.getCelkovaPopulace().toArray()));
+			writer.println("z toho umřelo          "+Arrays.toString(cas.getCelkoveUmrti().toArray()));
+			writer.println("Bylo vyrobeno léků     "+ Arrays.toString(cas.getCelkoveVyrobeno().toArray()));
+			writer.println("z toho ukradeno        "+ Arrays.toString(cas.getCelkoveUkradeno().toArray()));
+
 		
 		}catch(Exception e){}finally{
 			try{writer.close();}finally{}
