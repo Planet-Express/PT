@@ -138,8 +138,14 @@ public class Soubor {
 			}
 		
 		
-		}catch(Exception e){}finally{
-			try{writer.close();}finally{}
+		}catch(Exception e){
+			System.out.println();
+		}finally{
+			try{
+				writer.close();
+			}catch(Exception e){
+				System.out.println(e);
+			}
 		}
 	}
 	
@@ -157,21 +163,18 @@ public class Soubor {
 								cas.getStatistikaObjednavek()
 								.get(i).get(j).getPuvodni());
 					for (int j2 = 0; j2 < cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().size(); j2++) {
-						if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2)!=null){
-						if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2).getDen()/30==i){
-						writer.println("\tLoď "+cas.getStatistikaObjednavek()
-						.get(i).get(j).getKam().getDoruceno().get(j2).getLod().getId()+" doručila "+cas.getStatistikaObjednavek()
-						.get(i).get(j).getKam().getDoruceno().get(j2).getKolik());
-						}
+						if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2)!=null && 
+								cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2).getDen()/30==i){
+							writer.println("\tLoď "+cas.getStatistikaObjednavek()
+									.get(i).get(j).getKam().getDoruceno().get(j2).getLod().getId()+" doručila "+cas.getStatistikaObjednavek()
+									.get(i).get(j).getKam().getDoruceno().get(j2).getKolik());
 						}
 					}
 					Planeta a = cas.getStatistikaObjednavek().get(i).get(j).getKam();
-					if(a.getObyvatelsto().size()>i+1){
-						if(a.getObyvatelsto().get(i)>a.getObyvatelsto().get(i+1)){
-							writer.println("\tUmřelo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));
-						}
+					if(a.getObyvatelsto().size()>i+1 &&
+						a.getObyvatelsto().get(i)>a.getObyvatelsto().get(i+1)){
+						writer.println("\tUmřelo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));	
 					}
-					
 				}
 			}
 	
@@ -188,7 +191,10 @@ public class Soubor {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
-			try{writer.close();}finally{}
+			try{writer.close();
+			}catch(Exception e){
+				System.out.println(e);
+			}
 		}
 	}
 }
