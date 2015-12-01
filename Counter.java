@@ -27,6 +27,14 @@ public class Counter extends Thread{
 		Soubor.initLogger();
 		synchronized (this) {
 			while(true){
+				try {
+					if(mesic==12)
+					{
+					this.wait();
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				setPopulace();
 				////////////////ZACATEK MESICE
 				vytvorObjednavky();
@@ -68,13 +76,10 @@ public class Counter extends Thread{
 							throw new RuntimeException("Byly vyrobeny léky, které jsme nestihli dodat.");
 						}
 					}
-					/*
-					try {
-						this.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					*/
+					
+					
+					
+					
 					
 					
 				}

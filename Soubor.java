@@ -210,7 +210,19 @@ public class Soubor {
 			writer.println("z toho umřelo          "+Arrays.toString(cas.getCelkoveUmrti().toArray()));
 			writer.println("Bylo vyrobeno léků     "+ Arrays.toString(cas.getCelkoveVyrobeno().toArray()));
 			writer.println("z toho ukradeno        "+ Arrays.toString(cas.getCelkoveUkradeno().toArray()));
-		
+			long pocPopulace = cas.getCelkovaPopulace().get(0);
+			long umrelo = cas.getCelkovaPopulace().get(0)-cas.getCelkovaPopulace().get(cas.getCelkovaPopulace().size()-1);
+			float procenta = ((float)umrelo/pocPopulace);
+			writer.println("Za tuto dobu umřelo "+procenta*100+"% obyvatelstva.");
+			long vyrobeno = 0;
+			long ukradeno = 0;
+			for (int i = 0; i < cas.getCelkoveUkradeno().size(); i++) {
+				vyrobeno += cas.getCelkoveVyrobeno().get(i);
+				ukradeno += cas.getCelkoveUkradeno().get(i);
+			}
+			procenta = ((float)ukradeno/vyrobeno);
+			writer.println("Za tuto dobu bylo ukradeno "+(int)(procenta*100)+"% léků.");
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
