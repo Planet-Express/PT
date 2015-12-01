@@ -29,6 +29,7 @@ public class Soubor {
 		try {
 			br = new BufferedReader(new FileReader(new File("Soubor.txt")));
 			try {
+				String nazev;
 				String[] polePlaneta;
 				String[] poleCesta;
 				ArrayList<String[]> poleGalaxie = new ArrayList<String[]>(5005);
@@ -36,7 +37,7 @@ public class Soubor {
 				br.readLine();
 				br.readLine();
 				for(int j = 0; j < 5005; j++){
-					String nazev = br.readLine().trim();
+					nazev = br.readLine().trim();
 					polePlaneta = nazev.split(";");
 					poleGalaxie.add(polePlaneta);
 					nazev = br.readLine().trim();
@@ -44,41 +45,14 @@ public class Soubor {
 					poleCest.add(poleCesta);
 				}
 				System.out.println(System.nanoTime()-time+" -- pole vytvoreno");
-				for (int i = 0; i < poleGalaxie.size(); i++) {					
-					polePlaneta = poleGalaxie.get(i);
-					int id = Integer.parseInt(polePlaneta[0]);
-					int posX = Integer.parseInt(polePlaneta[1]);
-					int posY = Integer.parseInt(polePlaneta[2]);
-					int pop = Integer.parseInt(polePlaneta[3]);
-					if(i<5000){
-						g.getPlanety().add(new Planeta(id, posX, posY, pop));						
-					}
-					else{
-						g.getPlanety().add(new Planeta(id, posX, posY, pop));
-						g.getStanice().add(new Stanice(id, posX, posY));
-					}
-				}
+			
+				vytvorPlanety(g, poleGalaxie);
 				System.out.println(System.nanoTime()-time+" -- planety vytvoreny");
-				for (int i = 0; i < poleGalaxie.size(); i++) {
-					polePlaneta = poleGalaxie.get(i);
-					for (int j = 4; j < polePlaneta.length; j++) {	
- 						int id = Integer.parseInt(polePlaneta[j]);
-						g.getPlanety().get(i).getSousedi().add(g.getPlanety().get(id-1));
-					}						
-				}
+				
+				pridejSousedy(g, poleGalaxie);
 				System.out.println(System.nanoTime()-time+" -- pridani sousedi");
-				for (int i = 0; i < poleCest.size()-5; i++) {
-					poleCesta = poleCest.get(i);
-					Planeta p = g.getPlanety().get(Integer.parseInt(poleCesta[0])-1);
-					p.setVzdalenost(Double.parseDouble(poleCesta[1]));
-					for (int j = 2; j < poleCesta.length; j++) {
-						if(j<(poleCesta.length-1)){
-							p.cesta.add(g.getPlanety().get(Integer.parseInt(poleCesta[j])-1));
-						}else{
-							p.cesta.add(g.getStanice().get(Integer.parseInt(poleCesta[j])-5001));
-						}
-					}
-				}
+				
+				pridejCesty(g, poleCest);
 				System.out.println(System.nanoTime()-time+" -- pridana min cesta");
 				g.vytvorCesty(g.getPlanety());
 				g.generujNebezpecneCesty();
@@ -97,6 +71,55 @@ public class Soubor {
 		return g;
 	}
 	
+	private static void pridejCesty(Galaxie g, List<String[]> poleCest) {
+		String[] poleCesta;
+		for (int i = 0; i < poleCest.size()-5; i++) {
+			poleCesta = poleCest.get(i);
+			Planeta p = g.getPlanety().get(Integer.parseInt(poleCesta[0])-1);
+			p.setVzdalenost(Double.parseDouble(poleCesta[1]));
+			for (int j = 2; j < poleCesta.length; j++) {
+				if(j<(poleCesta.length-1)){
+					p.cesta.add(g.getPlanety().get(Integer.parseInt(poleCesta[j])-1));
+				}else{
+					p.cesta.add(g.getStanice().get(Integer.parseInt(poleCesta[j])-5001));
+				}
+			}
+		}
+		
+	}
+
+	private static void pridejSousedy(Galaxie g, List<String[]> poleGalaxie) {
+		String[] polePlaneta;
+		for (int i = 0; i < poleGalaxie.size(); i++) {
+			polePlaneta = poleGalaxie.get(i);
+			for (int j = 4; j < polePlaneta.length; j++) {	
+					int id = Integer.parseInt(polePlaneta[j]);
+				g.getPlanety().get(i).getSousedi().add(g.getPlanety().get(id-1));
+			}						
+		}
+
+		
+	}
+
+	private static void vytvorPlanety(Galaxie g, List<String[]> poleGalaxie) {
+		String[] polePlaneta;
+		for (int i = 0; i < poleGalaxie.size(); i++) {					
+			polePlaneta = poleGalaxie.get(i);
+			int id = Integer.parseInt(polePlaneta[0]);
+			int posX = Integer.parseInt(polePlaneta[1]);
+			int posY = Integer.parseInt(polePlaneta[2]);
+			int pop = Integer.parseInt(polePlaneta[3]);
+			if(i<5000){
+				g.getPlanety().add(new Planeta(id, posX, posY, pop));						
+			}
+			else{
+				g.getPlanety().add(new Planeta(id, posX, posY, pop));
+				g.getStanice().add(new Stanice(id, posX, posY));
+			}
+		}
+		
+	}
+
 	public static Logger getLogger(){
 		return LOGGER;
 	}
