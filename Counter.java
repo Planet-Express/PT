@@ -27,6 +27,7 @@ public class Counter extends Thread{
 		Soubor.initLogger();
 		synchronized (this) {
 			while(true){
+				
 				try {
 					if(mesic==12)
 					{
@@ -41,32 +42,10 @@ public class Counter extends Thread{
 				for (int i = 0; i < 30; i++) {
 					////////////// ZACATEK DNE
 					Soubor.getLogger().log(Level.SEVERE, "Začíná den "+(den+1)+", měsíc "+(mesic));
-					for (int j = 0; j < objednavky.size(); j++) {
-							if(!objednavky.get(j).getKam().isMrtva()){
-									obsluzObjednavku(j, den);
-									}
-					}
-					for (int j = 0; j < lode.size(); j++) {
-						posunLeticiLod(lode.get(j));
-						vylozLod(lode.get(j));
-						
-					}
-					/*
-					for (int j = 0; j < g.getStanice().size(); j++) {
-						for (int j2 = 0; j2 < g.getStanice().get(j).getDok().size(); j2++) {
-							if(g.getStanice().get(j).getDok().get(j2).getStav()==-1){
-								System.out.println(g.getStanice().get(j).getDok().get(j2).getId());
-							}
-						}
-					}	
-					*/				
+					obsluzVsechnyObjednavky();
+					posunVsechnyLode();		
 					den++;
-					Platform.runLater(new Runnable() {
-				            @Override
-				            public void run() {
-				            	gui.prekresliPlatno();
-				            }
-				    });    
+					prekresliPlatno(); 
 					Soubor.getLogger().log(Level.SEVERE, "Den "+den+" skončil");
 					zacniVykladatLode();
 					vysliNalozeneLode();
@@ -77,15 +56,34 @@ public class Counter extends Thread{
 						}
 					}
 					
-					
-					
-					
-					
-					
 				}
 				mesic++;
 			}
 		}
+	}
+	
+	public void posunVsechnyLode(){
+		for (int j = 0; j < lode.size(); j++) {
+			posunLeticiLod(lode.get(j));
+			vylozLod(lode.get(j));
+		}	
+	}
+	
+	public void obsluzVsechnyObjednavky(){
+		for (int j = 0; j < objednavky.size(); j++) {
+			if(!objednavky.get(j).getKam().isMrtva()){
+					obsluzObjednavku(j, den);
+					}
+	}
+	}
+	
+	public void prekresliPlatno(){
+		Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+            	gui.prekresliPlatno();
+            }
+    }); 
 	}
 	
 	public List<Long> getCelkoveVyrobeno(){

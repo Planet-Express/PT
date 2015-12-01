@@ -172,35 +172,38 @@ public class Soubor {
 		}
 	}
 	
+	public static void vytvorStatistikuObjednavek(Counter cas, PrintWriter writer){
+		for (int i = 0; i < cas.getStatistikaObjednavek().size(); i++) {
+			writer.println("..............---------/////////|||MĚSÍC "+i+".|||\\\\\\\\\\\\\\\\\\---------..............");
+			for (int j = 0; j < cas.getStatistikaObjednavek().get(i).size(); j++) {
+				writer.println("Planeta "+cas.getStatistikaObjednavek()
+							.get(i).get(j).getKam().getId()+" {"+
+							cas.getStatistikaObjednavek()
+							.get(i).get(j).getKam().getJmeno()+"} si objednala "+
+							cas.getStatistikaObjednavek()
+							.get(i).get(j).getPuvodni());
+				for (int j2 = 0; j2 < cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().size(); j2++) {
+					if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2)!=null && 
+							cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2).getDen()/30==i){
+						writer.println("\tLoď "+cas.getStatistikaObjednavek()
+								.get(i).get(j).getKam().getDoruceno().get(j2).getLod().getId()+" doručila "+cas.getStatistikaObjednavek()
+								.get(i).get(j).getKam().getDoruceno().get(j2).getKolik());
+					}
+				}
+				Planeta a = cas.getStatistikaObjednavek().get(i).get(j).getKam();
+				if(a.getObyvatelsto().size()>i+1 &&
+					a.getObyvatelsto().get(i)>a.getObyvatelsto().get(i+1)){
+					writer.println("\tUmřelo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));	
+				}
+			}
+		}
+	}
+	
 	public static void vytvorStatistiku(String nazev, Counter cas, List<Planeta> planety){
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));
-			for (int i = 0; i < cas.getStatistikaObjednavek().size(); i++) {
-				writer.println("..............---------/////////|||MĚSÍC "+i+".|||\\\\\\\\\\\\\\\\\\---------..............");
-				for (int j = 0; j < cas.getStatistikaObjednavek().get(i).size(); j++) {
-					writer.println("Planeta "+cas.getStatistikaObjednavek()
-								.get(i).get(j).getKam().getId()+" {"+
-								cas.getStatistikaObjednavek()
-								.get(i).get(j).getKam().getJmeno()+"} si objednala "+
-								cas.getStatistikaObjednavek()
-								.get(i).get(j).getPuvodni());
-					for (int j2 = 0; j2 < cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().size(); j2++) {
-						if(cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2)!=null && 
-								cas.getStatistikaObjednavek().get(i).get(j).getKam().getDoruceno().get(j2).getDen()/30==i){
-							writer.println("\tLoď "+cas.getStatistikaObjednavek()
-									.get(i).get(j).getKam().getDoruceno().get(j2).getLod().getId()+" doručila "+cas.getStatistikaObjednavek()
-									.get(i).get(j).getKam().getDoruceno().get(j2).getKolik());
-						}
-					}
-					Planeta a = cas.getStatistikaObjednavek().get(i).get(j).getKam();
-					if(a.getObyvatelsto().size()>i+1 &&
-						a.getObyvatelsto().get(i)>a.getObyvatelsto().get(i+1)){
-						writer.println("\tUmřelo "+(a.getObyvatelsto().get(i)-a.getObyvatelsto().get(i+1)));	
-					}
-				}
-			}
-	
+			vytvorStatistikuObjednavek(cas,writer);
 			for (int i = 0; i < planety.size()-5; i++) {
 				writer.println("Planeta "+planety.get(i).getId()+" {"+
 				planety.get(i).getJmeno()+"} vývoj populace "+Arrays.toString(planety.get(i).getObyvatelsto().toArray()));
