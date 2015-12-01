@@ -21,7 +21,7 @@ public class Hlavni extends Application{
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage){
 		Scene s = new Scene(gui.createScene(g));
 		primaryStage.setScene(s);
 		primaryStage.show();
