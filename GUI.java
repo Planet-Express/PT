@@ -65,8 +65,19 @@ public class GUI{
 		TextField tf = new TextField("Zadej objednávku");
 		Button objednat = new Button("Objednat");
 		objednat.setOnAction(event ->{
-		System.out.println("objednáno: " + tf.getText());
-		oPlaneta.getPlaneta().getObjednavka().setKolik(Integer.parseInt(tf.getText()));});
+			if(tf.getText().length() < 10){
+				if(oPlaneta.getPlaneta().getId() > 0 && oPlaneta.getPlaneta().getId() < 5001){
+					oPlaneta.getPlaneta().getObjednavka().setKolik(Integer.parseInt(tf.getText() + oPlaneta.getPlaneta().getObjednavka().getKolik()));
+					System.out.println("objednáno: " + tf.getText());	
+				}
+				else{
+					System.out.println("nebyla vybrána planeta");
+				}
+			}
+			else{
+				System.out.println("Příliš velká objednávka");
+			}
+		});
 		vb.setPrefWidth(300);
 		tv = getTableView();
 		vb.getChildren().addAll(getTree(), oLabel, tf, objednat, tv);
