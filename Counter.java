@@ -22,6 +22,7 @@ public class Counter extends Thread{
 	int den = 0;
 	int mesic = 0;
 	final int RYCHLOST = 25;
+	final int UNOSNOST = 5000000;
 	public void run(){
 		Soubor.initLogger();
 		synchronized (this) {
@@ -295,32 +296,11 @@ public class Counter extends Thread{
 	}
 	
 	public void dohledejObjednavkyPoCeste(Lod lod, Objednavka ob){
-		int unosnost = 5000000;
 		Lod l = lod;
 		naplnLod(l, ob, ob.getPotreba());
 		for (int j = 0; j < ob.getKam().getCesta().size()-1; j++) {
-			if(l.getNaklad()<unosnost&&l.stihne(ob, den)){
-				for (int j2 = 0; j2 < objednavky.size(); j2++) {
-					Objednavka dalsiOb = objednavky.get(j2);
-					Planeta dalsiP = ob.getKam().getCesta().get(j);
-					if(dalsiOb.getKam().equals(dalsiP)&&l.stihne(ob, den)){
-						if((dalsiOb.getPotreba()+l.getNaklad())<unosnost){
-							naplnLod(l, dalsiOb, dalsiOb.getPotreba());
-						//	System.out.println("2. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
-							if(unosnost-l.getNaklad()!=0){
-								break;
-								}
-						}else{
-							naplnLod(l, dalsiOb, unosnost-l.getNaklad());
-						//	System.out.println("3. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
-							ob.getOd().getDok().pop();
-							logLod(l,den);
-							l=getLod(ob.getOd());
-							break;
-							
-						}
-					}
-				}
+			if(l.getNaklad()<UNOSNOST&&l.stihne(ob, den)){
+				projdiPlanetyPoCeste(l, ob, j);
 			}
 		}
 		if(ob.getOd().getDok().size()>0 && ob.getOd().getDok().peek().getNaklad()>0){
@@ -330,10 +310,34 @@ public class Counter extends Thread{
 		}
 	}
 	
+	public void projdiPlanetyPoCeste(Lod lod, Objednavka ob, int j){
+		Lod l = lod;
+		for (int j2 = 0; j2 < objednavky.size(); j2++) {
+			Objednavka dalsiOb = objednavky.get(j2);
+			Planeta dalsiP = ob.getKam().getCesta().get(j);
+			if(dalsiOb.getKam().equals(dalsiP)&&l.stihne(ob, den)){
+				if((dalsiOb.getPotreba()+l.getNaklad())<UNOSNOST){
+					naplnLod(l, dalsiOb, dalsiOb.getPotreba());
+				//	System.out.println("2. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
+					if(UNOSNOST-l.getNaklad()!=0){
+						break;
+						}
+				}else{
+					naplnLod(l, dalsiOb, UNOSNOST-l.getNaklad());
+				//	System.out.println("3. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
+					ob.getOd().getDok().pop();
+					logLod(l,den);
+					l=getLod(ob.getOd());
+					break;
+					
+				}
+			}
+		}
+	}
+	
 	public void obsluzObjednavku(int kterou, int den){
 		Objednavka ob = objednavky.get(kterou);
 		while(ob.getPotreba()>0){
-			int unosnost = 5000000;
 			Lod l = getLod(ob.getOd());
 			if(l.getNaklad()!=0){
 				ob.getOd().getDok().pop();
@@ -341,8 +345,8 @@ public class Counter extends Thread{
 				l = getLod(ob.getOd());
 				}
 			if(l.stihne(ob, den)){
-				if((ob.getPotreba()+l.getNaklad())>unosnost){
-					naplnLod(l, ob, unosnost);
+				if((ob.getPotreba()+l.getNaklad())>UNOSNOST){
+					naplnLod(l, ob, UNOSNOST);
 					l.getStart().getDok().pop();
 					l = getLod(ob.getOd());
 				//System.out.println("1. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
