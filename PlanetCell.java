@@ -10,7 +10,12 @@ public class PlanetCell extends TreeCell<Planeta> {
 		if (empty || planeta == null) {
 			setText(null);
 		} else {
-			setText(planeta.toString());
+			if(planeta.getId() > 5000){
+				setText("Stanice " + Integer.toString((planeta.getId()-5000)));
+			}
+			else{
+				setText(planeta.toString());
+			}
 		}
 	}
 }

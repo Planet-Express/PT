@@ -13,7 +13,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -76,41 +75,33 @@ public class GUI{
 
 	private TableView<Lod> getTableView() {
 		TableView<Lod> tableView = new TableView<Lod>();
-		TableColumn<Lod, Integer> id = new TableColumn<Lod, Integer>("Id");
-		TableColumn<Lod, Integer> naklad = new TableColumn<Lod, Integer>("Naklad");
-		TableColumn<Lod, Integer> stav = new TableColumn<Lod, Integer>("Stav");
+		
+		tableView.getColumns().addAll(getColumnId(), getColumnNaklad(), getColumnStav(), getColumnStanice());
+		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		tableView.setItems(getLode());
+		return tableView;
+	}
+
+
+	private TableColumn<Lod, Stanice> getColumnStanice() {
+
 		TableColumn<Lod, Stanice> stanice = new TableColumn<Lod, Stanice>("Stanice");
-		
-		id.setCellValueFactory(new PropertyValueFactory<Lod, Integer>("id"));
-		id.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
-			public String toString(Integer arg0) {
-				return arg0 + "";
+		stanice.setCellValueFactory(new PropertyValueFactory<Lod, Stanice>("start"));
+		stanice.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Stanice>() {
+			public String toString(Stanice arg0) {
+				return "Stanice " + (arg0.getId()-5000);
 			}
-			public Integer fromString(String arg0){ 
-				try{
-					return Integer.parseInt((arg0));
-				}
-				catch(NumberFormatException nfe){
-					return 0;
-				}
+			@Override
+			public Stanice fromString(String arg0) {
+				return null;
 			}
 		}));
-		
-		naklad.setCellValueFactory(new PropertyValueFactory<Lod, Integer>("naklad"));
-		naklad.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
-			public String toString(Integer arg0) {
-				return arg0 + "";
-			}
-			public Integer fromString(String arg0){ 
-				try{
-					return Integer.parseInt((arg0));
-				}
-				catch(NumberFormatException nfe){
-					return 0;
-				}
-			}
-		}));
-		
+		return stanice;
+	}
+
+
+	private TableColumn<Lod, Integer> getColumnStav() {
+		TableColumn<Lod, Integer> stav = new TableColumn<Lod, Integer>("Stav");
 		stav.setCellValueFactory(new PropertyValueFactory<Lod, Integer>("stav"));
 		stav.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
 			public String toString(Integer arg0) {
@@ -126,23 +117,47 @@ public class GUI{
 			}
 		}));
 		
-		stanice.setCellValueFactory(new PropertyValueFactory<Lod, Stanice>("start"));
-		stanice.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Stanice>() {
-			public String toString(Stanice arg0) {
-				return "Stanice" + (arg0.getId()-5000);
-			}
+		return stav;
+	}
 
-			@Override
-			public Stanice fromString(String arg0) {
-				return null;
+
+	private TableColumn<Lod, Integer> getColumnNaklad() {
+		TableColumn<Lod, Integer> naklad = new TableColumn<Lod, Integer>("Naklad");
+		naklad.setCellValueFactory(new PropertyValueFactory<Lod, Integer>("naklad"));
+		naklad.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+			public String toString(Integer arg0) {
+				return arg0 + "";
+			}
+			public Integer fromString(String arg0){ 
+				try{
+					return Integer.parseInt((arg0));
+				}
+				catch(NumberFormatException nfe){
+					return 0;
+				}
 			}
 		}));
-		
-		tableView.getColumns().addAll(id, naklad, stav, stanice);
-		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		tableView.setItems(getLode());
-		return tableView;
+		return naklad;
+	}
+
+
+	private TableColumn<Lod, Integer> getColumnId() {
+		TableColumn<Lod, Integer> id = new TableColumn<Lod, Integer>("Id");
+		id.setCellValueFactory(new PropertyValueFactory<Lod, Integer>("id"));
+		id.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+			public String toString(Integer arg0) {
+				return arg0 + "";
+			}
+			public Integer fromString(String arg0){ 
+				try{
+					return Integer.parseInt((arg0));
+				}
+				catch(NumberFormatException nfe){
+					return 0;
+				}
+			}
+		}));
+		return id;
 	}
 
 
