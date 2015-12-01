@@ -21,17 +21,6 @@ public class Galaxie{
 	public Galaxie(int delka, int pocet){
 		this.pocet = pocet;
 		this.delka = delka;
-		/**
-		//VYPIS VSECH SOUSEDU PO VZDALENOSTECH
-		for (int i = 0; i < planety.size(); i++) {
-			
-			for (int j = 0; j < planety.get(i).getSousedi().size(); j++) {
-				System.out.print("|"+vzdalenostPlanet(planety.get(i), planety.get(i).getSousedi().get(j))+"|");
-			}
-			System.out.println(:D);
-		}
-		**/
-		
 	}
 	
 	public void generujVesmir(){
@@ -72,26 +61,10 @@ public class Galaxie{
 			x = randomRange(0, delka);
 			y = randomRange(0, delka);
 			
-				if(planety.size()==0){
-					lze = true;
-					}
-				for (int i = 0; i < planety.size(); i++) {
-					double vzdalenost = vzdalenostBodu(planety.get(i), x, y);
-					if(vzdalenost<=3){break;}
-					
-					if((i+1)==planety.size()){lze = true;}
-				}
-				//Kontrola se stanicemi
-				for (int j = 0; j < stanice.size(); j++) {
-					double vzdalenostStanice = vzdalenostBodu(stanice.get(j),x,y);
-					if(vzdalenostStanice<=4){
-						lze = false;
-						break;
-					}
-				}
-				if(counter==99){
-					System.out.println("Planeta "+id+" se do galaxie nevesla");
-				}
+			lze = testRozlozeni(x, y);
+			if(counter==99){
+				System.out.println("Planeta "+id+" se do galaxie nevesla");
+			}
 		}
 		
 		int populace = generujPopulaci();
@@ -99,6 +72,28 @@ public class Galaxie{
 		return p;
 	}
 	
+	private boolean testRozlozeni(int x, int y) {
+		boolean lze = false;
+		if(planety.size()==0){
+			lze = true;
+			}
+		for (int i = 0; i < planety.size(); i++) {
+			double vzdalenost = vzdalenostBodu(planety.get(i), x, y);
+			if(vzdalenost<=3){break;}
+			
+			if((i+1)==planety.size()){lze = true;}
+		}
+		//Kontrola se stanicemi
+		for (int j = 0; j < stanice.size(); j++) {
+			double vzdalenostStanice = vzdalenostBodu(stanice.get(j),x,y);
+			if(vzdalenostStanice<=4){
+				lze = false;
+				break;
+			}
+		}
+		return lze;
+	}
+
 	public void dohledejSousedy(List<Planeta> planety){
 		for (int i = 0; i < planety.size(); i++) {
 			Planeta a = planety.get(i);
