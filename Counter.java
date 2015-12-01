@@ -1,7 +1,6 @@
 package pt;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
@@ -156,17 +155,7 @@ public class Counter extends Thread{
 		//System.out.println("Lod "+l.getId()+" byla okradena. "+ okradeno +" za tento rok.");
 	}
 	
-	public void posunLeticiLod(Lod l){
-		if(l.getStav() == 0){
-			if(l.getCil().size()>0){
-				Soubor.getLogger().log(Level.FINE,"Lod č."+l.getId()+
-					" letí na "+Arrays.toString(l.getCil().toArray())+
-					" s nakladem "+l.getNaklad());
-			}else{
-				Soubor.getLogger().log(Level.FINE,"Lod č."+l.getId()+
-						" se vrací do Stanice.");
-				
-			}
+	public void vratiSeNaStanici(Lod l){
 		l.setChciNa();
 		if(l.getLokace() instanceof Planeta &&
 		((Planeta)l.getLokace()).getId() == l.getChciNa().getId()&&l.getChciNa().getId()>5000&&l.getCil().size()==0 
@@ -176,72 +165,93 @@ public class Counter extends Thread{
 			l.resetLod();
 			
 		}
-		double doleti = RYCHLOST;
-		if(l.getStav()==0){
-			l.setChciNa();
-			double cesta = 0;
-			double velikost = 0;
-			if(l.getLokace() instanceof Planeta){
-				cesta = g.vzdalenostPlanet((Planeta)l.getLokace(), l.getChciNa());
+	}
+	
+	public double[] letDokudMuzes(Lod l,double c,double d, double v){
+		double cesta = c;
+		double doleti = d;
+		double velikost = v;
+		while(cesta<doleti){
+			if(budeOkradena(l)){
+				break;
 			}else{
-				velikost = g.vzdalenostPlanet(((Cesta)l.getLokace()).getOd(),((Cesta)l.getLokace()).getKam());
-				cesta = velikost - velikost*l.getProcentaCesty();
-			}
-			while(cesta<doleti){
-				if(budeOkradena(l)){
-					break;
-				}else{
-					l.setLokace(l.getChciNa());
-					l.setChciNa();
-					doleti-=cesta;
-					if(l.getLokace() instanceof Planeta){
-						if(l.getCil().size()>0){
-							if(l.getLokace().equals(l.getCil().peek())){
-								l.setStav(2);
-								cesta = 0;
-								break;
-							}
-							else{
-								cesta = g.vzdalenostPlanet((Planeta)l.getLokace(), l.getChciNa());
-							}
-						}else{
-							if(((Planeta)l.getLokace()).getId() == l.getStart().getId()){
-								if(l.getStav()!=-1){
-								l.getStart().getDok().push(l);
-								l.setStav(-1);
-								l.resetLod();
-								}
-								break;
-							}
+				l.setLokace(l.getChciNa());
+				l.setChciNa();
+				doleti-=cesta;
+				if(l.getLokace() instanceof Planeta){
+					if(l.getCil().size()>0){
+						if(l.getLokace().equals(l.getCil().peek())){
+							l.setStav(2);
+							cesta = 0;
+							break;
+						}
+						else{
+							cesta = g.vzdalenostPlanet((Planeta)l.getLokace(), l.getChciNa());
 						}
 					}else{
-						velikost = g.vzdalenostPlanet(((Cesta)l.getLokace()).getOd(),((Cesta)l.getLokace()).getKam());
-						cesta = velikost - velikost*l.getProcentaCesty();
-					}
-				}				
-			}	
-			if(cesta>=doleti&&cesta!=0){		// zustavam na ceste
-				if(l.getLokace() instanceof Planeta){
-					l.setChciNa();
-					if(!budeOkradena(l)){
-						if(!l.getLokace().equals(l.getChciNa())){
-						l.setLokace(najdiCestu((Planeta)l.getLokace(), l.getChciNa()));
-						l.setProcentaCesty(1-((cesta-doleti)/cesta));
-						}
-						if(cesta==doleti){
-							l.setLokace(l.getChciNa());
-							l.setChciNa();
+						if(((Planeta)l.getLokace()).getId() == l.getStart().getId()){
+							if(l.getStav()!=-1){
+							l.getStart().getDok().push(l);
+							l.setStav(-1);
+							l.resetLod();
+							}
+							break;
 						}
 					}
 				}else{
-					l.setProcentaCesty(l.getProcentaCesty()+(1-(cesta-doleti)/velikost));
+					velikost = g.vzdalenostPlanet(((Cesta)l.getLokace()).getOd(),((Cesta)l.getLokace()).getKam());
+					cesta = velikost - velikost*l.getProcentaCesty();
+				}
+			}				
+		}	
+		return new double[]{cesta,doleti,velikost};
+	}
+	
+	public void posunLeticiLod(Lod l){
+		if(l.getStav() == 0){
+			logLod(l, den);
+			vratiSeNaStanici(l);
+			double doleti = RYCHLOST;
+			if(l.getStav()==0){
+				l.setChciNa();
+				double cesta = 0;
+				double velikost = 0;
+				if(l.getLokace() instanceof Planeta){
+					cesta = g.vzdalenostPlanet((Planeta)l.getLokace(), l.getChciNa());
+				}else{
+					velikost = g.vzdalenostPlanet(((Cesta)l.getLokace()).getOd(),((Cesta)l.getLokace()).getKam());
+					cesta = velikost - velikost*l.getProcentaCesty();
+				}
+				double[] pole = letDokudMuzes(l,cesta,doleti, velikost);
+				cesta = pole[0];
+				doleti = pole[1];
+				velikost = pole[2];
+				nastavKdeJsiSkoncila(l,cesta,doleti,velikost);
+			}
+		}
+	}
+	
+	public void nastavKdeJsiSkoncila(Lod l, double cesta, double doleti, double velikost){
+		if(cesta>=doleti&&cesta!=0){		// zustavam na ceste
+			if(l.getLokace() instanceof Planeta){
+				l.setChciNa();
+				if(!budeOkradena(l)){
+					if(!l.getLokace().equals(l.getChciNa())){
+					l.setLokace(najdiCestu((Planeta)l.getLokace(), l.getChciNa()));
+					l.setProcentaCesty(1-((cesta-doleti)/cesta));
+					}
 					if(cesta==doleti){
 						l.setLokace(l.getChciNa());
 						l.setChciNa();
 					}
 				}
+			}else{
+				l.setProcentaCesty(l.getProcentaCesty()+(1-(cesta-doleti)/velikost));
+				if(cesta==doleti){
+					l.setLokace(l.getChciNa());
+					l.setChciNa();
+				}
 			}
-		}
 		}
 	}
 	
@@ -284,6 +294,42 @@ public class Counter extends Thread{
 		return false;
 	}
 	
+	public void dohledejObjednavkyPoCeste(Lod lod, Objednavka ob){
+		int unosnost = 5000000;
+		Lod l = lod;
+		naplnLod(l, ob, ob.getPotreba());
+		for (int j = 0; j < ob.getKam().getCesta().size()-1; j++) {
+			if(l.getNaklad()<unosnost&&l.stihne(ob, den)){
+				for (int j2 = 0; j2 < objednavky.size(); j2++) {
+					Objednavka dalsiOb = objednavky.get(j2);
+					Planeta dalsiP = ob.getKam().getCesta().get(j);
+					if(dalsiOb.getKam().equals(dalsiP)&&l.stihne(ob, den)){
+						if((dalsiOb.getPotreba()+l.getNaklad())<unosnost){
+							naplnLod(l, dalsiOb, dalsiOb.getPotreba());
+						//	System.out.println("2. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
+							if(unosnost-l.getNaklad()!=0){
+								break;
+								}
+						}else{
+							naplnLod(l, dalsiOb, unosnost-l.getNaklad());
+						//	System.out.println("3. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
+							ob.getOd().getDok().pop();
+							logLod(l,den);
+							l=getLod(ob.getOd());
+							break;
+							
+						}
+					}
+				}
+			}
+		}
+		if(ob.getOd().getDok().size()>0 && ob.getOd().getDok().peek().getNaklad()>0){
+			ob.getOd().getDok().pop();
+			logLod(l,den);
+			l = getLod(ob.getOd());
+		}
+	}
+	
 	public void obsluzObjednavku(int kterou, int den){
 		Objednavka ob = objednavky.get(kterou);
 		while(ob.getPotreba()>0){
@@ -301,37 +347,7 @@ public class Counter extends Thread{
 					l = getLod(ob.getOd());
 				//System.out.println("1. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
 				}else{
-					naplnLod(l, ob, ob.getPotreba());
-					for (int j = 0; j < ob.getKam().getCesta().size()-1; j++) {
-						if(l.getNaklad()<unosnost&&l.stihne(ob, den)){
-							for (int j2 = 0; j2 < objednavky.size(); j2++) {
-								Objednavka dalsiOb = objednavky.get(j2);
-								Planeta dalsiP = ob.getKam().getCesta().get(j);
-								if(dalsiOb.getKam().equals(dalsiP)&&l.stihne(ob, den)){
-									if((dalsiOb.getPotreba()+l.getNaklad())<unosnost){
-										naplnLod(l, dalsiOb, dalsiOb.getPotreba());
-									//	System.out.println("2. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
-										if(unosnost-l.getNaklad()!=0){
-											break;
-											}
-									}else{
-										naplnLod(l, dalsiOb, unosnost-l.getNaklad());
-									//	System.out.println("3. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
-										ob.getOd().getDok().pop();
-										logLod(l,den);
-										l=getLod(ob.getOd());
-										break;
-										
-									}
-								}
-							}
-						}
-					}
-					if(ob.getOd().getDok().size()>0 && ob.getOd().getDok().peek().getNaklad()>0){
-						ob.getOd().getDok().pop();
-						logLod(l,den);
-						l = getLod(ob.getOd());
-					}
+					dohledejObjednavkyPoCeste(l, ob);
 				}
 			}else{break;}
 		}
@@ -385,6 +401,10 @@ public class Counter extends Thread{
 				" veze "+l.getNaklad()+" léků na "+l.getCil().size()+
 				" planet. Loď je naplněna z "+(int)(l.getNaklad()/50000.0)+
 				"%."+" Lod č."+l.getId()+" doručí svůj celý náklad "+cas+" den. A vrátí se "+casB+" den.");
+		}else{
+			Soubor.getLogger().log(Level.FINE,"Lod č."+l.getId()+
+					" se vrací do Stanice.");
+			
 		}
 	}
 	
