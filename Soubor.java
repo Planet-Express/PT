@@ -203,12 +203,6 @@ public class Soubor {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(nazev+".txt")));
-			vytvorStatistikuObjednavek(cas,writer);
-			for (int i = 0; i < planety.size()-5; i++) {
-				writer.println("Planeta "+planety.get(i).getId()+" {"+
-				planety.get(i).getJmeno()+"} vývoj populace "+Arrays.toString(planety.get(i).getObyvatelsto().toArray()));
-			}
-			
 			writer.println("Vývoj celkové populace "+Arrays.toString(cas.getCelkovaPopulace().toArray()));
 			writer.println("z toho umřelo          "+Arrays.toString(cas.getCelkoveUmrti().toArray()));
 			writer.println("Bylo vyrobeno léků     "+ Arrays.toString(cas.getCelkoveVyrobeno().toArray()));
@@ -225,6 +219,17 @@ public class Soubor {
 			}
 			procenta = ((float)ukradeno/vyrobeno);
 			writer.println("Za tuto dobu bylo ukradeno "+(int)(procenta*100)+"% léků.");
+			writer.println("Využití lodí:");
+			for (int i = 0; i < cas.getPouzitoLodi().size(); i++) {
+				writer.println(cas.getPouzitoLodi().get(i)/(double)cas.getLode().size()*100+"%");
+			}
+			
+			vytvorStatistikuObjednavek(cas,writer);
+			for (int i = 0; i < planety.size()-5; i++) {
+				writer.println("Planeta "+planety.get(i).getId()+" {"+
+				planety.get(i).getJmeno()+"} vývoj populace "+Arrays.toString(planety.get(i).getObyvatelsto().toArray()));
+			}
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();

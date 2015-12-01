@@ -18,7 +18,8 @@ public class Counter extends Thread{
 	List<Long> celkoveUkradeno = new ArrayList<Long>();
 	List<Long> celkovaPopulace = new ArrayList<Long>();
 	List<Long> celkoveUmrti = new ArrayList<Long>();
-
+	List<Integer> pouzitoLodi = new ArrayList<Integer>();
+	
 	int den = 0;
 	int mesic = 0;
 	final int RYCHLOST = 25;
@@ -29,7 +30,7 @@ public class Counter extends Thread{
 			while(true){
 				
 				try {
-					if(mesic==12)
+					if(false)
 					{
 					this.wait();
 					}
@@ -57,19 +58,42 @@ public class Counter extends Thread{
 					}
 					
 				}
+				setPouzitiLodi();
+				nastavPouzitiLodi(false);
 				mesic++;
 			}
 		}
 	}
 	
-	public void posunVsechnyLode(){
+	private void posunVsechnyLode(){
 		for (int j = 0; j < lode.size(); j++) {
 			posunLeticiLod(lode.get(j));
 			vylozLod(lode.get(j));
 		}	
 	}
 	
-	public void obsluzVsechnyObjednavky(){
+	private void nastavPouzitiLodi(boolean flag){
+		for (int i = 0; i < lode.size(); i++) {
+			lode.get(i).setPouzita(flag);
+		}
+	}
+	
+	private void setPouzitiLodi(){
+		int pouziti = 0;
+		for (int i = 0; i < lode.size(); i++) {
+			if(lode.get(i).getPouzita()){
+				pouziti++;
+			}
+		}
+		pouzitoLodi.add(pouziti);
+		
+	}
+	
+	public List<Integer> getPouzitoLodi(){
+		return this.pouzitoLodi;
+	}
+	
+	private void obsluzVsechnyObjednavky(){
 		for (int j = 0; j < objednavky.size(); j++) {
 			if(!objednavky.get(j).getKam().isMrtva()){
 					obsluzObjednavku(j, den);
@@ -77,7 +101,7 @@ public class Counter extends Thread{
 	}
 	}
 	
-	public void prekresliPlatno(){
+	private void prekresliPlatno(){
 		Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -447,10 +471,13 @@ public class Counter extends Thread{
 		if(s.getDok().size()==0){
 			Lod l = new Lod(s, counter);
 			counter++;
+			l.setPouzita(true);
 			lode.add(l);
 			Soubor.getLogger().log(Level.INFO, "Proběhla výroba nové lodi č."+counter+" v doku Stanice "+(s.getId()-5000));
 			return l;
-		}else{return s.getDok().peek();}
+		}else{
+			s.getDok().peek().setPouzita(true);
+			return s.getDok().peek();}
 	}
 	
 	public List<Objednavka> getObjednavky(){

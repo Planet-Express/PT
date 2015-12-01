@@ -19,7 +19,8 @@ public class Lod {
 	private Planeta chciNa;
 	private final Stack<Planeta> cil = new Stack<Planeta>();
 	private Stack<Integer> rozpis = new Stack<Integer>();
-
+	boolean pouzita = false;
+	
 	public Lod(Stanice start, int id){
 		this.id = id;
 		this.posX = start.getPosX();
@@ -27,6 +28,14 @@ public class Lod {
 		this.lokace = start;
 		this.start = start;
 		start.getDok().push(this);
+	}
+	
+	public boolean getPouzita(){
+		return this.pouzita;
+	}
+	
+	public void setPouzita(boolean flag){
+		this.pouzita = flag;
 	}
 	
 	public int getId() {

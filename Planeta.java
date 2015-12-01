@@ -107,7 +107,7 @@ public class Planeta{
 		this.obyvatelsto.add(pop);
 		if(this.pop<40000){
 			mrtva = true;
-			System.out.println("Na planetu "+id+" u� nem� cenu let�t.");
+			System.out.println("Na planetu "+id+" už nemá cenu letět.");
 		}
 	}
 	
