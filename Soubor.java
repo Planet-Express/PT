@@ -162,12 +162,12 @@ public class Soubor {
 		
 		
 		}catch(Exception e){
-			System.out.println();
+			e.printStackTrace();
 		}finally{
 			try{
 				writer.close();
 			}catch(Exception e){
-				System.out.println(e);
+				e.printStackTrace();
 			}
 		}
 	}
@@ -236,7 +236,7 @@ public class Soubor {
 		}finally{
 			try{writer.close();
 			}catch(Exception e){
-				System.out.println(e);
+				e.printStackTrace();
 			}
 		}
 	}
