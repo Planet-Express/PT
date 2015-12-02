@@ -79,9 +79,9 @@ public class Soubor {
 			p.setVzdalenost(Double.parseDouble(poleCesta[1]));
 			for (int j = 2; j < poleCesta.length; j++) {
 				if(j<(poleCesta.length-1)){
-					p.cesta.add(g.getPlanety().get(Integer.parseInt(poleCesta[j])-1));
+					p.getCesta().add(g.getPlanety().get(Integer.parseInt(poleCesta[j])-1));
 				}else{
-					p.cesta.add(g.getStanice().get(Integer.parseInt(poleCesta[j])-5001));
+					p.getCesta().add(g.getStanice().get(Integer.parseInt(poleCesta[j])-5001));
 				}
 			}
 		}

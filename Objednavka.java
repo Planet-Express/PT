@@ -139,7 +139,7 @@ public class Objednavka {
 	 * 
 	 * @param puvodni množství objednaných léků
 	 */
-	public void setPuvodni(int puvodni) {
+	private void setPuvodni(int puvodni) {
 		this.puvodni = puvodni;
 	}
 	

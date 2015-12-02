@@ -425,7 +425,7 @@ public class Counter extends Thread{
 	public void logLod(Lod l, int den){
 		if(l.getCil().size()>0){
 		int cas = 0;
-		int vzdalenost = (int)(l.getCil().get(l.getCil().size()-1).vzdalenost/25);
+		int vzdalenost = (int)(l.getCil().get(l.getCil().size()-1).getVzdalenost()/25);
 		cas = vzdalenost + l.getCil().size()+den;
 		int casB = cas + vzdalenost;
 		Soubor.getLogger().log(Level.INFO,"Lod č. "+l.getId()+
