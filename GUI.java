@@ -358,7 +358,7 @@ public class GUI{
 		generuj.setMinWidth(100);
 		Button start = new Button("Start");
 		start.setMinWidth(100);
-		Button stats = new Button("Vytvo� statistiku");
+		Button stats = new Button("Vytvoř statistiku");
 		start.setMinWidth(100);
 		generuj.setOnAction(event -> {
 			if(!cas.getState().toString().equals("WAITING")||!cas.isAlive()){
