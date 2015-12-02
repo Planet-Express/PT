@@ -8,7 +8,7 @@ public class Hlavni extends Application{
 	
 	static Galaxie g;
 	
-	static GUI gui = new GUI();
+	static GUI gui = GUI.getINSTANCE();
 	
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args){
@@ -17,7 +17,7 @@ public class Hlavni extends Application{
 		//Soubor.uloz("Soubor", g);
 		g = Soubor.nacti();
 		launch();
-		gui.cas.stop();
+		gui.getCas().stop();
 	}
 
 	@Override

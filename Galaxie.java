@@ -246,11 +246,11 @@ public class Galaxie{
 	 * na nejbližší stanici
 	 */
 	private void udelejDijkstra(){
-		projdi(getPlanety(), getPlanety().get(5000));
-		projdi(getPlanety(), getPlanety().get(5001));
-		projdi(getPlanety(), getPlanety().get(5002));
-		projdi(getPlanety(), getPlanety().get(5003));
-		projdi(getPlanety(), getPlanety().get(5004));
+		projdi(getPlanety().get(5000));
+		projdi(getPlanety().get(5001));
+		projdi(getPlanety().get(5002));
+		projdi(getPlanety().get(5003));
+		projdi(getPlanety().get(5004));
 		for (int i = 0; i < getPlanety().size()-5; i++) {
 			Planeta a = getPlanety().get(i);
 			Planeta b = a.getCesta().get(0);
@@ -270,10 +270,9 @@ public class Galaxie{
 	 * nejkraší vzdálenost, bud od nově testované stanice, 
 	 * nebo zůstává vzdálenost bližší z testovaných stanic.
 	 * 
-	 * @param planety seznam planet
 	 * @param stanice stanice, od které se prohledává graf
 	 */
-	private void projdi(List<Planeta> planety, Planeta stanice){
+	private void projdi(Planeta stanice){
 		Queue<Planeta> fronta = new LinkedList<Planeta>();
 		int[] pole = new int[5005];
 		for (int i = 0; i < pole.length; i++) {
