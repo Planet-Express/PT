@@ -1,5 +1,7 @@
 package pt;
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -28,10 +30,15 @@ public class Hlavni extends Application{
 	 */
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args){
-		//g = new Galaxie(800,5000);
-		//g.generujVesmir();
-		//Soubor.uloz("Soubor", g);
+		
+		File f = new File("Soubor.txt");
+		if(f.exists()){
 		g = Soubor.nacti();
+		}else{
+		g = new Galaxie(800,5000);
+		g.generujVesmir();
+		Soubor.uloz("Soubor", g);
+		}
 		launch();
 		gui.getCas().stop();
 	}
