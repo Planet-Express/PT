@@ -25,7 +25,7 @@ public class Lod {
 	private int stav = -1;
 	
 	/** id lodi*/
-	private int id;
+	private final int id;
 	
 	/** stanice, pod kterou lod spadá*/
 	private final Stanice start;
@@ -43,7 +43,7 @@ public class Lod {
 	private final Stack<Planeta> cil = new Stack<Planeta>();
 	
 	/** rozpis objednávek pro cílové planety*/
-	private Stack<Integer> rozpis = new Stack<Integer>();
+	private final Stack<Integer> rozpis = new Stack<Integer>();
 	
 	/** jestli je lod pouzita*/
 	private boolean pouzita = false;
@@ -308,9 +308,6 @@ public class Lod {
 	 */
 	public Stack<Integer> getRozpis() {
 		return rozpis;
-	}
-
-	
-	
+	}	
 
 }
