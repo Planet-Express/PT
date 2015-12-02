@@ -6,23 +6,62 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
-import java.util.logging.Level;
 
-
+/***********************************************************************
+ * Instance třídy {@code Galaxie} představují
+ * galaxii, která obsahuje planety, které jsou 
+ * zásobovány léky pomocí lodí ze stanic,
+ * kde se léky vyrábí. Lodě létají po nejkratších
+ * cestách, po cestě mohou být přepadeny, při
+ * přepadení přichází o náklad. 
+ * 
+ * @author Michal Štrunc a Jakub Váverka
+ *
+ */
 public class Galaxie{
+	
+	/** seznam planet*/
 	private final List<Planeta> planety = new ArrayList<Planeta>(5005);
+	
+	/** seznam stanic*/
 	private final List<Stanice> stanice = new ArrayList<Stanice>(5);
+	
+	/** seznam cest*/
 	private final List<Cesta> cesty = new ArrayList<Cesta>();
+	
+	/** počet planet*/
 	private final int pocet;
-	private final int delka;
+	
+	/** rozměr galaxie (rozmer*rozmer)*/
+	private final int rozmer;
+	
+	/** odsazení stanic od stran*/
 	private final int ODSAZENI = 160;
+	
+	/** čas na měření času*/
 	public long time = System.nanoTime();
 	
-	public Galaxie(int delka, int pocet){
+	/**********************************************************************
+	 * vytvoří galaxii o zadaném rozměru a
+	 * počtu planet, 5 stanic je pevně
+	 * rozmístěno.
+	 * 
+	 * @param rozmer rozměr galaxie
+	 * @param pocet pocet planet
+	 */
+	public Galaxie(int rozmer, int pocet){
 		this.pocet = pocet;
-		this.delka = delka;
+		this.rozmer = rozmer;
 	}
 	
+	/************************************************************************
+	 * má nastarosti vygenerování celé galaxie.
+	 * Začne s vytvářením planet, poté vytvoří
+	 * stanice a dohledá planetám sousedy.
+	 * Mezi sousedy vytvoří cesty a náhodné
+	 * označí za nebezpečné. Nakonec najde
+	 * nejkratší cestu os planety k stanici.
+	 */
 	public void generujVesmir(){
 		vytvorStanice();
 		System.out.println(System.nanoTime()-time+" -- Vytvoreni planet");
@@ -43,23 +82,27 @@ public class Galaxie{
 		System.out.println(System.nanoTime()-time+" -- Vykresluji");
 	}
 	
-	private void vytvorStanice() {
-		stanice.add(new Stanice(5001, ODSAZENI, ODSAZENI));
-		stanice.add(new Stanice(5002, delka - ODSAZENI, ODSAZENI));
-		stanice.add(new Stanice(5003, ODSAZENI, delka - ODSAZENI));
-		stanice.add(new Stanice(5004, delka - ODSAZENI, delka - ODSAZENI));
-		stanice.add(new Stanice(5005, (int)(delka/2.0), (int)(delka/2.0)));
-	}
 
-	public Planeta vytvorPlanetu(int id){
+	/************************************************************************
+	 * vytvoří planetu o zadaném id,
+	 * na náhodně vygenerované pozici, které je od 
+	 * nejbližší planety nejblíže ve vzdálenosti 2.
+	 * Populace planety se generuje pomocí Gaussovi
+	 * funkce.
+	 * 
+	 * @param id id planety
+	 * 
+	 * @return insttance třídy {@code Planeta} 
+	 */
+	private Planeta vytvorPlanetu(int id){
 		int x = -1;
 		int y = -1;
 		boolean lze = false;
 		int counter = 0;
 		while(!lze&&counter<100){
 			counter++;
-			x = randomRange(0, delka);
-			y = randomRange(0, delka);
+			x = (int) (Math.random()*801);
+			y = (int) (Math.random()*801);
 			
 			lze = testRozlozeni(x, y);
 			if(counter==99){
@@ -72,6 +115,14 @@ public class Galaxie{
 		return p;
 	}
 	
+	/************************************************************************
+	 * testuje zda je planeta v povolené vzdálenosti
+	 * od ostatních
+	 * 
+	 * @param x x-ová souřadnice
+	 * @param y y-ová souřadnice
+	 * @return je planeta na volných souřadnicích
+	 */
 	private boolean testRozlozeni(int x, int y) {
 		boolean lze = false;
 		if(planety.size()==0){
@@ -79,9 +130,13 @@ public class Galaxie{
 			}
 		for (int i = 0; i < planety.size(); i++) {
 			double vzdalenost = vzdalenostBodu(planety.get(i), x, y);
-			if(vzdalenost<=3){break;}
+			if(vzdalenost<=3){
+				break;
+				}
 			
-			if((i+1)==planety.size()){lze = true;}
+			if((i+1)==planety.size()){
+				lze = true;
+				}
 		}
 		//Kontrola se stanicemi
 		for (int j = 0; j < stanice.size(); j++) {
@@ -94,7 +149,26 @@ public class Galaxie{
 		return lze;
 	}
 
-	public void dohledejSousedy(List<Planeta> planety){
+	/***************************************************************************
+	 * vytvoří 5 stanic, rovnoměrně rozložených
+	 * b galaxii.
+	 * 
+	 */
+	private void vytvorStanice() {
+		stanice.add(new Stanice(5001, ODSAZENI, ODSAZENI));
+		stanice.add(new Stanice(5002, rozmer - ODSAZENI, ODSAZENI));
+		stanice.add(new Stanice(5003, ODSAZENI, rozmer - ODSAZENI));
+		stanice.add(new Stanice(5004, rozmer - ODSAZENI, rozmer - ODSAZENI));
+		stanice.add(new Stanice(5005, (int)(rozmer/2.0), (int)(rozmer/2.0)));
+	}
+
+	/*****************************************************************************************
+	 * dohledá každé planetě galaxie min. 5
+	 * nejbližších sousedů
+	 * 
+	 * @param planety seznam planet
+	 */
+	private void dohledejSousedy(List<Planeta> planety){
 		for (int i = 0; i < planety.size(); i++) {
 			Planeta a = planety.get(i);
 			for (int j = 0; j < planety.size(); j++) {
@@ -118,6 +192,12 @@ public class Galaxie{
 		}
 	}
 	
+	/****************************************************************************
+	 * vytvoří cesty mezi sousedy všech planet
+	 * galaxie
+	 * 
+	 * @param planety seznam planet
+	 */
 	public void vytvorCesty(List<Planeta> planety){
 		for (int i = 0; i < planety.size(); i++) {
 			Planeta a = planety.get(i);
@@ -129,8 +209,12 @@ public class Galaxie{
 			}
 		}
 	}
-	
-	public void ostatniSousedi(){
+
+	/**************************************************************************
+	 * ruší orientaci hran
+	 * 
+	 */
+	private void ostatniSousedi(){
 		for(int i = 0; i < cesty.size(); i++){
 			boolean existuje = false;
 			Planeta planetaOd = cesty.get(i).getOd();
@@ -142,82 +226,26 @@ public class Galaxie{
 				}
 			}
 			if(!existuje){
-				//System.out.println("nexistuje");
 				planetaDo.getSousedi().add(planetaOd);		
 			}
 		}
 	}
-	
-	public boolean existujeCesta(Planeta a, Planeta b){
-		for (int i = 0; i < cesty.size(); i++) {
-			Planeta od = cesty.get(i).getOd();
-			Planeta kam = cesty.get(i).getKam();
-			if(a==od&&b==kam||a==kam&&b==od){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public double vzdalenostPlanet(Planeta a, Planeta b){
-		int posAX = a.getPosX();
-		int posAY = a.getPosY();
-		int posBX = b.getPosX();
-		int posBY = b.getPosY();
-		int rozdilX = Math.abs(posAX-posBX);
-		int rozdilY = Math.abs(posAY-posBY);
-		return Math.sqrt(Math.pow(rozdilX, 2)+Math.pow(rozdilY, 2));
-	}
-	
-	public double vzdalenostBodu(Planeta a, int x, int y)
-	{
-		int posPX = a.getPosX();
-		int posPY = a.getPosY();
-		int rozdilX = Math.abs(posPX-x);
-		int rozdilY = Math.abs(posPY-y);
-		double vzdalenost = Math.sqrt(Math.pow(rozdilX, 2)+Math.pow(rozdilY, 2));
-		return vzdalenost;
-	}
-	
-	public int randomRange(int odkud, int kam){
-		int rozmezi = (kam-odkud)+1;
-		return (int)(Math.random()*rozmezi)+odkud;
-	}
 
-	public List<Planeta> getPlanety(){
-		return planety;
-	}
-	
-	public List<Stanice> getStanice(){
-		return stanice;
-	}
-	
-	public List<Cesta> getCesty(){
-		return cesty;
-	}
-	
+	/************************************************************
+	 * označí 20% cest za nebezpečné
+	 */
 	public void generujNebezpecneCesty(){
 		Collections.shuffle(cesty);
 		for (int i = 0; i < (cesty.size()/100)*20; i++) {
 			cesty.get(i).setNebezpeci(true);
 		}
 	}
-	
-	public int generujPopulaci(){
-		int stredHodnota = 3000000;
-		int rozptyl = 3000000;
-		Random rand = new Random();
-			int k;
-			while(true){
-				k = (int) (stredHodnota + rozptyl * rand.nextGaussian());
-				if(k >= 100000 && k <= 10000000){
-					break;
-				}
-			}
-		return k;
-	}
-	
-	public void udelejDijkstra(){
+
+	/************************************************************
+	 * pro každou planetu najde nekratší cestu
+	 * na nejbližší stanici
+	 */
+	private void udelejDijkstra(){
 		projdi(getPlanety(), getPlanety().get(5000));
 		projdi(getPlanety(), getPlanety().get(5001));
 		projdi(getPlanety(), getPlanety().get(5002));
@@ -236,8 +264,16 @@ public class Galaxie{
 			}while(b.getId()<=5000);		
 		}
 	}
-	
-	public void projdi(List<Planeta> planety, Planeta stanice){
+
+	/*****************************************************************
+	 * projdevšechny planety od dané stanice a přiřadí jim
+	 * nejkraší vzdálenost, bud od nově testované stanice, 
+	 * nebo zůstává vzdálenost bližší z testovaných stanic.
+	 * 
+	 * @param planety seznam planet
+	 * @param stanice stanice, od které se prohledává graf
+	 */
+	private void projdi(List<Planeta> planety, Planeta stanice){
 		Queue<Planeta> fronta = new LinkedList<Planeta>();
 		int[] pole = new int[5005];
 		for (int i = 0; i < pole.length; i++) {
@@ -264,18 +300,104 @@ public class Galaxie{
 			}
 		}
 	}
-	
-	public List<Objednavka> getObjednavky(){
-		List<Objednavka> objednavky = new ArrayList<Objednavka>();
-		
-		for (int i = 0; i < planety.size()-5; i++) {
-			Planeta a = planety.get(i);
-			int objednavka = a.getPop()-a.vyrobLeky();
-			Stanice sc = (Stanice)a.getCesta().get(a.getCesta().size()-1);
-			Objednavka ob = new Objednavka(a, sc,objednavka, a.getVzdalenost());
-			objednavky.add(ob);
-			Soubor.getLogger().log(Level.INFO, "Planeta "+a.getJmeno()+ " poslala objedn�vku na "+objednavka+" l�k�.");
+
+	/*************************************************************
+	 * testuje zda wxistuje mezi planetami cesta
+	 * 
+	 * @param a první planeta
+	 * @param b druhá planeta
+	 * @return existuje cesta
+	 */
+	private boolean existujeCesta(Planeta a, Planeta b){
+		for (int i = 0; i < cesty.size(); i++) {
+			Planeta od = cesty.get(i).getOd();
+			Planeta kam = cesty.get(i).getKam();
+			if(a==od&&b==kam||a==kam&&b==od){
+				return true;
+			}
 		}
- 		return objednavky;
+		return false;
+	}
+	
+	/*******************************************************
+	 * zjistí vzdálenost dvou planet
+	 * 
+	 * @param a první planeta
+	 * @param b druhá planeta
+	 * @return vzdálenost planet
+	 */
+	public double vzdalenostPlanet(Planeta a, Planeta b){
+		int posAX = a.getPosX();
+		int posAY = a.getPosY();
+		int posBX = b.getPosX();
+		int posBY = b.getPosY();
+		int rozdilX = Math.abs(posAX-posBX);
+		int rozdilY = Math.abs(posAY-posBY);
+		return Math.sqrt(Math.pow(rozdilX, 2)+Math.pow(rozdilY, 2));
+	}
+	
+	/******************************************************************************
+	 * zjistí vzdálenost mezi planetou a bodem
+	 * 
+	 * @param a planeta
+	 * @param x x-ová souřadnice bodu
+	 * @param y y-ová sořadnice boud
+	 * @return vzdálenost planety a bodu
+	 */
+	private double vzdalenostBodu(Planeta a, int x, int y)
+	{
+		int posPX = a.getPosX();
+		int posPY = a.getPosY();
+		int rozdilX = Math.abs(posPX-x);
+		int rozdilY = Math.abs(posPY-y);
+		double vzdalenost = Math.sqrt(Math.pow(rozdilX, 2)+Math.pow(rozdilY, 2));
+		return vzdalenost;
+	}
+
+	/*********************************************
+	 * vrátí seznam planet
+	 * 
+	 * @return seznam planet
+	 */
+	public List<Planeta> getPlanety(){
+		return planety;
+	}
+	
+	/********************************************
+	 * vrátí seznam stanic
+	 * 
+	 * @return stanic
+	 */
+	public List<Stanice> getStanice(){
+		return stanice;
+	}
+	
+	/******************************************
+	 * vrátí seznam cest
+	 * 
+	 * @return seznam cest
+	 */
+	public List<Cesta> getCesty(){
+		return cesty;
+	}
+	
+	/******************************************
+	 * generuje populaci pomocí Gaussovi
+	 * funkce, která má vrchol 3M
+	 * 
+	 * @return vrátí populaci
+	 */
+	private int generujPopulaci(){
+		int stredHodnota = 3000000;
+		int rozptyl = 3000000;
+		Random rand = new Random();
+			int k;
+			while(true){
+				k = (int) (stredHodnota + rozptyl * rand.nextGaussian());
+				if(k >= 100000 && k <= 10000000){
+					break;
+				}
+			}
+		return k;
 	}
 }

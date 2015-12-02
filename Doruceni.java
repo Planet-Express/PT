@@ -55,6 +55,7 @@ public class Doruceni {
 	 * vrátí den doručení léků
 	 * 
 	 * @return den doručení
+	 * 
 	 */
 	public int getDen() {
 		return den;
