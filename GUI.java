@@ -21,8 +21,10 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
@@ -139,7 +141,11 @@ public class GUI{
 		});
 		vb.setPrefWidth(300);
 		tv = getTableView();
-		vb.getChildren().addAll(getTree(), oLabel, tf, objednat, tv);
+		HBox hb = new HBox();
+		hb.getChildren().addAll(oLabel,tf,objednat);
+		oLabel.setAlignment(Pos.CENTER);
+		oLabel.setPrefWidth(120);
+		vb.getChildren().addAll(getTree(), hb, tv);
 		return vb;
 	}
 
