@@ -1,6 +1,5 @@
 package pt;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,10 +16,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+/************************************************************************************
+ * Instance třídy {@code Soubor} představuje
+ * sobor metod pro práci se souborem.
+ * 
+ * @author Michal Štrunc a Jakub Váverka
+ *
+ */
 public class Soubor {
 
+	/** logger pro vypysování logů*/
 	private final  static Logger LOGGER = Logger.getLogger(Soubor.class.getName());
 	
+	/**********************************************************************************
+	 * nacte galaxii ze souboru
+	 * 
+	 * @return instance třídy {@code Galaxie}
+	 */
 	public static Galaxie nacti(){
 		BufferedReader br = null;
 		Galaxie g = new Galaxie(800, 5000);
@@ -71,6 +83,12 @@ public class Soubor {
 		return g;
 	}
 	
+	/*******************************************************************************************
+	 * přidá cesty galaxii
+	 * 
+	 * @param g galaxie
+	 * @param poleCest zadaná cesty
+	 */
 	private static void pridejCesty(Galaxie g, List<String[]> poleCest) {
 		String[] poleCesta;
 		for (int i = 0; i < poleCest.size()-5; i++) {
@@ -88,6 +106,12 @@ public class Soubor {
 		
 	}
 
+	/****************************************************************************************
+	 * přidá planetám v galaxii jejich sousedy
+	 * 
+	 * @param g galaxie
+	 * @param poleGalaxie seznam id planet
+	 */
 	private static void pridejSousedy(Galaxie g, List<String[]> poleGalaxie) {
 		String[] polePlaneta;
 		for (int i = 0; i < poleGalaxie.size(); i++) {
@@ -101,6 +125,12 @@ public class Soubor {
 		
 	}
 
+	/*****************************************************************************
+	 * přidá do galaxie zadané planety
+	 * 
+	 * @param g galaxie
+	 * @param poleGalaxie seznam polí obsahujících id, soiřadnice a id planety
+	 */
 	private static void vytvorPlanety(Galaxie g, List<String[]> poleGalaxie) {
 		String[] polePlaneta;
 		for (int i = 0; i < poleGalaxie.size(); i++) {					
@@ -120,10 +150,19 @@ public class Soubor {
 		
 	}
 
+	/********************************************************************
+	 * vrátí logger
+	 * 
+	 * @return logger
+	 */
 	public static Logger getLogger(){
 		return LOGGER;
 	}
 	
+	/******************************************************
+	 * inicializuje logger
+	 * 
+	 */
 	public static void initLogger(){
 		FileHandler f = null;
 		try {
@@ -136,10 +175,14 @@ public class Soubor {
 		f.setLevel(Level.SEVERE);
 		LOGGER.setLevel(Level.SEVERE);
 		LOGGER.addHandler(f);
-		
 	}
 	
-	
+	/************************************************************************************************************
+	 * uloží galaxii do textového souboru
+	 * 
+	 * @param nazev název souboru
+	 * @param g galaxie
+	 */
 	public static void uloz(String nazev, Galaxie g){
 		PrintWriter writer = null;
 		try {
@@ -172,6 +215,11 @@ public class Soubor {
 		}
 	}
 	
+	/***************************************************************************************************************************************
+	 * utvoří statistiku objednávek
+	 * @param cas instance třídy {@code Counter}
+	 * @param writer writer pro zápis do souboru
+	 */
 	public static void vytvorStatistikuObjednavek(Counter cas, PrintWriter writer){
 		for (int i = 0; i < cas.getStatistikaObjednavek().size(); i++) {
 			writer.println("..............---------/////////|||MĚSÍC "+i+".|||\\\\\\\\\\\\\\\\\\---------..............");
@@ -198,7 +246,14 @@ public class Soubor {
 			}
 		}
 	}
-	
+
+	/************************************************************************************************************************
+	 * utváří celkovou statistiku
+	 * 
+	 * @param nazev název souboru
+	 * @param cas instance třídy {@code Counter}
+	 * @param planety seznam planet
+	 */
 	public static void vytvorStatistiku(String nazev, Counter cas, List<Planeta> planety){
 		PrintWriter writer = null;
 		try {
