@@ -24,13 +24,8 @@ public class PlanetCell extends TreeCell<Planeta> {
 			if(planeta.getId() > 5000){
 				setText("Stanice " + Integer.toString((planeta.getId()-5000)));
 			}
-			else{
-				if(planeta.getObjednavka() == null){
-					setText(planeta.toString());					
-				}
-				else{
-					setText("Yeah");
-				}
+			else{		
+				setText(planeta.toString());					
 			}
 		}
 	}
