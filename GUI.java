@@ -1,5 +1,7 @@
 package pt;
 
+
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
@@ -69,6 +72,9 @@ public class GUI{
 	/** tlačítko pro objednání*/
 	private Button objednat;
 	
+	/** popis v záhlaví*/
+	private Label popisek;
+	
 	
 	/*******************************************************************************************
 	 * Implicitní konstruktor vytvoří
@@ -110,10 +116,36 @@ public class GUI{
 		canvas.setScaleX(1.0/quality*0.9);
 		canvas.setScaleY(1.0/quality*0.9);
 		bp.setPrefSize(800, 600);
+		bp.setTop(getTop());
 		bp.setLeft(getControlBar());
 		bp.setCenter(getCenter());
 		bp.setRight(getInfoPane());
 		return bp;
+	}
+
+	/************************************************
+	 * vytvoří panel, na kterém se zobrazí
+	 * informace o dni, měsíci a obyvatelstvu
+	 * simulace.
+	 * 
+	 * @return panel s popiskem
+	 */
+	private Node getTop() {
+		VBox vb = new VBox();
+		popisek = new Label();
+		popisek.setText("");
+		vb.setAlignment(Pos.CENTER);
+		vb.getChildren().add(popisek);
+		return vb;
+	}
+	
+	/************************************************
+	 * nastavý popisek na zadaný text
+	 * 
+	 * @param popisek zadaný text
+	 */
+	public void setPopisek(String popisek){
+		this.popisek.setText(popisek);
 	}
 
 	/************************************************************
@@ -437,7 +469,8 @@ public class GUI{
 		tv.setItems(getLode());
 		tv.getColumns().get(0).setVisible(false);
 		tv.getColumns().get(0).setVisible(true);
-		
+		setPopisek("Den:\t" + cas.getDen() + "\tMěsíc:\t" + cas.getMesic() + "\tPopulace:\t" +
+		cas.getCelkovaPopulace().get(cas.getCelkovaPopulace().size()-1));
 		for (int i = 0; i < tv.getSelectionModel().getSelectedItems().size(); i++) {			
 			nakresliLod(tv.getSelectionModel().getSelectedItems().get(i));			
 		}

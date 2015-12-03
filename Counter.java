@@ -49,6 +49,7 @@ public class Counter extends Thread{
 	/** den*/
 	private int den = 0;
 	
+
 	/** měsíc*/
 	private int mesic = 0;
 	
@@ -106,6 +107,24 @@ public class Counter extends Thread{
 				mesic++;
 			}
 		}
+	}
+
+	/*****************************************
+	 * vrátí den simulace
+	 * 
+	 * @return den
+	 */
+	public int getDen() {
+		return den;
+	}
+	
+	/*******************************************
+	 * vrátí měsíc simulace
+	 * 
+	 * @return měsíc
+	 */
+	public int getMesic() {
+		return mesic;
 	}
 	
 	/**********************************************
