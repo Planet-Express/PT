@@ -133,7 +133,7 @@ public class Planeta{
 	 * @return popis planety
 	 */
 	public String toString(){
-		return "{"+getJmeno()+"}"+posX+"/"+posY+ " " + pop;
+		return getJmeno()+ " {" + posX + "|" + posY +"} " + pop;
 	}
 	
 	/*********************************************************

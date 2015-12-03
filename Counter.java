@@ -72,9 +72,10 @@ public class Counter extends Thread{
 			while(true){
 				
 				try {
-					if(den == 360)
+					if(den%361 == 360)
 					{
-					this.wait();
+						gui.getObjednat().setDisable(true);
+						this.wait();
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();

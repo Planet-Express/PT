@@ -66,6 +66,9 @@ public class GUI{
 	/** tableView*/
 	private TableView<Lod> tv;
 	
+	/** tlačítko pro objednání*/
+	private Button objednat;
+	
 	
 	/*******************************************************************************************
 	 * Implicitní konstruktor vytvoří
@@ -123,19 +126,34 @@ public class GUI{
 		ObservingLabel oLabel = new ObservingLabel();
 		oPlaneta.addObserver(oLabel);
 		TextField tf = new TextField("Zadej objednávku");
-		Button objednat = new Button("Objednat");
+		tf.setMaxWidth(110);
+		objednat = new Button("Objednat");
+		objednat.setDisable(true);
 		objednat.setOnAction(event ->{
 			if(tf.getText().length() < 10){
 				if(oPlaneta.getPlaneta().getId() > 0 && oPlaneta.getPlaneta().getId() < 5001){
-					oPlaneta.getPlaneta().getObjednavka().setKolik(Integer.parseInt(tf.getText() + oPlaneta.getPlaneta().getObjednavka().getKolik()));
-					System.out.println("objednáno: " + tf.getText());	
+					try {
+						int objednano = Integer.parseInt(tf.getText());
+						if(objednano >= 0 && objednano < oPlaneta.getPlaneta().getPop()){
+							oPlaneta.getPlaneta().getObjednavka().setKolik(objednano + oPlaneta.getPlaneta().getObjednavka().getKolik());
+							System.out.println("objednáno: " + tf.getText());							
+						}
+						else if(objednano < 0){
+							System.out.println("bylo zadáno záporné číslo");
+						}
+						else{
+							System.out.println("objednáno víc než než je populace");
+						}
+					} catch (Exception e) {
+						System.out.println("nebylo zadáno číslo");
+					}
 				}
 				else{
 					System.out.println("nebyla vybrána planeta");
 				}
 			}
 			else{
-				System.out.println("Příliš velká objednávka");
+				System.out.println("moc znaků");
 			}
 		});
 		vb.setPrefWidth(300);
@@ -379,7 +397,8 @@ public class GUI{
 			}else if(cas.getState().toString().equals("WAITING")){synchronized (cas) {
 				cas.notify();
 			}}
-			prekresliPlatno();			
+			prekresliPlatno();	
+			objednat.setDisable(false);
 		});
 		
 		stats.setOnAction(event -> {
@@ -418,6 +437,7 @@ public class GUI{
 		tv.setItems(getLode());
 		tv.getColumns().get(0).setVisible(false);
 		tv.getColumns().get(0).setVisible(true);
+		
 		for (int i = 0; i < tv.getSelectionModel().getSelectedItems().size(); i++) {			
 			nakresliLod(tv.getSelectionModel().getSelectedItems().get(i));			
 		}
@@ -540,6 +560,15 @@ public class GUI{
 		}
 	}
 	
+	
+	/***********************************************
+	 * vrátí tlačítko na objednání
+	 * @return tlačítko
+	 */
+	public Button getObjednat() {
+		return objednat;
+	}
+
 	/**********************************************************
 	 * vrátí barvu, v závislosti na počtu obyvatel
 	 * 
