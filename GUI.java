@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -21,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
@@ -171,21 +173,41 @@ public class GUI{
 							System.out.println("objednáno: " + tf.getText());							
 						}
 						else if(objednano < 0){
-							System.out.println("bylo zadáno záporné číslo");
+							Alert alert = new Alert(AlertType.WARNING);
+							alert.setTitle("Insert error");
+							alert.setHeaderText("Zadáno záporné číslo!");
+							alert.setContentText("Zadejte objednávku ve správném formátu!");
+							alert.showAndWait();
 						}
 						else{
-							System.out.println("objednáno víc než než je populace");
+							Alert alert = new Alert(AlertType.WARNING);
+							alert.setTitle("Insert error");
+							alert.setHeaderText("Objednávka je větší než populace planety!");
+							alert.setContentText("Zadejte objednávku ve správném formátu!");
+							alert.showAndWait();
 						}
 					} catch (Exception e) {
-						System.out.println("nebylo zadáno číslo");
+						Alert alert = new Alert(AlertType.WARNING);
+						alert.setTitle("Insert error");
+						alert.setHeaderText("Nebylo zadáno číslo!");
+						alert.setContentText("Zadejte objednávku ve správném formátu!");
+						alert.showAndWait();
 					}
 				}
 				else{
-					System.out.println("nebyla vybrána planeta");
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Insert error");
+					alert.setHeaderText("Nebyla vybrána planeta!");
+					alert.setContentText("Zadejte objednávku ve správném formátu!");
+					alert.showAndWait();
 				}
 			}
 			else{
-				System.out.println("moc znaků");
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Insert error");
+				alert.setHeaderText("Zadaná objednávka obsahuje moc znaků!");
+				alert.setContentText("Zadejte objednávku ve správném formátu!");
+				alert.showAndWait();
 			}
 		});
 		vb.setPrefWidth(300);
