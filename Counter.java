@@ -7,30 +7,72 @@ import java.util.logging.Level;
 
 import javafx.application.Platform;
 
+/************************************************************************************
+ * Instance třídy{@code Counter} představují
+ * chod aplikace v druhém vléjně s tiky
+ * 
+ * @author Michal Štrunc a Jakub Váverka
+ *
+ */
 public class Counter extends Thread{
 	
-	Galaxie g;
-	GUI gui;
-	List<Lod> lode = new ArrayList<Lod>();
-	List<Objednavka> objednavky = new ArrayList<Objednavka>();
-	List<ArrayList<Objednavka>> statistikaObjednavek = new ArrayList<ArrayList<Objednavka>>();
-	List<Long> celkoveVyrobeno = new ArrayList<Long>();
-	List<Long> celkoveUkradeno = new ArrayList<Long>();
-	List<Long> celkovaPopulace = new ArrayList<Long>();
-	List<Long> celkoveUmrti = new ArrayList<Long>();
-	List<Integer> pouzitoLodi = new ArrayList<Integer>();
+	/** galaxie*/
+	private Galaxie g;
 	
-	int den = 0;
-	int mesic = 0;
-	final int RYCHLOST = 25;
-	final int UNOSNOST = 5000000;
+	/** gui*/
+	private GUI gui;
+	
+	/** seznam lodí*/
+	private final List<Lod> lode = new ArrayList<Lod>();
+	
+	/** seznam objednávek*/
+	private List<Objednavka> objednavky = new ArrayList<Objednavka>();
+	
+	/** objednávky po měsíci*/
+	private final List<ArrayList<Objednavka>> statistikaObjednavek = new ArrayList<ArrayList<Objednavka>>();
+	
+	/** celková výroba léků*/
+	private final List<Long> celkoveVyrobeno = new ArrayList<Long>();
+	
+	/** celkově ukradeno*/
+	private final List<Long> celkoveUkradeno = new ArrayList<Long>();
+	
+	/** celková populace*/
+	private final List<Long> celkovaPopulace = new ArrayList<Long>();
+	
+	/** celkem úmrtí*/
+	private final List<Long> celkoveUmrti = new ArrayList<Long>();
+	
+	/** celkem použito lodí*/
+	private final List<Integer> pouzitoLodi = new ArrayList<Integer>();
+	
+	/** den*/
+	private int den = 0;
+	
+	/** měsíc*/
+	private int mesic = 0;
+	
+	/** rychlost lodi*/
+	private final int RYCHLOST = 25;
+	
+	/** nosnost lodi*/
+	private final int UNOSNOST = 5000000;
+	
+	/**inicializace countru*/
+	private int counter = 1;
+
+	
+	/******************************************************************
+	 * stará se o chod druhého vlákna,
+	 * každý tik představuje jeden den.
+	 */
 	public void run(){
 		Soubor.initLogger();
 		synchronized (this) {
 			while(true){
 				
 				try {
-					if(false)
+					if(den == 360)
 					{
 					this.wait();
 					}
@@ -65,6 +107,10 @@ public class Counter extends Thread{
 		}
 	}
 	
+	/**********************************************
+	 * posune všechny lodě
+	 * 
+	 */
 	private void posunVsechnyLode(){
 		for (int j = 0; j < lode.size(); j++) {
 			posunLeticiLod(lode.get(j));
@@ -72,12 +118,20 @@ public class Counter extends Thread{
 		}	
 	}
 	
+	/**********************************************
+	 * nastaví použítí lodí
+	 * 
+	 * @param flag podmínka, jestli je lod použita
+	 */
 	private void nastavPouzitiLodi(boolean flag){
 		for (int i = 0; i < lode.size(); i++) {
 			lode.get(i).setPouzita(flag);
 		}
 	}
 	
+	/***********************************************
+	 * do seznamu přidá počet použitých lodí
+	 */
 	private void setPouzitiLodi(){
 		int pouziti = 0;
 		for (int i = 0; i < lode.size(); i++) {
@@ -89,6 +143,13 @@ public class Counter extends Thread{
 		
 	}
 	
+	/********************************************
+	 * vrátí seznam obsahující počty
+	 * použitých lodí za jednotlivé
+	 * měsíce
+	 * 
+	 * @return seznam počtu použitých lodí
+	 */
 	public List<Integer> getPouzitoLodi(){
 		return this.pouzitoLodi;
 	}
@@ -98,43 +159,83 @@ public class Counter extends Thread{
 			if(!objednavky.get(j).getKam().isMrtva()){
 					obsluzObjednavku(j, den);
 					}
-	}
+		}
 	}
 	
+	/***************************************
+	 * překreslí plátno
+	 */
 	private void prekresliPlatno(){
 		Platform.runLater(new Runnable() {
             @Override
             public void run() {
             	gui.prekresliPlatno();
             }
-    }); 
+		}); 
 	}
 	
+	/******************************************
+	 * vrátí seznam vyrobených léků po
+	 * měsíci
+	 * 
+	 * @return seznam množství vyrobených léků
+	 */
 	public List<Long> getCelkoveVyrobeno(){
 		return this.celkoveVyrobeno;
 	}
 	
+	/******************************************
+	 * vrátí seznam ukradených léků po
+	 * měsíci
+	 * 
+	 * @return seznam množství ukradených léků
+	 */
 	public List<Long> getCelkoveUkradeno(){
 		return this.celkoveUkradeno;
 	}
 	
+	/******************************************
+	 * vrátí seznam populace po
+	 * měsíci
+	 * 
+	 * @return seznam populace
+	 */
 	public List<Long> getCelkovaPopulace(){
 		return this.celkovaPopulace;
 	}
 	
+	/******************************************
+	 * vrátí seznam úmrtí  po
+	 * měsíci
+	 * 
+	 * @return seznam úmrtí
+	 */
 	public List<Long> getCelkoveUmrti(){
 		return this.celkoveUmrti;
 	}
 	
+	/**************************************************************
+	 * vrátí seznam lodí
+	 * 
+	 * @return seznam lodí
+	 */
 	public List<Lod> getLode(){
 		return this.lode;
 	}
-	
+	/***************************************************************
+	 * vrátí seznam, který pro každý měsíc obsahuje seznam
+	 * objednávek
+	 * 
+	 * @return seznam seznamu objednávek
+	 */
 	public List<ArrayList<Objednavka>> getStatistikaObjednavek(){
 		return this.statistikaObjednavek;
 	}
 	
-	public void setPopulace(){
+	/**********************************************************************
+	 * do seznamu přidá počet obyvatel v daném měsíci
+	 */
+	private void setPopulace(){
 		long pop = 0;
 		for (int i = 0; i < g.getPlanety().size(); i++) {
 			pop += g.getPlanety().get(i).getPop();
@@ -146,8 +247,12 @@ public class Counter extends Thread{
 		}
 	}
 	
-	int i = 0;
-	public void vylozLod(Lod l){
+	/***********************************************************************
+	 * vyloží náklad lodi na planetě
+	 * 
+	 * @param l vykládající loď
+	 */
+	private void vylozLod(Lod l){
 		if(l.getStav()==3){
 
 			Planeta a = l.getCil().pop();
@@ -162,7 +267,14 @@ public class Counter extends Thread{
 			l.setStav(0);
 		}
 	}
-	public void okradLod(Lod l){
+	
+	/********************************************************************************
+	 * okrade loď a u planety
+	 * sníží potenciál
+	 * 
+	 * @param l okradená loď
+	 */
+	private void okradLod(Lod l){
 		if(celkoveUkradeno.size()==mesic){
 			celkoveUkradeno.add((long)l.getNaklad());
 		}else{
@@ -180,13 +292,17 @@ public class Counter extends Thread{
 		}
 		l.getCil().clear();
 		l.getRozpis().clear();
-		//System.out.println("Lod "+l.getId()+" byla okradena. "+ okradeno +" za tento rok.");
 	}
 	
-	public void vratiSeNaStanici(Lod l){
+	/***************************************************************************
+	 * vrátí lod na stanici
+	 * @param l vracená loĎ
+	 */
+	private void vratiSeNaStanici(Lod l){
 		l.setChciNa();
 		if(l.getLokace() instanceof Planeta &&
-		((Planeta)l.getLokace()).getId() == l.getChciNa().getId()&&l.getChciNa().getId()>5000&&l.getCil().size()==0 
+		((Planeta)l.getLokace()).getId() == l.getChciNa().getId()&&l.getChciNa()
+		.getId()>5000&&l.getCil().size()==0 
 		&& l.getStav()!=-1){
 			l.getStart().getDok().push(l);
 			l.setStav(-1);
@@ -195,7 +311,18 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public double[] letDokudMuzes(Lod l,double c,double d, double v){
+	/***************************************************************************
+	 * pohybuje lodí dokud neni ukončený den
+	 * 
+	 * @param l lod
+	 * @param c délka cesty
+	 * @param d dolet lodi v daný den
+	 * @param v velikost cesty
+	 * 
+	 * 
+	 * @return cesta doleti velikost
+	 */
+	private double[] letDokudMuzes(Lod l,double c,double d, double v){
 		double cesta = c;
 		double doleti = d;
 		double velikost = v;
@@ -235,7 +362,11 @@ public class Counter extends Thread{
 		return new double[]{cesta,doleti,velikost};
 	}
 	
-	public void posunLeticiLod(Lod l){
+	/****************************************************************************************************************
+	 * posun lodi
+	 * @param l posouvaná loď
+	 */
+	private void posunLeticiLod(Lod l){
 		if(l.getStav() == 0){
 			logLod(l, den);
 			vratiSeNaStanici(l);
@@ -259,7 +390,15 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public void nastavKdeJsiSkoncila(Lod l, double cesta, double doleti, double velikost){
+	
+	/***************************************************************************************
+	 * uloží kam lod doležela 
+	 * @param l lod
+	 * @param cesta délka cesty
+	 * @param doleti dolet lodi
+	 * @param velikost velikost cesty
+	 */
+	private void nastavKdeJsiSkoncila(Lod l, double cesta, double doleti, double velikost){
 		if(cesta>=doleti&&cesta!=0){		// zustavam na ceste
 			if(l.getLokace() instanceof Planeta){
 				l.setChciNa();
@@ -283,26 +422,44 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public Cesta najdiCestu(Planeta od, Planeta kam){
+	/************************************************************************
+	 * najde cestu mezi planetami
+	 * @param od první planeta
+	 * @param kam druhá planeta
+	 * 
+	 * @return instance třídy {@code Cesta}
+	 */
+	private Cesta najdiCestu(Planeta od, Planeta kam){
 		for (int i = 0; i < g.getCesty().size(); i++) {
-			//if((g.getCesty().get(i).getOd()==od&&g.getCesty().get(i).getKam()==kam)||(g.getCesty().get(i).getOd()==kam&&g.getCesty().get(i).getKam()==od)){
-			if((g.getCesty().get(i).getOd().getId()==od.getId()&&g.getCesty().get(i).getKam().getId()==kam.getId())||(g.getCesty().get(i).getOd().getId()==kam.getId()&&g.getCesty().get(i).getKam().getId()==od.getId())){
+			
+			if((g.getCesty().get(i).getOd().getId()==od.getId() &&
+					g.getCesty().get(i).getKam().getId()==kam.getId())||
+					(g.getCesty().get(i).getOd().getId()==kam.getId() &&
+					g.getCesty().get(i).getKam().getId()==od.getId())){
 				return g.getCesty().get(i);
 			}
 		}
 		return null;
 	}
 	
-	public void vysliNalozeneLode(){
+	
+	/**********************************************************************
+	 * vyšle naložené lodě
+	 */
+	private void vysliNalozeneLode(){
 		for (int i = 0; i < lode.size(); i++) {
 			if(lode.get(i).getStav()==1){
 				lode.get(i).setStav(0);
-				Soubor.getLogger().log(Level.FINE, "Lod č."+lode.get(i).getId()+" byla vyslána na cestu.");
+				Soubor.getLogger().log(Level.FINE, "Lod č."+lode.get(i).getId()+
+						" byla vyslána na cestu.");
 			}
 		}
 	}
 	
-	public void zacniVykladatLode(){
+	/************************************************
+	 * začne vykládat lodě
+	 */
+	private void zacniVykladatLode(){
 		for (int i = 0; i < lode.size(); i++) {
 			if(lode.get(i).getStav()==2){
 				lode.get(i).setStav(3);
@@ -310,9 +467,17 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public boolean budeOkradena(Lod l){
+	/*******************************************************************
+	 * zjistí zda loď bude přepadena
+	 * 
+	 * @param l lod
+	 * 
+	 * @return jestli je přepadena
+	 */
+	private boolean budeOkradena(Lod l){
 		l.setChciNa();
-		if(l.getNaklad()>0 && l.getLokace() instanceof Planeta &&((Planeta)l.getLokace()).getId()!=l.getChciNa().getId()){
+		if(l.getNaklad()>0 && l.getLokace() instanceof Planeta &&
+				((Planeta)l.getLokace()).getId()!=l.getChciNa().getId()){
 			Cesta c = najdiCestu((Planeta)l.getLokace(), l.getChciNa());
 			if(c.isNebezpecna() && Math.random()<0.1){
 				okradLod(l);
@@ -322,7 +487,13 @@ public class Counter extends Thread{
 		return false;
 	}
 	
-	public void dohledejObjednavkyPoCeste(Lod lod, Objednavka ob){
+	/***********************************************************************************
+	 * dohledá k objednávce objednávky planet na cestě
+	 * 
+	 * @param lod loď
+	 * @param ob objednávka
+	 */
+	private void dohledejObjednavkyPoCeste(Lod lod, Objednavka ob){
 		Lod l = lod;
 		naplnLod(l, ob, ob.getPotreba());
 		for (int j = 0; j < ob.getKam().getCesta().size()-1; j++) {
@@ -337,7 +508,15 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public void projdiPlanetyPoCeste(Lod lod, Objednavka ob, int j){
+	/*******************************************************************
+	 * projde planety po cestě, pkud má volnou kapacitu a stíhá
+	 * doletět, přidá objednávku k sobě
+	 * 
+	 * @param lod lod
+	 * @param ob objednavka
+	 * @param j index další planety
+	 */
+	private void projdiPlanetyPoCeste(Lod lod, Objednavka ob, int j){
 		Lod l = lod;
 		for (int j2 = 0; j2 < objednavky.size(); j2++) {
 			Objednavka dalsiOb = objednavky.get(j2);
@@ -345,13 +524,11 @@ public class Counter extends Thread{
 			if(dalsiOb.getKam().equals(dalsiP)&&l.stihne(ob, den)){
 				if((dalsiOb.getPotreba()+l.getNaklad())<UNOSNOST){
 					naplnLod(l, dalsiOb, dalsiOb.getPotreba());
-				//	System.out.println("2. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
 					if(UNOSNOST-l.getNaklad()!=0){
 						break;
 						}
 				}else{
 					naplnLod(l, dalsiOb, UNOSNOST-l.getNaklad());
-				//	System.out.println("3. "+l.getId()+", size = "+l.getCil().size()+", naklad = "+l.getNaklad());
 					ob.getOd().getDok().pop();
 					logLod(l,den);
 					l=getLod(ob.getOd());
@@ -362,7 +539,13 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public void obsluzObjednavku(int kterou, int den){
+	/********************************************************************
+	 * obslouží objedávku pod indexe
+	 * 
+	 * @param kterou index objednávky
+	 * @param den aktuální den
+	 */
+	private void obsluzObjednavku(int kterou, int den){
 		Objednavka ob = objednavky.get(kterou);
 		while(ob.getPotreba()>0){
 			Lod l = getLod(ob.getOd());
@@ -384,20 +567,21 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public void vytvorObjednavky(){
+	/*********************************************************
+	 * vytvoří objednávky
+	 */
+	private void vytvorObjednavky(){
 		objednavky = getObjednavky();
 		objednavky.sort(new FarComparator());
 	}
 	
-	public long potrebaLeku(){
-		long leku = 0;
-		for (int i = 0; i < objednavky.size(); i++) {
-			leku += (objednavky.get(i).getPotreba());
-		}
-		return leku;
-	}
-
-	public long nadvyrobenoLeku(){
+	/********************************************************************************
+	 * zjistí kolik léků byo vyrobeno, ale
+	 * nebylo využio
+	 * 
+	 * @return množství lěků
+	 */
+	private long nadvyrobenoLeku(){
 		long leku = 0;
 		for (int i = 0; i < objednavky.size(); i++) {
 			if(objednavky.get(i).getPotencial()>0){
@@ -407,13 +591,6 @@ public class Counter extends Thread{
 				for (int j2 = 0; j2 < l.getCil().size(); j2++) {
 					if(l.getCil().get(j2).equals(objednavky.get(i).getKam())){
 						System.out.println(l.getId());
-						/*try {
-							this.wait();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						*/
 					}
 				}
 			}
@@ -422,7 +599,12 @@ public class Counter extends Thread{
 		return leku;
 	}
 	
-	public void logLod(Lod l, int den){
+	/********************************************************************************************************
+	 * log lodi
+	 * @param l lod 
+	 * @param den aktualni den
+	 */
+	private  void logLod(Lod l, int den){
 		if(l.getCil().size()>0){
 		int cas = 0;
 		int vzdalenost = (int)(l.getCil().get(l.getCil().size()-1).getVzdalenost()/25);
@@ -439,7 +621,13 @@ public class Counter extends Thread{
 		}
 	}
 	
-	public void naplnLod(Lod l, Objednavka ob, int naklad){
+	/*******************************************************************************
+	 * naplní lod
+	 * @param l lod
+	 * @param ob objednávka
+	 * @param naklad velikost náladu
+	 */
+	private void naplnLod(Lod l, Objednavka ob, int naklad){
 		if(naklad != 0){
 			if(celkoveVyrobeno.size()==mesic){
 				celkoveVyrobeno.add((long)naklad);
@@ -454,20 +642,20 @@ public class Counter extends Thread{
 			l.setLokace(ob.getOd());
 			l.setPosX(ob.getOd().getPosX());
 			l.setPosY(ob.getOd().getPosY());
-			/*Soubor.getLogger().log(Level.INFO, "Lod �. "+l.getId()+
-					" doveze "+naklad+" l�k� na planetu "+ob.getKam().getJmeno()+
-					". Lo� je napln�na z "+(int)(l.getNaklad()/50000.0)+
-					"% a cestou bude z�sobovat "+l.getCil().size()+" planet(u).");
-					*/
+		
 		}
 		if(l.getNaklad()>5000000){
 			throw new RuntimeException("Moc velký náklad");
 		}
-		//System.out.println("Lod �."+l.getId()+" se nakl�d� v doku "+((Stanice)l.getLokace()).getId());
 	}
-	
-	private int counter = 1;
-	public Lod getLod(Stanice s){
+	/*****************************************************************
+	 * vrátí loď, krerá je v zásobníku na vrchlu
+	 * 
+	 * @param s výchozí stanice
+	 * 
+	 * @return instance třídy {@code Lod}
+	 */
+	private Lod getLod(Stanice s){
 		if(s.getDok().size()==0){
 			Lod l = new Lod(s, counter);
 			counter++;
@@ -480,7 +668,12 @@ public class Counter extends Thread{
 			return s.getDok().peek();}
 	}
 	
-	public List<Objednavka> getObjednavky(){
+	/******************************************************************
+	 * vrátí seznam objednávek
+	 * 
+	 * @return seznam objednávek
+	 */
+	private List<Objednavka> getObjednavky(){
 		ArrayList<Objednavka> objednavky = new ArrayList<Objednavka>();
 		
 		for (int i = 0; i < g.getPlanety().size()-5; i++) {
@@ -498,7 +691,10 @@ public class Counter extends Thread{
  		return objednavky;
 	}
 	
-	public void zabijLidi(){
+	/***************************************************************************************************************
+	 * zabije lidi kteří na konce měsíce nodostali léky
+	 */
+	private void zabijLidi(){
 		for (int i = 0; i < g.getPlanety().size()-5; i++) {
 			if(g.getPlanety().get(i).isMrtva()){
 				g.getPlanety().get(i).zabij(g.getPlanety().get(i).getPop()-g.getPlanety().get(i).vyrobLeky());
@@ -512,9 +708,13 @@ public class Counter extends Thread{
 				}
 			}
 		}
-		//System.out.println("Zemřelo "+mrtvych+" lidí.");
 	}
 	
+	/********************************************
+	 * metoda spiští tiky
+	 * @param g
+	 * @param gui
+	 */
 	public void start(Galaxie g, GUI gui){
 		super.start();
 		this.g = g;
@@ -523,9 +723,21 @@ public class Counter extends Thread{
 	
 }
 
-
+/*****************************************************************
+ * Třída slouží k porovnávání dvou objednávek
+ * @author Michal Štrunc a Jakub Vááverka
+ *
+ */
 class FarComparator implements Comparator<Objednavka> {
 
+	/****************************************************
+	 * porovná dvě objednávky podle velikosti
+	 * 
+	 * @param o1 první objednávka
+	 * @param o2 druhá objednávka
+	 * 
+	 * @return 1 větší 0 stejně velký -1 mneší
+	 */
 	@Override
 	public int compare(Objednavka o1, Objednavka o2) {
 		if(o1.getVzdalenost()<o2.getVzdalenost()){

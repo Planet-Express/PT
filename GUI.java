@@ -273,8 +273,8 @@ public class GUI{
 	 */
 	private ObservableList<Lod> getLode() {
 		ObservableList<Lod> ol = FXCollections.observableArrayList();
-		for (int i = 0; i < cas.lode.size(); i++) {
-			ol.add(cas.lode.get(i));
+		for (int i = 0; i < cas.getLode().size(); i++) {
+			ol.add(cas.getLode().get(i));
 		}
 		return ol;
 	}
