@@ -491,8 +491,6 @@ public class GUI{
 		tv.setItems(getLode());
 		tv.getColumns().get(0).setVisible(false);
 		tv.getColumns().get(0).setVisible(true);
-		setPopisek("Den:\t" + cas.getDen() + "\tMěsíc:\t" + cas.getMesic() + "\tPopulace:\t" +
-		cas.getCelkovaPopulace().get(cas.getCelkovaPopulace().size()-1));
 		for (int i = 0; i < tv.getSelectionModel().getSelectedItems().size(); i++) {			
 			nakresliLod(tv.getSelectionModel().getSelectedItems().get(i));			
 		}
