@@ -159,7 +159,8 @@ public class GUI{
 		VBox vb = new VBox();
 		ObservingLabel oLabel = new ObservingLabel();
 		oPlaneta.addObserver(oLabel);
-		TextField tf = new TextField("Zadej objednávku");
+		TextField tf = new TextField();
+		tf.setPromptText("Zadej objednávku");
 		tf.setMaxWidth(110);
 		objednat = new Button("Objednat");
 		objednat.setDisable(true);
@@ -491,6 +492,10 @@ public class GUI{
 		tv.setItems(getLode());
 		tv.getColumns().get(0).setVisible(false);
 		tv.getColumns().get(0).setVisible(true);
+		if(cas.getCelkovaPopulace().size() != 0){
+			setPopisek("Den:\t" + cas.getDen() + "\tMěsíc:\t" + cas.getMesic() + "\tPopulace:\t" +
+					cas.getCelkovaPopulace().get(cas.getCelkovaPopulace().size()-1));
+		}
 		for (int i = 0; i < tv.getSelectionModel().getSelectedItems().size(); i++) {			
 			nakresliLod(tv.getSelectionModel().getSelectedItems().get(i));			
 		}
